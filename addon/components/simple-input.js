@@ -17,6 +17,10 @@ export default Ember.Component.extend({
     return !Ember.isEmpty(this.get("errors"));
   }.property("errors"),
 
+  errorMessages: function() {
+    return this.get("errors").join(", ");
+  }.property("errors"),
+
   objectOrAttrChanged: function() {
     var errorsAttribute = "object.errors." + this.get("attr");
     var binding = Ember.Binding.from(errorsAttribute).to("errors");

@@ -76,13 +76,13 @@ test("it reflects error updates", function(assert) {
 
   Ember.run(function() {
     model.set("errors", Ember.Object.create({
-      title: Ember.A(["can't be blank"])
+      title: Ember.A(["can't be blank", "is too short"])
     }));
   });
 
   assert.ok(component.get("hasErrors"), "Component has errors.");
   assert.ok(component.$().is(".field-with-errors"), "Wrapper element has an error class assigned.");
-  assert.equal(component.$(".errors").text(), "can't be blank", "The error is displayed");
+  assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errora are displayed");
 });
 
 test("it humanizes the property for use as label", function(assert) {
