@@ -49,6 +49,6 @@ export default Ember.Component.extend({
   }.property("attr"),
 
   inlineLabel: function() {
-    return this.get("type") === "checkbox";
+    return this.get("type") === "boolean";
   }.property("type")
 });

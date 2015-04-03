@@ -4,12 +4,15 @@ import FormBuilder from "ember-cli-simple-form/models/form-builder";
 import configuration from "ember-cli-simple-form/configuration";
 
 var type = "string";
+var defaultTypes = ["string", "text", "boolean", "number", "date"];
 var attr = "title";
 var formBuilder;
 var model;
 
 moduleForComponent("simple-input", "Simple Input component", {
-  needs: ["component:string-input"],
+  needs: defaultTypes.map(function(t) {
+    return "component:" + t + "-input";
+  }),
 
   beforeEach: function() {
     model = Ember.Object.create({ title: "Testing testing 123" });
@@ -148,4 +151,24 @@ test("it renders the label differently when it's inline", function(assert) {
   });
 
   assert.equal(component.$("input+label").length, 1, "The label is after the input");
+});
+
+defaultTypes.forEach(function(type) {
+  test("it renders correctly for type \"" + type + "\"", function(assert) {
+    var component = this.subject({
+      on: formBuilder,
+      as: type,
+      attr: attr
+    });
+
+    Ember.run(function() {
+      component.appendTo("#ember-testing");
+    });
+
+    assert.equal(
+      component.$("#" + component.get("inputElementId")).length,
+      1,
+      "Rendered correctly for type \"" + type + "\""
+    );
+  });
 });
