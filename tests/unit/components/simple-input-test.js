@@ -120,8 +120,7 @@ test("it renders assigns the input's id as the label's for", function(assert) {
   var component = this.subject({
     on: formBuilder,
     as: type,
-    attr: attr,
-    label: "Custom title"
+    attr: attr
   });
 
   Ember.run(function() {
@@ -129,4 +128,24 @@ test("it renders assigns the input's id as the label's for", function(assert) {
   });
 
   assert.equal(component.$("label").attr("for"), component.$("input").attr("id"));
+});
+
+test("it renders the label differently when it's inline", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.$("label+.field").length, 1, "The label is rendered before the field");
+
+  Ember.run(function() {
+    component.set("inlineLabel", true);
+  });
+
+  assert.equal(component.$("input+label").length, 1, "The label is after the input");
 });

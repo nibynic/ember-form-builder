@@ -46,5 +46,9 @@ export default Ember.Component.extend({
 
   label: function() {
     return humanize(this.get("attr"));
-  }.property("attr")
+  }.property("attr"),
+
+  inlineLabel: function() {
+    return this.get("type") === "checkbox";
+  }.property("type")
 });
