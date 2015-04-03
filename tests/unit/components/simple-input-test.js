@@ -11,7 +11,7 @@ var model;
 
 moduleForComponent("simple-input", "Simple Input component", {
   needs: defaultTypes.map(function(t) {
-    return "component:" + t + "-input";
+    return "component:inputs/" + t + "-input";
   }),
 
   beforeEach: function() {

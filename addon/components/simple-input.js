@@ -37,7 +37,7 @@ export default Ember.Component.extend({
   }.observes("object", "attr").on("init"),
 
   inputComponentName: function() {
-    return this.get("type") + "-input";
+    return "inputs/" + this.get("type") + "-input";
   }.property("attr", "builder"),
 
   inputElementId: function() {
