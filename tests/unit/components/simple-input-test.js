@@ -61,6 +61,23 @@ test("it reflects value updates", function(assert) {
   assert.equal(component.$("input").val(), "Another test!");
 });
 
+test("it uses the classes from configuration", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.ok(component.$().is(".input"), "Wrapper element has the configured wrapper class.");
+  assert.ok(component.$().is(".string-input"), "Wrapper element has a type-based class.");
+  assert.equal(component.$(".field").length, 1, "Field element has the configurec class.");
+  assert.ok(component.$("input").is(".input-control"), "Wrapper element has a type-based class.");
+});
+
 test("it reflects error updates", function(assert) {
   var component = this.subject({
     on: formBuilder,
@@ -73,7 +90,7 @@ test("it reflects error updates", function(assert) {
   });
 
   assert.ok(!component.get("hasErrors"), "Component has no errors.");
-  assert.ok(!component.$().is(".field-with-errors"), "Wrapper element has no error class assigned.");
+  assert.ok(!component.$().is(".input-with-errors"), "Wrapper element has no error class assigned.");
   assert.equal(component.$(".errors").text(), "", "No errors are displayed");
   // assert.equal(component.$("input").val(), "Testing testing 123");
 
@@ -84,7 +101,7 @@ test("it reflects error updates", function(assert) {
   });
 
   assert.ok(component.get("hasErrors"), "Component has errors.");
-  assert.ok(component.$().is(".field-with-errors"), "Wrapper element has an error class assigned.");
+  assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned.");
   assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errora are displayed");
 });
 

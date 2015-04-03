@@ -5,12 +5,14 @@ import humanize from "ember-simple-form/utilities/humanize";
 export default Ember.Component.extend({
   // TODO: assertions
 
+  classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
+
   builder: Ember.computed.alias("on"),
   type: Ember.computed.alias("as"),
   object: Ember.computed.alias("builder.object"),
 
   setupClassNameBindings: function() {
-    this.classNameBindings.push("hasErrors:" + configuration.errorsClass);
+    this.classNameBindings.push("hasErrors:" + configuration.wrapperWithErrorsClass);
   }.on("init"),
 
   hasErrors: function() {
@@ -35,6 +37,14 @@ export default Ember.Component.extend({
       return this.get(valueAttribute);
     }).property(valueAttribute));
   }.observes("object", "attr").on("init"),
+
+  wrapperClassName: function() { return configuration.wrapperClass; }.property(),
+  wrapperTypeClassName: function() {
+    return this.get("type") + "-input";
+  }.property("type"),
+  errorsClassName: function() { return configuration.errorsClass; }.property(),
+  fieldClassName: function() { return configuration.fieldClass; }.property(),
+  inputClassName: function() { return configuration.inputClass; }.property(),
 
   inputComponentName: function() {
     return "inputs/" + this.get("type") + "-input";

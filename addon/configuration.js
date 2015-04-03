@@ -1,3 +1,7 @@
 export default {
-  errorsClass: "field-with-errors"
+  wrapperClass: "input",
+  wrapperWithErrorsClass: "input-with-errors",
+  errorsClass: "errors",
+  fieldClass: "field",
+  inputClass: "input-control"
 };
