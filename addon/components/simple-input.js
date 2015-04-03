@@ -45,6 +45,7 @@ export default Ember.Component.extend({
   errorsClassName: function() { return configuration.errorsClass; }.property(),
   fieldClassName: function() { return configuration.fieldClass; }.property(),
   inputClassName: function() { return configuration.inputClass; }.property(),
+  hintClassName: function() { return configuration.hintClass; }.property(),
 
   inputComponentName: function() {
     return "inputs/" + this.get("type") + "-input";
@@ -60,5 +61,9 @@ export default Ember.Component.extend({
 
   inlineLabel: function() {
     return this.get("type") === "boolean";
-  }.property("type")
+  }.property("type"),
+
+  hasHint: function() {
+    return Ember.isPresent(this.get("hint"));
+  }.property("hint")
 });

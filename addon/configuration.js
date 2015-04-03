@@ -3,5 +3,6 @@ export default {
   wrapperWithErrorsClass: "input-with-errors",
   errorsClass: "errors",
   fieldClass: "field",
-  inputClass: "input-control"
+  inputClass: "input-control",
+  hintClass: "hint"
 };

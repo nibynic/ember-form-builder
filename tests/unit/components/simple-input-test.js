@@ -105,6 +105,28 @@ test("it reflects error updates", function(assert) {
   assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errora are displayed");
 });
 
+test("it renders a hint when provided", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.ok(!component.get("hasHint"));
+  assert.equal(component.$(".hint").length, 0);
+
+  Ember.run(function() {
+    component.set("hint", "This is a hint");
+  });
+
+  assert.ok(component.get("hasHint"));
+  assert.equal(component.$(".hint").text(), "This is a hint");
+});
+
 test("it humanizes the property for use as label", function(assert) {
   var component = this.subject({
     on: formBuilder,
