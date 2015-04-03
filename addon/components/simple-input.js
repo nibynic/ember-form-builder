@@ -36,6 +36,10 @@ export default Ember.Component.extend({
     return this.get("type") + "-input";
   }.property("attr", "builder"),
 
+  inputElementId: function() {
+    return this.get("elementId") + "Input";
+  }.property("elementId"),
+
   label: function() {
     return humanize(this.get("attr"));
   }.property("attr")

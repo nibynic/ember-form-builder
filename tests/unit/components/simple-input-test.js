@@ -115,3 +115,18 @@ test("it uses the provided label if it's provided", function(assert) {
   assert.equal(component.get("label"), "Custom title");
   assert.equal(component.$("label").text(), "Custom title", "The custom label test is rendered");
 });
+
+test("it renders assigns the input's id as the label's for", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr,
+    label: "Custom title"
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.$("label").attr("for"), component.$("input").attr("id"));
+});

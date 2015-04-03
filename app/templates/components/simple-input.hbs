@@ -1,6 +1,6 @@
-<label>{{label}}</label>
+<label for={{inputElementId}}>{{label}}</label>
 <div class="field">
-  {{component inputComponentName value=value}}
+  {{component inputComponentName value=value elementId=inputElementId}}
   {{#if hasErrors}}
     <div class="errors">{{errors.firstObject}}</div>
   {{/if}}
