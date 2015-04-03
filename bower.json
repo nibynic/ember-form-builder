@@ -1,5 +1,5 @@
 {
-  "name": "ember-cli-simple-form",
+  "name": "ember-simple-form",
   "dependencies": {
     "jquery": "^1.11.1",
     "ember": "1.11.0-beta.4",

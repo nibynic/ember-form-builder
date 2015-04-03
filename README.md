@@ -1,4 +1,4 @@
-# Ember-cli-simple-form
+# ember-simple-form
 
 This README outlines the details of collaborating on this Ember addon.
 

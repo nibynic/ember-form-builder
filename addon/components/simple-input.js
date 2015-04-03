@@ -1,6 +1,6 @@
 import Ember from "ember";
-import configuration from "ember-cli-simple-form/configuration";
-import humanize from "ember-cli-simple-form/utilities/humanize";
+import configuration from "ember-simple-form/configuration";
+import humanize from "ember-simple-form/utilities/humanize";
 
 export default Ember.Component.extend({
   // TODO: assertions
