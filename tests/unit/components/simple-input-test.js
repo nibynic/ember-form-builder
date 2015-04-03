@@ -59,7 +59,6 @@ test("it reflects value updates", function(assert) {
 });
 
 test("it reflects error updates", function(assert) {
-
   var component = this.subject({
     on: formBuilder,
     as: type,
@@ -84,4 +83,35 @@ test("it reflects error updates", function(assert) {
   assert.ok(component.get("hasErrors"), "Component has errors.");
   assert.ok(component.$().is(".field-with-errors"), "Wrapper element has an error class assigned.");
   assert.equal(component.$(".errors").text(), "can't be blank", "The error is displayed");
+});
+
+test("it humanizes the property for use as label", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: "multiWordAttribute"
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.get("label"), "Multi word attribute");
+  assert.equal(component.$("label").text(), "Multi word attribute", "The humanized label test is rendered");
+});
+
+test("it uses the provided label if it's provided", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr,
+    label: "Custom title"
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.get("label"), "Custom title");
+  assert.equal(component.$("label").text(), "Custom title", "The custom label test is rendered");
 });

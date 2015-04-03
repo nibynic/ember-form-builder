@@ -1,5 +1,6 @@
 import Ember from "ember";
 import configuration from "ember-cli-simple-form/configuration";
+import humanize from "ember-cli-simple-form/utilities/humanize";
 
 export default Ember.Component.extend({
   // TODO: assertions
@@ -33,5 +34,9 @@ export default Ember.Component.extend({
 
   inputComponentName: function() {
     return this.get("type") + "-input";
-  }.property("attr", "builder")
+  }.property("attr", "builder"),
+
+  label: function() {
+    return humanize(this.get("attr"));
+  }.property("attr")
 });
