@@ -4,7 +4,7 @@ import humanize from "ember-simple-form/utilities/humanize";
 
 export default Ember.Component.extend({
   // TODO: assertions
-
+  inputAttributeNames: [],
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
 
   builder: Ember.computed.alias("on"),

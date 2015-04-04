@@ -1,6 +1,8 @@
 {{#unless inlineLabel}}<label for={{inputElementId}}>{{label}}</label>{{/unless}}
 <div class={{fieldClassName}}>
-  {{component inputComponentName value=value elementId=inputElementId class=inputClassName}}
+  {{input-component inputComponentName
+    additionalAttributeNames=inputAttributeNames value=value
+    elementId=inputElementId class=inputClassName}}
   {{#if inlineLabel}}<label for={{inputElementId}}>{{label}}</label>{{/if}}
   {{#if hasErrors}}
     <div class={{errorsClassName}}>{{errorMessages}}</div>

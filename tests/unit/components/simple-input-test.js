@@ -2,12 +2,15 @@ import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 import FormBuilder from "ember-simple-form/models/form-builder";
 import configuration from "ember-simple-form/configuration";
+import inputComponent from "ember-simple-form/helpers/input-component";
 
 var type = "string";
 var defaultTypes = ["string", "text", "boolean", "number", "date"];
 var attr = "title";
 var formBuilder;
 var model;
+
+Ember.HTMLBars._registerHelper("input-component", inputComponent);
 
 moduleForComponent("simple-input", "Simple Input component", {
   needs: defaultTypes.map(function(t) {
@@ -210,4 +213,22 @@ defaultTypes.forEach(function(type) {
       "Rendered correctly for type \"" + type + "\""
     );
   });
+});
+
+test("it passes all external attributes to the input component", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr,
+    customAttr1: "asdf",
+    collection: ["a", "b", "c"],
+    inputAttributeNames: ["customAttr1", "collection"]
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.ok(component.get("inputAttributeNames").indexOf("customAttr1") > -1);
+  assert.ok(component.get("inputAttributeNames").indexOf("collection") > -1);
 });
