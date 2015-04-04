@@ -1,6 +1,7 @@
 # ember-simple-form
 
-This README outlines the details of collaborating on this Ember addon.
+[![Build Status](https://travis-ci.org/nibynic/ember-simple-form.svg)](https://travis-ci.org/nibynic/ember-simple-form)
+
 
 ## Installation
 
