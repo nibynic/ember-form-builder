@@ -30,20 +30,6 @@ moduleForComponent("simple-input", "Simple Input component", {
   }
 });
 
-test("it renders with the right props", function(assert) {
-  var component = this.subject({
-    on: formBuilder,
-    as: type,
-    attr: attr
-  });
-
-  assert.equal(component._state, "preRender");
-
-  this.render();
-
-  assert.equal(component._state, "inDOM");
-});
-
 test("it reflects value updates", function(assert) {
   var component = this.subject({
     on: formBuilder,

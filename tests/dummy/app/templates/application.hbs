@@ -5,7 +5,12 @@
 {{#simple-form for=controller as |f|}}
   asdf
   {{title}}
+  <br/>
+  {{currentProgrammerId}}
   {{simple-input on=f attr="title" as="string" testAttr="asdfasdf"}}
+  {{simple-input on=f attr="currentProgrammerId" as="collection" collection=programmers
+    optionValuePath="content.id" optionLabelPath="content.firstName"
+    inputAttributeNames=additionalProgrammerSelectAttributeNames}}
 {{/simple-form}}
 
 {{outlet}}
