@@ -7,10 +7,9 @@
   {{title}}
   <br/>
   {{currentProgrammerId}}
-  {{simple-input on=f attr="title" as="string" testAttr="asdfasdf"}}
-  {{simple-input on=f attr="currentProgrammerId" as="collection" collection=programmers
-    optionValuePath="content.id" optionLabelPath="content.firstName"
-    inputAttributeNames=additionalProgrammerSelectAttributeNames}}
+  {{input-on f "title" as="string" testAttr="asdfasdf"}}
+  {{input-on f "currentProgrammerId" as="collection" collection=programmers
+    optionValuePath="id" optionLabelPath="firstName"}}
 {{/simple-form}}
 
 {{outlet}}

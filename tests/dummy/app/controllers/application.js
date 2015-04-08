@@ -5,18 +5,13 @@ export default Ember.Controller.extend({
     return "test 123";
   }.property(),
 
-  // programmers: [
-  //   { firstName: "Yehuda", id: 1 },
-  //   { firstName: "Tom",    id: 2 }
-  // ],
-  //
-  // currentProgrammer: 2,
+  programmers: [
+    { firstName: "Yehuda", id: 1 },
+    { firstName: "Tom",    id: 2 }
+  ],
 
-  programmers: ["Tom", "Yehuda"],
-  currentProgrammer: "Tom",
+  currentProgrammerId: 2
 
-  additionalProgrammerSelectAttributeNames: [
-    "collection", "optionLabelPath", "optionValuePath"
-  ]
-
+  // programmers: ["Tom", "Yehuda"],
+  // currentProgrammer: "Tom"
 });

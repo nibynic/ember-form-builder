@@ -2,10 +2,12 @@ import Ember from "ember";
 import configuration from "ember-simple-form/configuration";
 import humanize from "ember-simple-form/utilities/humanize";
 
-export default Ember.Component.extend({
+var extension = {
   // TODO: assertions
-  inputAttributeNames: [],
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
+  on: null,
+  as: null,
+  attr: null,
 
   builder: Ember.computed.alias("on"),
   type: Ember.computed.alias("as"),
@@ -66,4 +68,11 @@ export default Ember.Component.extend({
   hasHint: function() {
     return Ember.isPresent(this.get("hint"));
   }.property("hint")
-});
+};
+
+var simpleInputAttributeNames = Ember.keys(extension);
+
+export default Ember.Component.extend(extension);
+export {
+  simpleInputAttributeNames
+};
