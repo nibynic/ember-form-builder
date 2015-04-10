@@ -4,6 +4,7 @@ import humanize from "ember-simple-form/utilities/humanize";
 var extension = {
   // TODO: assertions
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
+  hasFocusedOut: false,
   on: null,
   as: null,
   attr: null,
@@ -19,12 +20,16 @@ var extension = {
     this.objectOrAttrChanged();
   },
 
+  focusOut: function() {
+    this.set("hasFocusedOut", true);
+  },
+
   setupClassNameBindings: Ember.on("init", function() {
     this.classNameBindings.push("hasErrors:" + this.get("configuration.wrapperWithErrorsClass"));
   }),
 
-  hasErrors: Ember.computed("errors", function() {
-    return !Ember.isEmpty(this.get("errors"));
+  hasErrors: Ember.computed("hasFocusedOut", "errors", function() {
+    return this.get("hasFocusedOut") && !Ember.isEmpty(this.get("errors"));
   }),
 
   errorMessages: Ember.computed("errors", function() {

@@ -90,6 +90,14 @@ test("it reflects error updates", function(assert) {
     }));
   });
 
+  assert.ok(!component.get("hasErrors"), "Component has no errors if wasn't focused out.");
+  assert.ok(!component.$().is(".input-with-errors"), "Wrapper element has no error class assigned if wasn't focused out.");
+  assert.equal(component.$(".errors").text(), "", "No errors are displayed if wasn't focused out");
+
+  Ember.run(function() {
+    component.focusOut();
+  });
+
   assert.ok(component.get("hasErrors"), "Component has errors.");
   assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned.");
   assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errora are displayed");
