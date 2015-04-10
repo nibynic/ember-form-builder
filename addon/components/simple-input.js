@@ -1,5 +1,4 @@
 import Ember from "ember";
-import configuration from "ember-simple-form/configuration";
 import humanize from "ember-simple-form/utilities/humanize";
 
 var extension = {
@@ -8,6 +7,7 @@ var extension = {
   on: null,
   as: null,
   attr: null,
+  configuration: {},
 
   builder: Ember.computed.alias("on"),
   type: Ember.computed.alias("as"),
@@ -20,7 +20,7 @@ var extension = {
   },
 
   setupClassNameBindings: Ember.on("init", function() {
-    this.classNameBindings.push("hasErrors:" + configuration.wrapperWithErrorsClass);
+    this.classNameBindings.push("hasErrors:" + this.get("configuration.wrapperWithErrorsClass"));
   }),
 
   hasErrors: Ember.computed("errors", function() {
@@ -46,14 +46,14 @@ var extension = {
     }));
   }),
 
-  wrapperClassName: Ember.computed(function() { return configuration.wrapperClass; }),
+  wrapperClassName: Ember.computed(function() { return this.get("configuration.wrapperClass"); }),
   wrapperTypeClassName: Ember.computed("type", function() {
     return this.get("type") + "-input";
   }),
-  errorsClassName: Ember.computed(function() { return configuration.errorsClass; }),
-  fieldClassName: Ember.computed(function() { return configuration.fieldClass; }),
-  inputClassName: Ember.computed(function() { return configuration.inputClass; }),
-  hintClassName: Ember.computed(function() { return configuration.hintClass; }),
+  errorsClassName: Ember.computed(function() { return this.get("configuration.errorsClass"); }),
+  fieldClassName: Ember.computed(function() { return this.get("configuration.fieldClass"); }),
+  inputClassName: Ember.computed(function() { return this.get("configuration.inputClass"); }),
+  hintClassName: Ember.computed(function() { return this.get("configuration.hintClass"); }),
 
   inputComponentName: Ember.computed("attr", "builder", function() {
     return "inputs/" + this.get("type") + "-input";

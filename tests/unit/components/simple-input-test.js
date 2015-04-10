@@ -1,8 +1,8 @@
 import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 import FormBuilder from "ember-simple-form/models/form-builder";
-import configuration from "ember-simple-form/configuration";
 import inputComponent from "ember-simple-form/helpers/input-component";
+import configurationInitialiser from "../../../initializers/ember-simple-form-configuration";
 
 var type = "string";
 var defaultTypes = ["string", "text", "boolean", "number", "date"];
@@ -11,6 +11,7 @@ var formBuilder;
 var model;
 
 Ember.HTMLBars._registerHelper("input-component", inputComponent);
+configurationInitialiser.initialize();
 
 moduleForComponent("simple-input", "Simple Input component", {
   needs: defaultTypes.map(function(t) {
@@ -63,7 +64,7 @@ test("it uses the classes from configuration", function(assert) {
 
   assert.ok(component.$().is(".input"), "Wrapper element has the configured wrapper class.");
   assert.ok(component.$().is(".string-input"), "Wrapper element has a type-based class.");
-  assert.equal(component.$(".field").length, 1, "Field element has the configurec class.");
+  assert.equal(component.$(".field").length, 1, "Field element has the configured class.");
   assert.ok(component.$("input").is(".input-control"), "Wrapper element has a type-based class.");
 });
 
