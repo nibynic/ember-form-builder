@@ -1,14 +1,14 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
-  title: function() {
+  title: Ember.computed(function() {
     return "test 123";
-  }.property(),
+  }),
 
-  programmers: [
+  programmers: Ember.A([
     { firstName: "Yehuda", id: 1 },
     { firstName: "Tom",    id: 2 }
-  ],
+  ]),
 
   currentProgrammerId: 2
 

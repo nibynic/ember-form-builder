@@ -15,7 +15,7 @@ moduleForComponent("inputs/collection-input", "Collection Input component", {
 
 test("it renders collection of strings as options", function(assert) {
   var component = this.subject({
-    collection: ["Cooking", "Sports", "Politics"],
+    collection: Ember.A(["Cooking", "Sports", "Politics"]),
     value: "Cooking"
   });
 
@@ -33,13 +33,13 @@ test("it renders collection of strings as options", function(assert) {
 
 test("it renders collection objects as options", function(assert) {
   var component = this.subject({
-    collection: [{
+    collection: Ember.A([{
       id: 1, name: "Cooking", slug: "cooking", headline: "For kitchen geeks!"
     }, {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
     }, {
       id: 3, name: "Politics", slug: "politics", headline: "For nerds"
-    }],
+    }]),
     value: 2
   });
 
@@ -69,13 +69,13 @@ test("it renders collection objects as options", function(assert) {
 
 test("it selects given values", function(assert) {
   var component = this.subject({
-    collection: [{
+    collection: Ember.A([{
       id: 1, name: "Cooking",
     }, {
       id: 2, name: "Sports",
     }, {
       id: 3, name: "Politics",
-    }],
+    }]),
     value: 2
   });
 
@@ -98,15 +98,15 @@ test("it selects given values", function(assert) {
 
 test("it updates value after changing", function(assert) {
   var component = this.subject({
-    collection: [{
+    collection: Ember.A([{
       id: 1, name: "Cooking",
     }, {
       id: 2, name: "Sports",
     }, {
       id: 3, name: "Politics",
-    }],
+    }]),
     isMultiple: true,
-    value: [1, 2]
+    value: Ember.A([1, 2])
   });
 
   Ember.run(function() {
@@ -123,7 +123,7 @@ test("it updates value after changing", function(assert) {
 
 test("it sets the value after being displayed", function(assert) {
   var component = this.subject({
-    collection: ["Cooking", "Sports", "Politics"],
+    collection: Ember.A(["Cooking", "Sports", "Politics"]),
     value: null
   });
 

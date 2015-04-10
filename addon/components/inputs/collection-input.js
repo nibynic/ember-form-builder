@@ -30,13 +30,13 @@ export default Ember.Component.extend({
     //
     var selection = this.get("collection").objectsAt(indicies);
     var valuePath = this.get("optionValuePath");
-    var newValues = selection.map(function(item) {
+    var newValues = Ember.A(selection.map(function(item) {
       if (typeof item === "string") {
         return item;
       } else {
         return Ember.get(item, valuePath);
       }
-    });
+    }));
 
     if (Ember.isArray(this.get("value"))) {
       this.get("value").replace(0, this.get("value.length"), newValues);

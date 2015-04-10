@@ -13,61 +13,67 @@ var extension = {
   type: Ember.computed.alias("as"),
   object: Ember.computed.alias("builder.object"),
 
-  setupClassNameBindings: function() {
+  init: function() {
+    this._super();
+
+    this.objectOrAttrChanged();
+  },
+
+  setupClassNameBindings: Ember.on("init", function() {
     this.classNameBindings.push("hasErrors:" + configuration.wrapperWithErrorsClass);
-  }.on("init"),
+  }),
 
-  hasErrors: function() {
+  hasErrors: Ember.computed("errors", function() {
     return !Ember.isEmpty(this.get("errors"));
-  }.property("errors"),
+  }),
 
-  errorMessages: function() {
+  errorMessages: Ember.computed("errors", function() {
     return this.get("errors").join(", ");
-  }.property("errors"),
+  }),
 
-  objectOrAttrChanged: function() {
+  objectOrAttrChanged: Ember.observer("object", "attr", function() {
     var errorsAttribute = "object.errors." + this.get("attr");
     var binding = Ember.Binding.from(errorsAttribute).to("errors");
     binding.connect(this);
 
     var valueAttribute = "object." + this.get("attr");
-    Ember.defineProperty(this, "value", Ember.computed(function(key, value) {
+    Ember.defineProperty(this, "value", Ember.computed(valueAttribute, function(key, value) {
       if (arguments.length > 1) {
         this.set(valueAttribute, value);
       }
 
       return this.get(valueAttribute);
-    }).property(valueAttribute));
-  }.observes("object", "attr").on("init"),
+    }));
+  }),
 
-  wrapperClassName: function() { return configuration.wrapperClass; }.property(),
-  wrapperTypeClassName: function() {
+  wrapperClassName: Ember.computed(function() { return configuration.wrapperClass; }),
+  wrapperTypeClassName: Ember.computed("type", function() {
     return this.get("type") + "-input";
-  }.property("type"),
-  errorsClassName: function() { return configuration.errorsClass; }.property(),
-  fieldClassName: function() { return configuration.fieldClass; }.property(),
-  inputClassName: function() { return configuration.inputClass; }.property(),
-  hintClassName: function() { return configuration.hintClass; }.property(),
+  }),
+  errorsClassName: Ember.computed(function() { return configuration.errorsClass; }),
+  fieldClassName: Ember.computed(function() { return configuration.fieldClass; }),
+  inputClassName: Ember.computed(function() { return configuration.inputClass; }),
+  hintClassName: Ember.computed(function() { return configuration.hintClass; }),
 
-  inputComponentName: function() {
+  inputComponentName: Ember.computed("attr", "builder", function() {
     return "inputs/" + this.get("type") + "-input";
-  }.property("attr", "builder"),
+  }),
 
-  inputElementId: function() {
+  inputElementId: Ember.computed("elementId", function() {
     return this.get("elementId") + "Input";
-  }.property("elementId"),
+  }),
 
-  label: function() {
+  label: Ember.computed("attr", function() {
     return humanize(this.get("attr"));
-  }.property("attr"),
+  }),
 
-  inlineLabel: function() {
+  inlineLabel: Ember.computed("type", function() {
     return this.get("type") === "boolean";
-  }.property("type"),
+  }),
 
-  hasHint: function() {
+  hasHint: Ember.computed("hint", function() {
     return Ember.isPresent(this.get("hint"));
-  }.property("hint")
+  })
 };
 
 var simpleInputAttributeNames = Ember.keys(extension);

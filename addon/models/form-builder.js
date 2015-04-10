@@ -1,7 +1,7 @@
 import Ember from "ember";
 
 export default Ember.Object.extend({
-  name: function(key, value, previousValue) {
+  name: Ember.computed(function(key, value, previousValue) {
     var newValue = previousValue;
 
     if (arguments.length > 1) {
@@ -13,5 +13,5 @@ export default Ember.Object.extend({
     }
 
     return newValue;
-  }.property()
+  })
 });

@@ -4,7 +4,13 @@ export default Ember.Component.extend({
   tagName: "option",
   attributeBindings: ["value", "isSelected:selected"],
 
-  labelPathDidChange: function() {
+  init: function() {
+    this._super();
+    this.labelPathDidChange();
+    this.valuePathDidChange();
+  },
+
+  labelPathDidChange: Ember.observer("labelPath", function() {
     var labelPath = "content." + this.get("labelPath");
 
     Ember.defineProperty(this, "label", Ember.computed("content", labelPath, function() {
@@ -15,9 +21,9 @@ export default Ember.Component.extend({
       }
     }));
     this.notifyPropertyChange("label");
-  }.observes("labelPath").on("init"),
+  }),
 
-  valuePathDidChange: function() {
+  valuePathDidChange: Ember.observer("valuePath", function() {
     var valuePath = "content." + this.get("valuePath");
 
     Ember.defineProperty(this, "value", Ember.computed("content", valuePath, function() {
@@ -28,13 +34,13 @@ export default Ember.Component.extend({
       }
     }));
     this.notifyPropertyChange("value");
-  }.observes("valuePath").on("init"),
+  }),
 
-  isSelected: function() {
+  isSelected: Ember.computed("selectedValue", "value", function() {
     if (Ember.isArray(this.get("selectedValue"))) {
       return this.get("selectedValue").indexOf(this.get("value")) >= 0;
     } else {
       return this.get("selectedValue") === this.get("value");
     }
-  }.property("selectedValue", "value")
+  })
 });
