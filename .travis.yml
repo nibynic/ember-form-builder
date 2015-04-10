@@ -7,10 +7,6 @@ node_js:
   - "0.12"
   - "iojs"
 
-cache:
-  directories:
-    - node_modules
-
 before_install:
   - "npm config set spin false"
   - "npm install -g npm@^2"
