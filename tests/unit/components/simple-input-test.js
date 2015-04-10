@@ -5,7 +5,7 @@ import inputComponent from "ember-simple-form/helpers/input-component";
 import configurationInitialiser from "../../../initializers/ember-simple-form-configuration";
 
 var type = "string";
-var defaultTypes = ["string", "text", "boolean", "number", "date"];
+var defaultTypes = ["string", "text", "boolean", "number", "date", "password", "email"];
 var attr = "title";
 var formBuilder;
 var model;
