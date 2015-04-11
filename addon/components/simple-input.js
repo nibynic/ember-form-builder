@@ -1,12 +1,16 @@
 import Ember from "ember";
 import humanize from "ember-simple-form/utilities/humanize";
+import guessType from "ember-simple-form/utilities/guess-type";
+import findModel from "ember-simple-form/utilities/find-model";
 
 var extension = {
   // TODO: assertions
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
   hasFocusedOut: false,
   on: null,
-  as: null,
+  as: Ember.computed("object", "attr", function() {
+    return guessType(findModel(this.get("object")), this.get("attr"), this);
+  }),
   attr: null,
   configuration: {},
 
