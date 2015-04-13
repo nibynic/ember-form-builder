@@ -29,14 +29,19 @@ test("it detects collection when a collection param is available", function(asse
 
 test("it recognizes Ember Data attribute types", function(assert) {
   Ember.A(["string", "number", "date", "boolean"]).forEach(function(type) {
-    object = {
-      metaForProperty: function(p) { return p === "someProperty" && { type: type }; }
-    };
+    object = { };
+    object.constructor.metaForProperty = function(p) { return p === "someProperty" && { type: type }; };
+
     assert.equal(guessType(object, "someProperty", input), type);
     object = Ember.Object.create();
   });
 });
 
 test("it returns 'string' by default", function(assert) {
+  object = { };
+  object.constructor.metaForProperty = function(p) { return false; };
+
   assert.equal(guessType(object, "role", input), "string");
+
+  object = Ember.Object.create();
 });
