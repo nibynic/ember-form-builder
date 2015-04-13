@@ -1,4 +1,5 @@
 import Ember from "ember";
+import findModel from "ember-simple-form/utilities/find-model";
 
 export default Ember.Object.extend({
   name: Ember.computed(function(key, value, previousValue) {
@@ -13,5 +14,9 @@ export default Ember.Object.extend({
     }
 
     return newValue;
+  }),
+
+  model: Ember.computed("object", function() {
+    return findModel(this.get("object"));
   })
 });

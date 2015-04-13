@@ -13,10 +13,14 @@ var model;
 Ember.HTMLBars._registerHelper("input-component", inputComponent);
 configurationInitialiser.initialize();
 
+var dependencies = defaultTypes.map(function(t) {
+  return "component:inputs/" + t + "-input";
+});
+dependencies.push("component:simple-label");
+dependencies.push("template:components/simple-label");
+
 moduleForComponent("simple-input", "Simple Input component", {
-  needs: defaultTypes.map(function(t) {
-    return "component:inputs/" + t + "-input";
-  }),
+  needs: dependencies,
 
   beforeEach: function() {
     model = Ember.Object.create({ title: "Testing testing 123" });
@@ -137,7 +141,7 @@ test("it humanizes the property for use as label", function(assert) {
   });
 
   assert.equal(component.get("label"), "Multi word attribute");
-  assert.equal(component.$("label").text(), "Multi word attribute", "The humanized label test is rendered");
+  assert.equal(component.$("label").text().replace(/^\s/, "").replace(/\s$/, ""), "Multi word attribute", "The humanized label test is rendered");
 });
 
 test("it uses the provided label if it's provided", function(assert) {
@@ -153,7 +157,7 @@ test("it uses the provided label if it's provided", function(assert) {
   });
 
   assert.equal(component.get("label"), "Custom title");
-  assert.equal(component.$("label").text(), "Custom title", "The custom label test is rendered");
+  assert.equal(component.$("label").text().replace(/^\s/, "").replace(/\s$/, ""), "Custom title", "The custom label test is rendered");
 });
 
 test("it renders assigns the input's id as the label's for", function(assert) {
@@ -188,6 +192,23 @@ test("it renders the label differently when it's inline", function(assert) {
   });
 
   assert.equal(component.$("input+label").length, 1, "The label is after the input");
+});
+
+test("it renders the required mark", function(assert) {
+  model.set("validations", { "name": { "presence": {} } });
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: "name"
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.ok(component.get("isRequired"), "Is required");
+  assert.equal(component.$("label abbr").text(), "*");
+  assert.equal(component.$("label abbr").attr("title"), "Required");
 });
 
 defaultTypes.forEach(function(type) {

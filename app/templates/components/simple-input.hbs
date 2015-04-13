@@ -1,9 +1,9 @@
-{{#unless inlineLabel}}<label for={{inputElementId}}>{{label}}</label>{{/unless}}
+{{#unless inlineLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/unless}}
 <div class={{fieldClassName}}>
   {{input-component inputComponentName
     additionalAttributeNames=additionalAttributeNames value=value
     elementId=inputElementId class=inputClassName}}
-  {{#if inlineLabel}}<label for={{inputElementId}}>{{label}}</label>{{/if}}
+  {{#if inlineLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/if}}
   {{#if hasErrors}}
     <div class={{errorsClassName}}>{{errorMessages}}</div>
   {{/if}}

@@ -1,15 +1,14 @@
 import Ember from "ember";
 import humanize from "ember-simple-form/utilities/humanize";
 import guessType from "ember-simple-form/utilities/guess-type";
-import findModel from "ember-simple-form/utilities/find-model";
 
 var extension = {
   // TODO: assertions
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
   hasFocusedOut: false,
   on: null,
-  as: Ember.computed("object", "attr", function() {
-    return guessType(findModel(this.get("object")), this.get("attr"), this);
+  as: Ember.computed("_model", "attr", function() {
+    return guessType(this.get("_model"), this.get("attr"), this);
   }),
   attr: null,
   configuration: {},
@@ -17,6 +16,7 @@ var extension = {
   builder: Ember.computed.alias("on"),
   type: Ember.computed.alias("as"),
   object: Ember.computed.alias("builder.object"),
+  _model: Ember.computed.alias("builder.model"),
 
   init: function() {
     this._super();
@@ -30,6 +30,11 @@ var extension = {
 
   setupClassNameBindings: Ember.on("init", function() {
     this.classNameBindings.push("hasErrors:" + this.get("configuration.wrapperWithErrorsClass"));
+  }),
+
+  isRequired: Ember.computed("model", "attr", function() {
+    var presenceValidator = this.get("object.validations." + this.get("attr"));
+    return presenceValidator && !presenceValidator.soft;
   }),
 
   hasErrors: Ember.computed("hasFocusedOut", "errors", function() {
