@@ -211,6 +211,30 @@ test("it renders the required mark", function(assert) {
   assert.equal(component.$("label abbr").attr("title"), "Required");
 });
 
+test("it renders unit when it's provided", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: "name"
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.ok(!component.get("hasUnit"), "Has no unit");
+  assert.ok(!component.$().is(".has-unit"), "Has no has-unit class");
+  assert.equal(component.$(".input-unit").length, 0, "Unit was not rendered");
+
+  Ember.run(function() {
+    component.set("unit", "PLN");
+  });
+
+  assert.ok(component.get("hasUnit"), "Has unit");
+  assert.ok(component.$().is(".has-unit"), "Has has-unit class");
+  assert.equal(component.$(".input-unit").text(), "PLN");
+});
+
 defaultTypes.forEach(function(type) {
   test("it renders correctly for type \"" + type + "\"", function(assert) {
     var component = this.subject({

@@ -30,6 +30,7 @@ var extension = {
 
   setupClassNameBindings: Ember.on("init", function() {
     this.classNameBindings.push("hasErrors:" + this.get("configuration.wrapperWithErrorsClass"));
+    this.classNameBindings.push("hasUnit:" + this.get("configuration.wrapperWithUnitClass"));
   }),
 
   isRequired: Ember.computed("model", "attr", function() {
@@ -39,6 +40,10 @@ var extension = {
 
   hasErrors: Ember.computed("hasFocusedOut", "errors", function() {
     return this.get("hasFocusedOut") && !Ember.isEmpty(this.get("errors"));
+  }),
+
+  hasUnit: Ember.computed("unit", function() {
+    return Ember.isPresent(this.get("unit"));
   }),
 
   errorMessages: Ember.computed("errors", function() {
@@ -64,6 +69,7 @@ var extension = {
   wrapperTypeClassName: Ember.computed("type", function() {
     return this.get("type") + "-input";
   }),
+  unitClassName: Ember.computed(function() { return this.get("configuration.unitClass"); }),
   errorsClassName: Ember.computed(function() { return this.get("configuration.errorsClass"); }),
   fieldClassName: Ember.computed(function() { return this.get("configuration.fieldClass"); }),
   inputClassName: Ember.computed(function() { return this.get("configuration.inputClass"); }),

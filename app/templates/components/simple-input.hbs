@@ -4,6 +4,9 @@
     additionalAttributeNames=additionalAttributeNames value=value
     elementId=inputElementId class=inputClassName}}
   {{#if inlineLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/if}}
+  {{#if hasUnit}}
+    <div class={{unitClassName}}>{{unit}}</div>
+  {{/if}}
   {{#if hasErrors}}
     <div class={{errorsClassName}}>{{errorMessages}}</div>
   {{/if}}
