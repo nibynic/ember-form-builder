@@ -32,6 +32,7 @@ moduleForComponent("simple-input", "Simple Input component", {
   afterEach: function() {
     model = null;
     formBuilder = null;
+    Ember.I18n = null;
   }
 });
 
@@ -271,4 +272,57 @@ test("it passes all external attributes to the input component", function(assert
 
   assert.ok(component.get("inputAttributeNames").indexOf("customAttr1") > -1);
   assert.ok(component.get("inputAttributeNames").indexOf("collection") > -1);
+});
+
+test("it translates some attributes", function(assert) {
+  model.constructor.typeKey = null;
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr,
+    t: null
+  });
+
+  assert.equal(component.get("label"), "Title", "Label was humanized without translation function");
+  assert.equal(component.get("hint"), null, "Hint was omitted without translation function");
+
+  var translations = {
+    "article.attributes.title": "Tytuł artykułu",
+    "article.hints.title": "Maksymalnie 255 znaków",
+    "post.attributes.title": "Tytuł posta",
+    "post.hints.title": "Maksymalnie 45 znaków",
+    "some.weird.label.translation.key": "Dziwny tytuł",
+    "some.weird.hint.translation.key": "Dziwny hint"
+  };
+
+  Ember.I18n = { t: function(key) {
+      return translations[key] || "missing-translation " + key;
+  }, exists: function(key) {
+    return !!translations[key];
+  } };
+
+  // We don't expect Ember.I18n to appear during runtime in real life
+  component.notifyPropertyChange("label");
+  component.notifyPropertyChange("hint");
+
+  assert.equal(component.get("label"), "Title", "Label was humanized without translation key");
+  assert.equal(component.get("hint"), null, "Hint was omitted without translation key");
+
+  model.constructor.typeKey = "post";
+  // We don't expect model constructor changes in real life
+  formBuilder.notifyPropertyChange("translationKey");
+
+  assert.equal(component.get("label"), "Tytuł posta");
+  assert.equal(component.get("hint"), "Maksymalnie 45 znaków");
+
+  formBuilder.set("translationKey", "article");
+
+  assert.equal(component.get("label"), "Tytuł artykułu");
+  assert.equal(component.get("hint"), "Maksymalnie 255 znaków");
+
+  component.set("labelTranslation", "some.weird.label.translation.key");
+  component.set("hintTranslation", "some.weird.hint.translation.key");
+
+  assert.equal(component.get("label"), "Dziwny tytuł");
+  assert.equal(component.get("hint"), "Dziwny hint");
 });

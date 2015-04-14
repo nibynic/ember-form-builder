@@ -18,5 +18,9 @@ export default Ember.Object.extend({
 
   model: Ember.computed("object", function() {
     return findModel(this.get("object"));
+  }),
+
+  translationKey: Ember.computed("model", function() {
+    return this.get("model.constructor.typeKey");
   })
 });

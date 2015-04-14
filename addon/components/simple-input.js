@@ -83,8 +83,19 @@ var extension = {
     return this.get("elementId") + "Input";
   }),
 
-  label: Ember.computed("attr", function() {
-    return humanize(this.get("attr"));
+  label: Ember.computed("builder.translationKey", "attr", "labelTranslation", function() {
+    var key;
+
+    if (Ember.isPresent(this.get("labelTranslation"))) {
+      key = this.get("labelTranslation");
+    } else {
+      key = this.get("builder.translationKey") + ".attributes." + this.get("attr");
+    }
+
+    var result;
+    if (Ember.I18n && Ember.I18n.exists(key)) { result = Ember.I18n.t(key); }
+    if (Ember.isEmpty(result)) { result = humanize(this.get("attr")); }
+    return result;
   }),
 
   inlineLabel: Ember.computed("type", function() {
@@ -93,7 +104,19 @@ var extension = {
 
   hasHint: Ember.computed("hint", function() {
     return Ember.isPresent(this.get("hint"));
-  })
+  }),
+
+  hint: Ember.computed("builder.translationKey", "attr", "hintTranslation", function() {
+    var key;
+
+    if (Ember.isPresent(this.get("hintTranslation"))) {
+      key = this.get("hintTranslation");
+    } else {
+      key = this.get("builder.translationKey") + ".hints." + this.get("attr");
+    }
+
+    if (Ember.I18n && Ember.I18n.exists(key)) { return Ember.I18n.t(key); }
+  }),
 };
 
 var simpleInputAttributeNames = Ember.keys(extension);

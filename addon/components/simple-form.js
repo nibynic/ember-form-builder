@@ -9,10 +9,11 @@ export default Ember.Component.extend({
     this.sendAction();
   },
 
-  formBuilder: Ember.computed(function() {
+  formBuilder: Ember.computed("for", "as", "translationKey", function() {
     return FormBuilder.create({
       object: this.get("for"),
-      name: this.get("as")
+      name: this.get("as"),
+      translationKey: this.get("translationKey")
     });
   })
 });
