@@ -9,9 +9,6 @@ export default Ember.Component.extend({
   optionLabelPath: "name",
   value: null,
   optionComponentName: "inputs/select-option",
-  // concatenatedClassNames: function() {
-  //   return this.get("classNames").join(" ");
-  // }.property("classNames")
 
   didInsertElement: function() {
     this.change();
@@ -24,19 +21,8 @@ export default Ember.Component.extend({
   },
 
   _setSelection: function(indicies) {
-    // if (!Ember.isArray(value)) {
-    //   value = [value];
-    // }
-    //
     var selection = this.get("collection").objectsAt(indicies);
-    var valuePath = this.get("optionValuePath");
-    var newValues = Ember.A(selection.map(function(item) {
-      if (typeof item === "string") {
-        return item;
-      } else {
-        return Ember.get(item, valuePath);
-      }
-    }));
+    var newValues = Ember.A(selection);
 
     if (Ember.isArray(this.get("value"))) {
       this.get("value").replace(0, this.get("value.length"), newValues);

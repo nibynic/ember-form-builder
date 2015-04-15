@@ -6,11 +6,11 @@
   asdf
   {{title}}
   <br/>
-  {{currentProgrammerId}}
+  {{currentProgrammer.id}}: {{currentProgrammer.firstName}}
   {{input-on f "title" as="string" testAttr="asdfasdf"}}
-  {{input-on f "currentProgrammerId" as="collection" collection=programmers
+  {{input-on f "currentProgrammer" as="collection" collection=programmers
     optionValuePath="id" optionLabelPath="firstName"}}
-  {{input-on f "currentProgrammerId" as="radioButtons" collection=programmers
+  {{input-on f "currentProgrammer" as="radioButtons" collection=programmers
     optionValuePath="id" optionLabelPath="firstName"}}
 
   {{submit-on f}}

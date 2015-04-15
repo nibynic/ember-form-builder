@@ -6,12 +6,10 @@ export default SelectOption.extend({
   attributeBindings: [],
 
   change: function() {
-    this.sendAction("action", this.get("value"));
+    this.sendAction("action", this.get("content"));
   },
 
-  isChecked: Ember.computed("selectedValue", "value", function() {
-    return this.get("selectedValue") === this.get("value");
-  }),
+  isChecked: Ember.computed.alias("isSelected"),
 
   inputElementId: Ember.computed("elementId", function() {
     return this.get("elementId") + "-input";

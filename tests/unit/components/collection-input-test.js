@@ -40,7 +40,9 @@ test("it renders collection objects as options", function(assert) {
     }, {
       id: 3, name: "Politics", slug: "politics", headline: "For nerds"
     }]),
-    value: 2
+    value: {
+      id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
+    }
   });
 
   Ember.run(function() {
@@ -70,13 +72,15 @@ test("it renders collection objects as options", function(assert) {
 test("it selects given values", function(assert) {
   var component = this.subject({
     collection: Ember.A([{
-      id: 1, name: "Cooking",
+      id: 1, name: "Cooking"
     }, {
-      id: 2, name: "Sports",
+      id: 2, name: "Sports"
     }, {
-      id: 3, name: "Politics",
+      id: 3, name: "Politics"
     }]),
-    value: 2
+    value: {
+      id: 2, name: "Sports"
+    }
   });
 
   Ember.run(function() {
@@ -88,7 +92,11 @@ test("it selects given values", function(assert) {
 
   Ember.run(function() {
     component.set("isMultiple", true);
-    component.set("value", [2, 3]);
+    component.set("value", Ember.A([{
+      id: 2, name: "Sports"
+    }, {
+      id: 3, name: "Politics"
+    }]));
   });
 
   assert.equal(component.$("option:selected").length, 2);
@@ -99,14 +107,18 @@ test("it selects given values", function(assert) {
 test("it updates value after changing", function(assert) {
   var component = this.subject({
     collection: Ember.A([{
-      id: 1, name: "Cooking",
+      id: 1, name: "Cooking"
     }, {
-      id: 2, name: "Sports",
+      id: 2, name: "Sports"
     }, {
-      id: 3, name: "Politics",
+      id: 3, name: "Politics"
     }]),
     isMultiple: true,
-    value: Ember.A([1, 2])
+    value: Ember.A([{
+      id: 1, name: "Cooking"
+    }, {
+      id: 2, name: "Sports"
+    }])
   });
 
   Ember.run(function() {
@@ -118,7 +130,8 @@ test("it updates value after changing", function(assert) {
   component.$().trigger("change");
 
   assert.equal(component.get("value.length"), 1);
-  assert.equal(component.get("value.firstObject"), 3);
+  assert.equal(component.get("value.firstObject.id"), 3);
+  assert.equal(component.get("value.firstObject.name"), "Politics");
 });
 
 test("it sets the value after being displayed", function(assert) {

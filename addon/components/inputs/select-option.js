@@ -34,13 +34,22 @@ export default Ember.Component.extend({
       }
     }));
     this.notifyPropertyChange("value");
-  }),
 
-  isSelected: Ember.computed("selectedValue", "value", function() {
-    if (Ember.isArray(this.get("selectedValue"))) {
-      return this.get("selectedValue").indexOf(this.get("value")) >= 0;
-    } else {
-      return this.get("selectedValue") === this.get("value");
-    }
+    Ember.defineProperty(this, "isSelected", Ember.computed("selectedValue", "value", function() {
+      var selectedValue = this.get("selectedValue");
+
+      if (Ember.isEmpty(selectedValue)) {
+        selectedValue = Ember.A();
+      } else if (!Ember.isArray(selectedValue)) {
+        selectedValue = Ember.A([selectedValue]);
+      }
+
+      if (Ember.isPresent(this.get("valuePath"))) {
+        selectedValue = selectedValue.mapBy(this.get("valuePath"));
+      }
+
+      return selectedValue.indexOf(this.get("value")) >= 0;
+    }));
+    this.notifyPropertyChange("isSelected");
   })
 });
