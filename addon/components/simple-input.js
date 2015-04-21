@@ -4,6 +4,7 @@ import guessType from "ember-simple-form/utilities/guess-type";
 
 var extension = {
   // TODO: assertions
+  class: null,
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
   hasFocusedOut: false,
   on: null,
