@@ -10,8 +10,12 @@
   {{input-on f "title" as="string" testAttr="asdfasdf"}}
   {{input-on f "currentProgrammer" as="collection" collection=programmers
     optionValuePath="id" optionLabelPath="firstName"}}
-  {{input-on f "currentProgrammer" as="radioButtons" collection=programmers
+  {{input-on f "currentProgrammer" as="checkboxes" collection=programmers
     optionValuePath="id" optionLabelPath="firstName"}}
+
+  {{#each programmer in currentProgrammers}}{{programmer.firstName}}<br/>{{/each}}
+  {{input-on f "currentProgrammers" as="checkboxes" collection=programmers
+    optionValuePath="id" optionLabelPath="firstName" isMultiple=true}}
 
   {{submit-on f}}
 {{/simple-form}}

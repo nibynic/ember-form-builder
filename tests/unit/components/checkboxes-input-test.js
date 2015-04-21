@@ -9,13 +9,13 @@ var model;
 
 Ember.HTMLBars._registerHelper("input-component", inputComponent);
 
-moduleForComponent("inputs/radio-buttons-input", "Radio Buttons Input component", {
-  needs: ["component:inputs/radio-button-option",
-          "template:components/inputs/radio-buttons-input",
-          "template:components/inputs/radio-button-option"]
+moduleForComponent("inputs/checkboxes-input", "Checkboxes Input component", {
+  needs: ["component:inputs/checkbox-option",
+          "template:components/inputs/checkboxes-input",
+          "template:components/inputs/checkbox-option"]
 });
 
-test("it renders collection of strings as radio buttons", function(assert) {
+test("it renders collection of strings as radio buttons or checkboxes", function(assert) {
   var component = this.subject({
     collection: Ember.A(["Cooking", "Sports", "Politics"]),
     value: "Cooking"
@@ -31,6 +31,19 @@ test("it renders collection of strings as radio buttons", function(assert) {
   assert.equal(component.$("input[type=radio][value=Cooking]").attr("value"), "Cooking");
   assert.equal(component.$("input[type=radio][value=Sports]").attr("value"), "Sports");
   assert.equal(component.$("input[type=radio][value=Politics]").attr("value"), "Politics");
+
+  Ember.run(function() {
+    component.set("value", Ember.A(["Cooking"]));
+    component.set("isMultiple", true);
+  });
+
+  assert.equal(component.$("input[type=checkbox][value=Cooking]+label").text().replace(/\s/, ""), "Cooking");
+  assert.equal(component.$("input[type=checkbox][value=Sports]+label").text().replace(/\s/, ""), "Sports");
+  assert.equal(component.$("input[type=checkbox][value=Politics]+label").text().replace(/\s/, ""), "Politics");
+  assert.equal(component.$("input[type=checkbox][value=Cooking]").attr("value"), "Cooking");
+  assert.equal(component.$("input[type=checkbox][value=Sports]").attr("value"), "Sports");
+  assert.equal(component.$("input[type=checkbox][value=Politics]").attr("value"), "Politics");
+
 });
 
 test("it renders collection objects as inputs", function(assert) {
@@ -100,6 +113,17 @@ test("it selects given values", function(assert) {
 
   assert.equal(component.$("input[type=radio]:checked").length, 1);
   assert.equal(component.$("input[type=radio]:checked").attr("value"), 3);
+
+  Ember.run(function() {
+    component.set("value", Ember.A([{
+      id: 3, name: "Politics"
+    }]));
+    component.set("isMultiple", true);
+  });
+
+  assert.equal(component.$("input[type=checkbox]:checked").length, 1);
+  assert.equal(component.$("input[type=checkbox]:checked").attr("value"), 3);
+
 });
 
 test("it updates value after changing", function(assert) {
@@ -111,7 +135,6 @@ test("it updates value after changing", function(assert) {
     }, {
       id: 3, name: "Politics"
     }]),
-    isMultiple: true,
     value: {
       id: 1, name: "Cooking"
     }
@@ -126,4 +149,23 @@ test("it updates value after changing", function(assert) {
 
   assert.equal(component.get("value.id"), 3);
   assert.equal(component.get("value.name"), "Politics");
+
+  Ember.run(function() {
+    component.set("value", Ember.A());
+    component.set("isMultiple", true);
+  });
+
+  component.$("input").attr("checked", null);
+  component.$("input[value=1]").attr("checked", "checked").trigger("change");
+  component.$("input[value=3]").attr("checked", "checked").trigger("change");
+
+  assert.equal(component.get("value.firstObject.id"), 1);
+  assert.equal(component.get("value.firstObject.name"), "Cooking");
+  assert.equal(component.get("value.lastObject.id"), 3);
+  assert.equal(component.get("value.lastObject.name"), "Politics");
+
+  component.$("input[value=1]").attr("checked", null).trigger("change");
+
+  assert.equal(component.get("value.firstObject.id"), 3);
+  assert.equal(component.get("value.firstObject.name"), "Politics");
 });

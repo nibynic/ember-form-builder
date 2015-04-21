@@ -10,7 +10,8 @@ export default Ember.Controller.extend({
     { firstName: "Tom",    id: 2 }
   ]),
 
-  currentProgrammer: null
+  currentProgrammer: null,
+  currentProgrammers: Ember.A()
 
   // programmers: ["Tom", "Yehuda"],
   // currentProgrammer: "Tom"
