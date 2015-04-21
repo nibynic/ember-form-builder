@@ -5,13 +5,15 @@ export default Ember.Component.extend({
   attributeBindings: ["isMultiple:multiple"],
   isMultiple: false,
   collection: Ember.A(),
-  optionValuePath: "id",
-  optionLabelPath: "name",
+  optionValuePath: "content.id",
+  optionLabelPath: "content.name",
   value: null,
   optionComponentName: "inputs/select-option",
 
   didInsertElement: function() {
-    this.change();
+    if (Ember.isEmpty(this.get("value"))) {
+      this.change();
+    }
   },
 
   change: function() {
@@ -22,7 +24,14 @@ export default Ember.Component.extend({
 
   _setSelection: function(indicies) {
     var selection = this.get("collection").objectsAt(indicies);
-    var newValues = Ember.A(selection);
+    var valuePath = this.get("optionValuePath");
+    var newValues = Ember.A(selection.map(function(item) {
+      if (typeof item === "string" || valuePath === "content") {
+        return item;
+      } else {
+        return Ember.get(item, valuePath.replace(/^content\./, ""));
+      }
+    }));
 
     if (Ember.isArray(this.get("value"))) {
       this.get("value").replace(0, this.get("value.length"), newValues);

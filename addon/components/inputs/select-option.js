@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   },
 
   labelPathDidChange: Ember.observer("labelPath", function() {
-    var labelPath = "content." + this.get("labelPath");
+    var labelPath = this.get("labelPath");
 
     Ember.defineProperty(this, "label", Ember.computed("content", labelPath, function() {
       if (typeof this.get("content") === "string") {
@@ -24,7 +24,7 @@ export default Ember.Component.extend({
   }),
 
   valuePathDidChange: Ember.observer("valuePath", function() {
-    var valuePath = "content." + this.get("valuePath");
+    var valuePath = this.get("valuePath");
 
     Ember.defineProperty(this, "value", Ember.computed("content", valuePath, function() {
       if (typeof this.get("content") === "string") {
@@ -37,18 +37,12 @@ export default Ember.Component.extend({
 
     Ember.defineProperty(this, "isSelected", Ember.computed("selectedValue", "value", function() {
       var selectedValue = this.get("selectedValue");
-
-      if (Ember.isEmpty(selectedValue)) {
-        selectedValue = Ember.A();
+      
+      if (Ember.isArray(selectedValue)) {
+        return selectedValue.indexOf(this.get("value")) > -1;
       } else if (!Ember.isArray(selectedValue)) {
-        selectedValue = Ember.A([selectedValue]);
+        return selectedValue === this.get("value");
       }
-
-      if (Ember.isPresent(this.get("valuePath"))) {
-        selectedValue = selectedValue.mapBy(this.get("valuePath"));
-      }
-
-      return selectedValue.indexOf(this.get("value")) >= 0;
     }));
     this.notifyPropertyChange("isSelected");
   })

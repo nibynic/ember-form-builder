@@ -57,8 +57,8 @@ test("it renders collection objects as options", function(assert) {
   assert.equal(component.$("option:nth-child(3)").attr("value"), "3");
 
   Ember.run(function() {
-    component.set("optionLabelPath", "headline");
-    component.set("optionValuePath", "slug");
+    component.set("optionLabelPath", "content.headline");
+    component.set("optionValuePath", "content.slug");
   });
 
   assert.equal(component.$("option:nth-child(1)").text().replace(/\s$/, ""), "For kitchen geeks!");
@@ -70,55 +70,57 @@ test("it renders collection objects as options", function(assert) {
 });
 
 test("it selects given values", function(assert) {
+  var collection = Ember.A([{
+    id: 1, name: "Cooking"
+  }, {
+    id: 2, name: "Sports"
+  }, {
+    id: 3, name: "Politics"
+  }]);
   var component = this.subject({
-    collection: Ember.A([{
-      id: 1, name: "Cooking"
-    }, {
-      id: 2, name: "Sports"
-    }, {
-      id: 3, name: "Politics"
-    }]),
-    value: {
-      id: 2, name: "Sports"
-    }
+    collection: collection,
+    value: collection[1],
+    optionValuePath: "content"
   });
 
   Ember.run(function() {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("option:selected").length, 1);
-  assert.equal(component.$("option:selected").attr("value"), 2);
+  assert.equal(component.$("option:selected").length, 1, 123123);
+  assert.ok(component.$("option:nth-child(2)").is(":selected"), "1");
 
   Ember.run(function() {
     component.set("isMultiple", true);
-    component.set("value", Ember.A([{
-      id: 2, name: "Sports"
-    }, {
-      id: 3, name: "Politics"
-    }]));
+    component.set("value", Ember.A([collection[1], collection[2]]));
   });
 
-  assert.equal(component.$("option:selected").length, 2);
-  assert.equal(component.$("option:selected:nth-child(2)").attr("value"), 2);
-  assert.equal(component.$("option:selected:nth-child(3)").attr("value"), 3);
+  assert.equal(component.$("option:selected").length, 2, 234);
+  assert.ok(component.$("option:nth-child(2)").is(":selected"), "2");
+  assert.ok(component.$("option:nth-child(3)").is(":selected"), "3");
+
+  Ember.run(function() {
+    component.set("optionValuePath", "content.id");
+    component.set("value", Ember.A([2]));
+  });
+  
+  assert.equal(component.$("option:selected").length, 1, 123);
+  assert.equal(component.$("option:selected").attr("value"), 2);
 });
 
 test("it updates value after changing", function(assert) {
+  var collection = Ember.A([{
+    id: 1, name: "Cooking"
+  }, {
+    id: 2, name: "Sports"
+  }, {
+    id: 3, name: "Politics"
+  }]);
   var component = this.subject({
-    collection: Ember.A([{
-      id: 1, name: "Cooking"
-    }, {
-      id: 2, name: "Sports"
-    }, {
-      id: 3, name: "Politics"
-    }]),
+    collection: collection,
     isMultiple: true,
-    value: Ember.A([{
-      id: 1, name: "Cooking"
-    }, {
-      id: 2, name: "Sports"
-    }])
+    value: Ember.A([collection[0], collection[1]]),
+    optionValuePath: "content"
   });
 
   Ember.run(function() {
@@ -126,12 +128,23 @@ test("it updates value after changing", function(assert) {
   });
 
   component.$("option").attr("selected", null);
-  component.$("option[value=3]").attr("selected", "selected");
+  component.$("option:nth-child(3)").attr("selected", "selected");
   component.$().trigger("change");
 
   assert.equal(component.get("value.length"), 1);
   assert.equal(component.get("value.firstObject.id"), 3);
   assert.equal(component.get("value.firstObject.name"), "Politics");
+
+  Ember.run(function() {
+    component.set("optionValuePath", "content.id");
+  });
+
+  component.$("option").attr("selected", null);
+  component.$("option[value=3]").attr("selected", "selected");
+  component.$().trigger("change");
+
+  assert.equal(component.get("value.length"), 1);
+  assert.equal(component.get("value.firstObject"), 3);
 });
 
 test("it sets the value after being displayed", function(assert) {

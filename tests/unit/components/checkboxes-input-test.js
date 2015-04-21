@@ -64,7 +64,7 @@ test("it renders collection objects as inputs", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input[type=radio][value=1]+label").text().replace(/\s$/, ""), "Cooking");
+  assert.equal(component.$("input[type=radio][value=1]+label").text().replace(/\s$/, ""), "Cooking", "123");
   assert.equal(component.$("input[type=radio][value=2]+label").text().replace(/\s$/, ""), "Sports");
   assert.equal(component.$("input[type=radio][value=3]+label").text().replace(/\s$/, ""), "Politics");
   assert.equal(component.$("input[type=radio][value=1]").attr("value"), "1");
@@ -72,8 +72,8 @@ test("it renders collection objects as inputs", function(assert) {
   assert.equal(component.$("input[type=radio][value=3]").attr("value"), "3");
 
   Ember.run(function() {
-    component.set("optionLabelPath", "headline");
-    component.set("optionValuePath", "slug");
+    component.set("optionLabelPath", "content.headline");
+    component.set("optionValuePath", "content.slug");
   });
 
   assert.equal(component.$("input[type=radio][value=cooking]+label").text().replace(/\s$/, ""), "For kitchen geeks!");
@@ -85,17 +85,17 @@ test("it renders collection objects as inputs", function(assert) {
 });
 
 test("it selects given values", function(assert) {
+  var collection = Ember.A([{
+    id: 1, name: "Cooking"
+  }, {
+    id: 2, name: "Sports"
+  }, {
+    id: 3, name: "Politics"
+  }]);
   var component = this.subject({
-    collection: Ember.A([{
-      id: 1, name: "Cooking"
-    }, {
-      id: 2, name: "Sports"
-    }, {
-      id: 3, name: "Politics"
-    }]),
-    value: {
-      id: 2, name: "Sports"
-    }
+    collection: collection,
+    value: collection[1],
+    optionValuePath: "content"
   });
 
   Ember.run(function() {
@@ -103,26 +103,22 @@ test("it selects given values", function(assert) {
   });
 
   assert.equal(component.$("input[type=radio]:checked").length, 1);
-  assert.equal(component.$("input[type=radio]:checked").attr("value"), 2);
+  assert.ok(component.$("div:nth-child(2) input[type=radio]").is(":checked"));
 
   Ember.run(function() {
-    component.set("value", {
-      id: 3, name: "Politics"
-    });
+    component.set("value", collection[2]);
   });
 
   assert.equal(component.$("input[type=radio]:checked").length, 1);
-  assert.equal(component.$("input[type=radio]:checked").attr("value"), 3);
+  assert.ok(component.$("div:nth-child(3) input[type=radio]").is(":checked"));
 
   Ember.run(function() {
-    component.set("value", Ember.A([{
-      id: 3, name: "Politics"
-    }]));
+    component.set("value", Ember.A([collection[2]]));
     component.set("isMultiple", true);
   });
 
   assert.equal(component.$("input[type=checkbox]:checked").length, 1);
-  assert.equal(component.$("input[type=checkbox]:checked").attr("value"), 3);
+  assert.ok(component.$("div:nth-child(3) input[type=checkbox]").is(":checked"));
 
 });
 
@@ -137,7 +133,8 @@ test("it updates value after changing", function(assert) {
     }]),
     value: {
       id: 1, name: "Cooking"
-    }
+    },
+    optionValuePath: "content"
   });
 
   Ember.run(function() {
@@ -145,7 +142,7 @@ test("it updates value after changing", function(assert) {
   });
 
   component.$("input").attr("checked", null);
-  component.$("input[value=3]").attr("checked", "checked").trigger("change");
+  component.$("div:nth-child(3) input").attr("checked", "checked").trigger("change");
 
   assert.equal(component.get("value.id"), 3);
   assert.equal(component.get("value.name"), "Politics");
@@ -156,15 +153,15 @@ test("it updates value after changing", function(assert) {
   });
 
   component.$("input").attr("checked", null);
-  component.$("input[value=1]").attr("checked", "checked").trigger("change");
-  component.$("input[value=3]").attr("checked", "checked").trigger("change");
+  component.$("div:nth-child(1) input").attr("checked", "checked").trigger("change");
+  component.$("div:nth-child(3) input").attr("checked", "checked").trigger("change");
 
   assert.equal(component.get("value.firstObject.id"), 1);
   assert.equal(component.get("value.firstObject.name"), "Cooking");
   assert.equal(component.get("value.lastObject.id"), 3);
   assert.equal(component.get("value.lastObject.name"), "Politics");
 
-  component.$("input[value=1]").attr("checked", null).trigger("change");
+  component.$("div:nth-child(1) input").attr("checked", null).trigger("change");
 
   assert.equal(component.get("value.firstObject.id"), 3);
   assert.equal(component.get("value.firstObject.name"), "Politics");

@@ -6,16 +6,19 @@
   asdf
   {{title}}
   <br/>
-  {{currentProgrammer.id}}: {{currentProgrammer.firstName}}
+
   {{input-on f "title" as="string" testAttr="asdfasdf"}}
-  {{input-on f "currentProgrammer" as="collection" collection=programmers
-    optionValuePath="id" optionLabelPath="firstName"}}
+  {{currentProgrammerId}}
+  {{input-on f "currentProgrammerId" as="collection" collection=programmers
+    optionValuePath="content.id" optionLabelPath="content.firstName"}}
+  <br/>
+  {{currentProgrammer.id}}: {{currentProgrammer.firstName}}
   {{input-on f "currentProgrammer" as="checkboxes" collection=programmers
-    optionValuePath="id" optionLabelPath="firstName"}}
+    optionValuePath="content" optionLabelPath="content.firstName"}}
 
   {{#each programmer in currentProgrammers}}{{programmer.firstName}}<br/>{{/each}}
   {{input-on f "currentProgrammers" as="checkboxes" collection=programmers
-    optionValuePath="id" optionLabelPath="firstName" isMultiple=true}}
+    optionValuePath="content" optionLabelPath="content.firstName" isMultiple=true}}
 
   {{submit-on f}}
 {{/simple-form}}

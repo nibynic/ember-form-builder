@@ -26,14 +26,14 @@ _Installation from GitHub is temporary until we publish to npm._
 
   {{input-on f "title"}}
   {{input-on f "category" collection=categories
-             optionValuePath="id" optionLabelPath="fullName"}}
+             optionValuePath="content.id" optionLabelPath="content.fullName"}}
   {{input-on f "isPublished"}}
   {{input-on f "publishedOn" as="date"}}
   {{input-on f "price" unit="PLN" hint="Leave empty if this is a free article"}}
 
   {{submit-on f}}
 
-{{/simple-form-for}}
+{{/simple-form}}
 ```
 
 ### Built-in inputs
@@ -48,7 +48,7 @@ Type | Guessed when | HTML form
 `email` | attribute name contains `email` | `<input type="email" />`|
 `number` | underlying model's attribute is a `DS.attr("number")` | `<input type="number" />`|
 `password` | attribute name contains `password` | `<input type="password" />`|
-`radio-buttons` | _never_ | collection of `<input type="radio" />` with labels
+`checkboxes` | _never_ | collection of `<input type="radio" />` with labels
 `string` | underlying model's attribute is a `DS.attr("string")` | `<input type="text" />`|
 `text` | _never_ | `<textarea>`
 

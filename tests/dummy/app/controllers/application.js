@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
     { firstName: "Tom",    id: 2 }
   ]),
 
+  currentProgrammerId: 2,
   currentProgrammer: null,
   currentProgrammers: Ember.A()
 
