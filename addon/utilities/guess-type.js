@@ -1,9 +1,13 @@
 import Ember from "ember";
 
 function typeForProperty(object, property) {
-  return object.constructor.metaForProperty &&
-    object.constructor.metaForProperty(property) &&
-    object.constructor.metaForProperty(property).type;
+  try {
+    return object.constructor.metaForProperty &&
+      object.constructor.metaForProperty(property) &&
+      object.constructor.metaForProperty(property).type;
+  } catch(error) {
+    return null;
+  }
 }
 
 export default function(object, attribute, input) {
