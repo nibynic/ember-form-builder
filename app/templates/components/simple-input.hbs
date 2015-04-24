@@ -3,13 +3,13 @@
   {{#if inlineLabel}}
     {{#simple-label for=inputElementId isRequired=isRequired}}
       {{input-component inputComponentName
-        additionalAttributeNames=additionalAttributeNames value=value
+        additionalAttributeNames=additionalAttributeNames modelValue=value
         elementId=inputElementId class=inputClassName}}
       {{label}}
     {{/simple-label}}
   {{else}}
     {{input-component inputComponentName
-      additionalAttributeNames=additionalAttributeNames value=value
+      additionalAttributeNames=additionalAttributeNames modelValue=value
       elementId=inputElementId class=inputClassName}}
   {{/if}}
   {{#if hasUnit}}

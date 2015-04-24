@@ -18,7 +18,7 @@ moduleForComponent("inputs/checkboxes-input", "Checkboxes Input component", {
 test("it renders collection of strings as radio buttons or checkboxes", function(assert) {
   var component = this.subject({
     collection: Ember.A(["Cooking", "Sports", "Politics"]),
-    value: "Cooking"
+    modelValue: "Cooking"
   });
 
   Ember.run(function() {
@@ -33,7 +33,7 @@ test("it renders collection of strings as radio buttons or checkboxes", function
   assert.equal(component.$("input[type=radio][value=Politics]").attr("value"), "Politics");
 
   Ember.run(function() {
-    component.set("value", Ember.A(["Cooking"]));
+    component.set("modelValue", Ember.A(["Cooking"]));
     component.set("isMultiple", true);
   });
 
@@ -55,7 +55,7 @@ test("it renders collection objects as inputs", function(assert) {
     }, {
       id: 3, name: "Politics", slug: "politics", headline: "For nerds"
     }]),
-    value: {
+    modelValue: {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
     }
   });
@@ -94,7 +94,7 @@ test("it selects given values", function(assert) {
   }]);
   var component = this.subject({
     collection: collection,
-    value: collection[1],
+    modelValue: collection[1],
     optionValuePath: "content"
   });
 
@@ -106,14 +106,14 @@ test("it selects given values", function(assert) {
   assert.ok(component.$("div:nth-child(2) input[type=radio]").is(":checked"));
 
   Ember.run(function() {
-    component.set("value", collection[2]);
+    component.set("modelValue", collection[2]);
   });
 
   assert.equal(component.$("input[type=radio]:checked").length, 1);
   assert.ok(component.$("div:nth-child(3) input[type=radio]").is(":checked"));
 
   Ember.run(function() {
-    component.set("value", Ember.A([collection[2]]));
+    component.set("modelValue", Ember.A([collection[2]]));
     component.set("isMultiple", true);
   });
 
@@ -131,7 +131,7 @@ test("it updates value after changing", function(assert) {
     }, {
       id: 3, name: "Politics"
     }]),
-    value: {
+    modelValue: {
       id: 1, name: "Cooking"
     },
     optionValuePath: "content"
@@ -148,7 +148,7 @@ test("it updates value after changing", function(assert) {
   assert.equal(component.get("value.name"), "Politics");
 
   Ember.run(function() {
-    component.set("value", Ember.A());
+    component.set("modelValue", Ember.A());
     component.set("isMultiple", true);
   });
 

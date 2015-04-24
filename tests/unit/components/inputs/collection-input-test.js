@@ -16,7 +16,7 @@ moduleForComponent("inputs/collection-input", "Collection Input component", {
 test("it renders collection of strings as options", function(assert) {
   var component = this.subject({
     collection: Ember.A(["Cooking", "Sports", "Politics"]),
-    value: "Cooking"
+    modelValue: "Cooking"
   });
 
   Ember.run(function() {
@@ -40,7 +40,7 @@ test("it renders collection objects as options", function(assert) {
     }, {
       id: 3, name: "Politics", slug: "politics", headline: "For nerds"
     }]),
-    value: {
+    modelValue: {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
     }
   });
@@ -79,7 +79,7 @@ test("it selects given values", function(assert) {
   }]);
   var component = this.subject({
     collection: collection,
-    value: collection[1],
+    modelValue: collection[1],
     optionValuePath: "content"
   });
 
@@ -92,7 +92,7 @@ test("it selects given values", function(assert) {
 
   Ember.run(function() {
     component.set("isMultiple", true);
-    component.set("value", Ember.A([collection[1], collection[2]]));
+    component.set("modelValue", Ember.A([collection[1], collection[2]]));
   });
 
   assert.equal(component.$("option:selected").length, 2, 234);
@@ -101,9 +101,9 @@ test("it selects given values", function(assert) {
 
   Ember.run(function() {
     component.set("optionValuePath", "content.id");
-    component.set("value", Ember.A([2]));
+    component.set("modelValue", Ember.A([2]));
   });
-  
+
   assert.equal(component.$("option:selected").length, 1, 123);
   assert.equal(component.$("option:selected").attr("value"), 2);
 });
@@ -119,7 +119,7 @@ test("it updates value after changing", function(assert) {
   var component = this.subject({
     collection: collection,
     isMultiple: true,
-    value: Ember.A([collection[0], collection[1]]),
+    modelValue: Ember.A([collection[0], collection[1]]),
     optionValuePath: "content"
   });
 
@@ -150,7 +150,7 @@ test("it updates value after changing", function(assert) {
 test("it sets the value after being displayed", function(assert) {
   var component = this.subject({
     collection: Ember.A(["Cooking", "Sports", "Politics"]),
-    value: null
+    modelValue: null
   });
 
   assert.equal(component.get("value"), null);

@@ -7,7 +7,8 @@ export default Ember.Component.extend({
   collection: Ember.A(),
   optionValuePath: "content.id",
   optionLabelPath: "content.name",
-  value: null,
+  modelValue: null,
+  value: Ember.computed.alias("modelValue"),
   optionComponentName: "inputs/select-option",
 
   didInsertElement: function() {
