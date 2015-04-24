@@ -70,6 +70,10 @@ test("it translates some attributes", function(assert) {
 
   assert.equal(component.get("text"), "Zapisz artykuł");
 
+  formBuilder.set("translationKey", "inexistentKey");
+
+  assert.equal(component.get("text"), "Zapisz");
+
   component.set("translation", "some.weird.submit.translation.key");
 
   assert.equal(component.get("text"), "Zapisz dziw");
