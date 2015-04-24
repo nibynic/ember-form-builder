@@ -8,6 +8,7 @@ var input = Ember.Object.create();
 test("it detects password by attribute", function(assert) {
   assert.equal(guessType(object, "password", input), "password");
   assert.equal(guessType(object, "passwordConfirmation", input), "password");
+  assert.equal(guessType(object, "currentPassword", input), "password");
 });
 
 test("it detects email by attribute", function(assert) {

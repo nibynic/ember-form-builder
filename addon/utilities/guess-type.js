@@ -11,7 +11,7 @@ function typeForProperty(object, property) {
 }
 
 export default function(object, attribute, input) {
-  if (attribute.match(/password/)) {
+  if (attribute.match(/password/i)) {
     return "password";
   }
 
