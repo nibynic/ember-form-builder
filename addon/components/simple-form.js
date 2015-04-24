@@ -10,10 +10,13 @@ export default Ember.Component.extend({
   },
 
   formBuilder: Ember.computed("for", "as", "translationKey", function() {
-    return FormBuilder.create({
+    var params = {
       object: this.get("for"),
-      name: this.get("as"),
-      translationKey: this.get("translationKey")
-    });
+      name: this.get("as")
+    };
+    if (Ember.isPresent(this.get("translationKey"))) {
+      params.translationKey = this.get("translationKey");
+    }
+    return FormBuilder.create(params);
   })
 });

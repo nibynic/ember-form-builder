@@ -1,9 +1,17 @@
 {{#unless inlineLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/unless}}
 <div class={{fieldClassName}}>
-  {{input-component inputComponentName
-    additionalAttributeNames=additionalAttributeNames value=value
-    elementId=inputElementId class=inputClassName}}
-  {{#if inlineLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/if}}
+  {{#if inlineLabel}}
+    {{#simple-label for=inputElementId isRequired=isRequired}}
+      {{input-component inputComponentName
+        additionalAttributeNames=additionalAttributeNames value=value
+        elementId=inputElementId class=inputClassName}}
+      {{label}}
+    {{/simple-label}}
+  {{else}}
+    {{input-component inputComponentName
+      additionalAttributeNames=additionalAttributeNames value=value
+      elementId=inputElementId class=inputClassName}}
+  {{/if}}
   {{#if hasUnit}}
     <div class={{unitClassName}}>{{unit}}</div>
   {{/if}}

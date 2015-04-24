@@ -25,9 +25,9 @@ test("it renders collection of strings as radio buttons or checkboxes", function
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input[type=radio][value=Cooking]+label").text().replace(/\s/, ""), "Cooking");
-  assert.equal(component.$("input[type=radio][value=Sports]+label").text().replace(/\s/, ""), "Sports");
-  assert.equal(component.$("input[type=radio][value=Politics]+label").text().replace(/\s/, ""), "Politics");
+  assert.equal(component.$("label:has(input[type=radio][value=Cooking])").text().replace(/\s/g, ""), "Cooking");
+  assert.equal(component.$("label:has(input[type=radio][value=Sports])").text().replace(/\s/g, ""), "Sports");
+  assert.equal(component.$("label:has(input[type=radio][value=Politics])").text().replace(/\s/g, ""), "Politics");
   assert.equal(component.$("input[type=radio][value=Cooking]").attr("value"), "Cooking");
   assert.equal(component.$("input[type=radio][value=Sports]").attr("value"), "Sports");
   assert.equal(component.$("input[type=radio][value=Politics]").attr("value"), "Politics");
@@ -37,9 +37,9 @@ test("it renders collection of strings as radio buttons or checkboxes", function
     component.set("isMultiple", true);
   });
 
-  assert.equal(component.$("input[type=checkbox][value=Cooking]+label").text().replace(/\s/, ""), "Cooking");
-  assert.equal(component.$("input[type=checkbox][value=Sports]+label").text().replace(/\s/, ""), "Sports");
-  assert.equal(component.$("input[type=checkbox][value=Politics]+label").text().replace(/\s/, ""), "Politics");
+  assert.equal(component.$("label:has(input[type=checkbox][value=Cooking])").text().replace(/\s/g, ""), "Cooking");
+  assert.equal(component.$("label:has(input[type=checkbox][value=Sports])").text().replace(/\s/g, ""), "Sports");
+  assert.equal(component.$("label:has(input[type=checkbox][value=Politics])").text().replace(/\s/g, ""), "Politics");
   assert.equal(component.$("input[type=checkbox][value=Cooking]").attr("value"), "Cooking");
   assert.equal(component.$("input[type=checkbox][value=Sports]").attr("value"), "Sports");
   assert.equal(component.$("input[type=checkbox][value=Politics]").attr("value"), "Politics");
@@ -64,9 +64,9 @@ test("it renders collection objects as inputs", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input[type=radio][value=1]+label").text().replace(/\s$/, ""), "Cooking", "123");
-  assert.equal(component.$("input[type=radio][value=2]+label").text().replace(/\s$/, ""), "Sports");
-  assert.equal(component.$("input[type=radio][value=3]+label").text().replace(/\s$/, ""), "Politics");
+  assert.equal(component.$("label:has(input[type=radio][value=1])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Cooking");
+  assert.equal(component.$("label:has(input[type=radio][value=2])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Sports");
+  assert.equal(component.$("label:has(input[type=radio][value=3])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Politics");
   assert.equal(component.$("input[type=radio][value=1]").attr("value"), "1");
   assert.equal(component.$("input[type=radio][value=2]").attr("value"), "2");
   assert.equal(component.$("input[type=radio][value=3]").attr("value"), "3");
@@ -76,9 +76,9 @@ test("it renders collection objects as inputs", function(assert) {
     component.set("optionValuePath", "content.slug");
   });
 
-  assert.equal(component.$("input[type=radio][value=cooking]+label").text().replace(/\s$/, ""), "For kitchen geeks!");
-  assert.equal(component.$("input[type=radio][value=sports]+label").text().replace(/\s$/, ""), "For couch potatos");
-  assert.equal(component.$("input[type=radio][value=politics]+label").text().replace(/\s$/, ""), "For nerds");
+  assert.equal(component.$("label:has(input[type=radio][value=cooking])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "For kitchen geeks!");
+  assert.equal(component.$("label:has(input[type=radio][value=sports])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "For couch potatos");
+  assert.equal(component.$("label:has(input[type=radio][value=politics])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "For nerds");
   assert.equal(component.$("input[type=radio][value=cooking]").attr("value"), "cooking");
   assert.equal(component.$("input[type=radio][value=sports]").attr("value"), "sports");
   assert.equal(component.$("input[type=radio][value=politics]").attr("value"), "politics");

@@ -192,7 +192,7 @@ test("it renders the label differently when it's inline", function(assert) {
     component.set("inlineLabel", true);
   });
 
-  assert.equal(component.$("input+label").length, 1, "The label is after the input");
+  assert.equal(component.$("label>input").length, 1, "The label contains the input");
 });
 
 test("it renders the required mark", function(assert) {
