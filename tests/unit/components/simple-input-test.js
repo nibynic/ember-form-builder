@@ -102,7 +102,7 @@ test("it reflects error updates", function(assert) {
   Ember.run(function() {
     formBuilder.set("isValid", false);
   });
-  
+
   assert.ok(component.get("hasErrors"), "Component has errors when builder is invalid.");
   assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned when builder is invalid.");
   assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errors are displayed when builder is invalid");
@@ -207,6 +207,27 @@ test("it renders the label differently when it's inline", function(assert) {
   });
 
   assert.equal(component.$("label>input").length, 1, "The label contains the input");
+});
+
+test("it renders no label when it's set to false", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr,
+    label: false
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.$("label").length, 0, "There is no label in regular layout");
+
+  Ember.run(function() {
+    component.set("inlineLabel", true);
+  });
+
+  assert.equal(component.$("label").length, 0, "There is no label in inline layout");
 });
 
 test("it renders the required mark", function(assert) {

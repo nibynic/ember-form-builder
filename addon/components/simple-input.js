@@ -99,8 +99,16 @@ var extension = {
     return result;
   }),
 
+  hasLabel: Ember.computed("inlineLabel", "label", function() {
+    return !this.get("inlineLabel") && this.get("label") !== false;
+  }),
+
   inlineLabel: Ember.computed("type", function() {
     return this.get("type") === "boolean";
+  }),
+
+  hasInlineLabel: Ember.computed("inlineLabel", "label", function() {
+    return this.get("inlineLabel") && this.get("label") !== false;
   }),
 
   hasHint: Ember.computed("hint", function() {

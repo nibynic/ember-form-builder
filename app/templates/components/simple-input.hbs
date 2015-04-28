@@ -1,6 +1,6 @@
-{{#unless inlineLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/unless}}
+{{#if hasLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/if}}
 <div class={{fieldClassName}}>
-  {{#if inlineLabel}}
+  {{#if hasInlineLabel}}
     {{#simple-label for=inputElementId isRequired=isRequired}}
       {{input-component inputComponentName
         additionalAttributeNames=additionalAttributeNames modelValue=value
