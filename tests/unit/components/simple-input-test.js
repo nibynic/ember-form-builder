@@ -100,12 +100,26 @@ test("it reflects error updates", function(assert) {
   assert.equal(component.$(".errors").text(), "", "No errors are displayed if wasn't focused out");
 
   Ember.run(function() {
+    formBuilder.set("isValid", false);
+  });
+  
+  assert.ok(component.get("hasErrors"), "Component has errors when builder is invalid.");
+  assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned when builder is invalid.");
+  assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errors are displayed when builder is invalid");
+
+  Ember.run(function() {
+    formBuilder.set("isValid", true);
+  });
+
+  assert.ok(!component.get("hasErrors"), "Just to be sure it stopped displaying errors.");
+
+  Ember.run(function() {
     component.focusOut();
   });
 
   assert.ok(component.get("hasErrors"), "Component has errors.");
   assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned.");
-  assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errora are displayed");
+  assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errors are displayed");
 });
 
 test("it renders a hint when provided", function(assert) {

@@ -6,7 +6,19 @@ export default Ember.Component.extend({
 
   submit: function(event) {
     event.preventDefault();
-    this.sendAction();
+    var self = this;
+
+    if (!this.get("formBuilder.object.validate")) {
+      this.sendAction();
+    } else {
+      this.get("formBuilder.object").validate().then(function() {
+        self.set("formBuilder.isValid", true);
+        self.sendAction();
+      }, function() {
+        self.set("formBuilder.isValid", false);
+        self.sendAction("submitFailed");
+      });
+    }
   },
 
   formBuilder: Ember.computed("for", "as", "translationKey", function() {
@@ -16,6 +28,9 @@ export default Ember.Component.extend({
     };
     if (Ember.isPresent(this.get("translationKey"))) {
       params.translationKey = this.get("translationKey");
+    }
+    if (Ember.isPresent(this.get("model"))) {
+      params.model = this.get("model");
     }
     return FormBuilder.create(params);
   })

@@ -19,3 +19,52 @@ test("it inserts a form tag into DOM", function(assert) {
 
   assert.ok(component.$().is("form"));
 });
+
+test("it handles submit", function(assert) {
+  var validationPerformed = false;
+  var submitActionSent = false;
+  var submitFailedActionSent = false;
+  var isValid = false;
+
+  var object = Ember.Object.create({
+    validate: function() {
+      validationPerformed = true;
+      this.set("isValid", isValid);
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        if (isValid) {
+          resolve();
+        } else {
+          reject();
+        }
+      });
+    }
+  });
+  var targetObject = Ember.Object.create({
+    submit: function() {
+      submitActionSent = true;
+    },
+    submitFailed: function() {
+      submitFailedActionSent = true;
+    }
+  });
+  var component = this.subject({
+    for: object,
+    action: "submit",
+    submitFailed: "submitFailed",
+    targetObject: targetObject
+  });
+
+  this.render();
+
+  component.$().trigger("submit");
+
+  assert.ok(validationPerformed, "Validation was performed");
+  assert.ok(submitFailedActionSent, "Submit failed action was sent");
+  assert.ok(!component.get("formBuilder.isValid"), "Form was invalid");
+
+  isValid = true;
+  component.$().trigger("submit");
+
+  assert.ok(submitActionSent, "Submit action was sent");
+  assert.ok(component.get("formBuilder.isValid"), "Form was valid");
+});

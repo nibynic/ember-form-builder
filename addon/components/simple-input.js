@@ -39,8 +39,8 @@ var extension = {
     return presenceValidator && !presenceValidator.soft;
   }),
 
-  hasErrors: Ember.computed("hasFocusedOut", "errors", function() {
-    return this.get("hasFocusedOut") && !Ember.isEmpty(this.get("errors"));
+  hasErrors: Ember.computed("hasFocusedOut", "builder.isValid", "errors", function() {
+    return (this.get("hasFocusedOut") || !this.get("builder.isValid")) && !Ember.isEmpty(this.get("errors"));
   }),
 
   hasUnit: Ember.computed("unit", function() {
