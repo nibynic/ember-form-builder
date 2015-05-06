@@ -144,6 +144,26 @@ test("it renders a hint when provided", function(assert) {
   assert.equal(component.$(".hint").text(), "This is a hint");
 });
 
+test("it renders a placeholder when provided", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.$("input").attr("placeholder"), undefined);
+
+  Ember.run(function() {
+    component.set("placeholder", "This is a placeholder");
+  });
+
+  assert.equal(component.$("input").attr("placeholder"), "This is a placeholder");
+});
+
 test("it humanizes the property for use as label", function(assert) {
   var component = this.subject({
     on: formBuilder,
@@ -324,10 +344,12 @@ test("it translates some attributes", function(assert) {
   var translations = {
     "article.attributes.title": "Tytuł artykułu",
     "article.hints.title": "Maksymalnie 255 znaków",
+    "article.placeholders.title": "Wpisz tytuł",
     "post.attributes.title": "Tytuł posta",
     "post.hints.title": "Maksymalnie 45 znaków",
     "some.weird.label.translation.key": "Dziwny tytuł",
-    "some.weird.hint.translation.key": "Dziwny hint"
+    "some.weird.hint.translation.key": "Dziwny hint",
+    "some.weird.placeholder.translation.key": "Dziwny placeholder"
   };
 
   Ember.I18n = { t: function(key) {
@@ -342,6 +364,7 @@ test("it translates some attributes", function(assert) {
 
   assert.equal(component.get("label"), "Title", "Label was humanized without translation key");
   assert.equal(component.get("hint"), null, "Hint was omitted without translation key");
+  assert.equal(component.get("placeholder"), null, "Placeholder was omitted without translation key");
 
   model.constructor.typeKey = "post";
   // We don't expect model constructor changes in real life
@@ -354,10 +377,13 @@ test("it translates some attributes", function(assert) {
 
   assert.equal(component.get("label"), "Tytuł artykułu");
   assert.equal(component.get("hint"), "Maksymalnie 255 znaków");
+  assert.equal(component.get("placeholder"), "Wpisz tytuł");
 
   component.set("labelTranslation", "some.weird.label.translation.key");
   component.set("hintTranslation", "some.weird.hint.translation.key");
+  component.set("placeholderTranslation", "some.weird.placeholder.translation.key");
 
   assert.equal(component.get("label"), "Dziwny tytuł");
   assert.equal(component.get("hint"), "Dziwny hint");
+  assert.equal(component.get("placeholder"), "Dziwny placeholder");
 });

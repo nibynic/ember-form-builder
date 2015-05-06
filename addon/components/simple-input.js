@@ -126,6 +126,18 @@ var extension = {
 
     if (Ember.I18n && Ember.I18n.exists(key)) { return Ember.I18n.t(key); }
   }),
+  
+  placeholder: Ember.computed("builder.translationKey", "attr", "placeholderTranslation", function() {
+    var key;
+
+    if (Ember.isPresent(this.get("placeholderTranslation"))) {
+      key = this.get("placeholderTranslation");
+    } else {
+      key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
+    }
+
+    if (Ember.I18n && Ember.I18n.exists(key)) { return Ember.I18n.t(key); }
+  })
 };
 
 var simpleInputAttributeNames = Ember.keys(extension);
