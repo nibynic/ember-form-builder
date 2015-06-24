@@ -1,5 +1,4 @@
 import Ember from "ember";
+import InputDefaultsMixin from "ember-simple-form/mixins/input-defaults";
 
-export default Ember.TextArea.extend({
-  value: Ember.computed.alias("modelValue")
-});
+export default Ember.TextArea.extend(InputDefaultsMixin);

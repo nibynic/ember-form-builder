@@ -1,6 +1,7 @@
 import Ember from "ember";
+import InputDefaultsMixin from "ember-simple-form/mixins/input-defaults";
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(InputDefaultsMixin, {
   tagName: "select",
   attributeBindings: ["isMultiple:multiple"],
   isMultiple: false,
@@ -8,7 +9,6 @@ export default Ember.Component.extend({
   optionValuePath: "content.id",
   optionLabelPath: "content.name",
   modelValue: null,
-  value: Ember.computed.alias("modelValue"),
   optionComponentName: "inputs/select-option",
 
   didInsertElement: function() {
