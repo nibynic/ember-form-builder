@@ -141,8 +141,8 @@ test("it updates value after changing", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  component.$("input").attr("checked", null);
-  component.$("div:nth-child(3) input").attr("checked", "checked").trigger("change");
+  component.$("input").prop("checked", false);
+  component.$("input").eq(2).prop("checked", true).trigger("change");
 
   assert.equal(component.get("value.id"), 3);
   assert.equal(component.get("value.name"), "Politics");
@@ -152,16 +152,16 @@ test("it updates value after changing", function(assert) {
     component.set("isMultiple", true);
   });
 
-  component.$("input").attr("checked", null);
-  component.$("div:nth-child(1) input").attr("checked", "checked").trigger("change");
-  component.$("div:nth-child(3) input").attr("checked", "checked").trigger("change");
+  component.$("input").prop("checked", false);
+  component.$("input").eq(0).prop("checked", true).trigger("change");
+  component.$("input").eq(2).prop("checked", true).trigger("change");
 
   assert.equal(component.get("value.firstObject.id"), 1);
   assert.equal(component.get("value.firstObject.name"), "Cooking");
   assert.equal(component.get("value.lastObject.id"), 3);
   assert.equal(component.get("value.lastObject.name"), "Politics");
 
-  component.$("div:nth-child(1) input").attr("checked", null).trigger("change");
+  component.$("div:nth-child(1) input").prop("checked", false).trigger("change");
 
   assert.equal(component.get("value.firstObject.id"), 3);
   assert.equal(component.get("value.firstObject.name"), "Politics");

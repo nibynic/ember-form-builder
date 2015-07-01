@@ -4,20 +4,15 @@ import CollectionInput from "ember-simple-form/components/inputs/collection-inpu
 export default CollectionInput.extend({
   tagName: "div",
   optionComponentName: "inputs/checkbox-option",
-  change: function() {},
-
-  actions: {
-    selectValue: function(value) {
-      if (Ember.isArray(this.get("value"))) {
-        if (this.get("value").indexOf(value) > -1) {
-          this.get("value").removeObject(value);
-        } else {
-          this.get("value").addObject(value);
-        }
-      } else {
-        this.set("value", value);
+  
+  change: function() {
+    var indices = [];
+    this.$("input").each( function(i, input) {
+      if(input.checked) {
+        indices.push(i);
       }
-    }
+    });
+    this._setSelection(indices);
   },
 
   inputType: Ember.computed("isMultiple", function() {

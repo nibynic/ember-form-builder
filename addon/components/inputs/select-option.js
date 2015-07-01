@@ -35,7 +35,7 @@ export default Ember.Component.extend({
     }));
     this.notifyPropertyChange("value");
 
-    Ember.defineProperty(this, "isSelected", Ember.computed("selectedValue", "value", function() {
+    Ember.defineProperty(this, "isSelected", Ember.computed("selectedValue", "value", function(key, value) { // jshint ignore:line
       var selectedValue = this.get("selectedValue");
       
       if (Ember.isArray(selectedValue)) {
