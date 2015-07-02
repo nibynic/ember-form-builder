@@ -1,8 +1,8 @@
 import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 import FormBuilder from "ember-simple-form/models/form-builder";
-import inputComponent from "ember-simple-form/helpers/input-component";
 import configurationInitialiser from "../../../initializers/ember-simple-form-configuration";
+import keywordsInitialiser from "../../../initializers/ember-simple-form-keywords";
 
 var type = "string";
 var defaultTypes = ["string", "text", "boolean", "number", "date", "password", "email", "tel"];
@@ -10,8 +10,8 @@ var attr = "title";
 var formBuilder;
 var model;
 
-Ember.HTMLBars._registerHelper("input-component", inputComponent);
 configurationInitialiser.initialize();
+keywordsInitialiser.initialize();
 
 var dependencies = defaultTypes.map(function(t) {
   return "component:inputs/" + t + "-input";
