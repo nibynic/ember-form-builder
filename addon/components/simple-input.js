@@ -57,12 +57,15 @@ var extension = {
     binding.connect(this);
 
     var valueAttribute = "object." + this.get("attr");
-    Ember.defineProperty(this, "value", Ember.computed(valueAttribute, function(key, value) {
-      if (arguments.length > 1) {
-        this.set(valueAttribute, value);
-      }
+    Ember.defineProperty(this, "value", Ember.computed(valueAttribute, {
+      get: function() {
+        return this.get(valueAttribute);
+      },
 
-      return this.get(valueAttribute);
+      set: function(key, value) {
+        this.set(valueAttribute, value);
+        return value;
+      }
     }));
   }),
 
@@ -126,7 +129,7 @@ var extension = {
 
     if (Ember.I18n && Ember.I18n.exists(key)) { return Ember.I18n.t(key); }
   }),
-  
+
   placeholder: Ember.computed("builder.translationKey", "attr", "placeholderTranslation", function() {
     var key;
 

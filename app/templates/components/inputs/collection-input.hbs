@@ -1,4 +1,4 @@
-{{#each option in collection}}
+{{#each collection as |option|}}
   {{component optionComponentName content=option selectedValue=value
     valuePath=optionValuePath labelPath=optionLabelPath}}
 {{/each}}
