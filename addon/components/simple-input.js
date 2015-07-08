@@ -143,7 +143,7 @@ var extension = {
   })
 };
 
-var simpleInputAttributeNames = Ember.keys(extension);
+var simpleInputAttributeNames = Object.keys(extension);
 
 export default Ember.Component.extend(extension);
 export {
