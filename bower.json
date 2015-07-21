@@ -2,8 +2,8 @@
   "name": "ember-simple-form",
   "dependencies": {
     "jquery": "^1.11.1",
-    "ember": "1.13.2",
-    "ember-data": "1.13",
+    "ember": "1.13.5",
+    "ember-data": "1.13.4",
     "ember-resolver": "~0.1.15",
     "loader.js": "ember-cli/loader.js#3.2.0",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
