@@ -27,11 +27,11 @@ export default Ember.Object.extend({
   }),
 
   modelName: Ember.computed("model", function() {
-    return this.get("model.constructor.typeKey");
+    return this.get("model.constructor.modelName");
   }),
 
   translationKey: Ember.computed("model", function() {
-    return this.get("model.constructor.typeKey");
+    return this.get("model.constructor.modelName");
   }),
 
   _setSuccessStatus: function() {

@@ -35,7 +35,7 @@ test("it renders a submit button", function(assert) {
 });
 
 test("it translates some attributes", function(assert) {
-  model.constructor.typeKey = null;
+  model.constructor.modelName = null;
   var component = this.subject({
     on: formBuilder
   });
@@ -60,7 +60,7 @@ test("it translates some attributes", function(assert) {
 
   assert.equal(component.get("text"), "Zapisz");
 
-  model.constructor.typeKey = "post";
+  model.constructor.modelName = "post";
   // We don't expect model constructor changes in real life
   formBuilder.notifyPropertyChange("translationKey");
 

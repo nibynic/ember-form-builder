@@ -57,7 +57,7 @@ test("it reflects value updates", function(assert) {
 });
 
 test("it renders input name", function(assert) {
-  model.constructor.typeKey = "post";
+  model.constructor.modelName = "post";
   var component = this.subject({
     on: formBuilder,
     as: type,
@@ -345,7 +345,7 @@ test("it passes all external attributes to the input component", function(assert
 });
 
 test("it translates some attributes", function(assert) {
-  model.constructor.typeKey = null;
+  model.constructor.modelName = null;
   var component = this.subject({
     on: formBuilder,
     as: type,
@@ -381,7 +381,7 @@ test("it translates some attributes", function(assert) {
   assert.equal(component.get("hint"), null, "Hint was omitted without translation key");
   assert.equal(component.get("placeholder"), null, "Placeholder was omitted without translation key");
 
-  model.constructor.typeKey = "post";
+  model.constructor.modelName = "post";
   // We don't expect model constructor changes in real life
   formBuilder.notifyPropertyChange("translationKey");
 

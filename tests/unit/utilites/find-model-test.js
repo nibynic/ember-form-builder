@@ -2,9 +2,9 @@ import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 import findModel from "ember-simple-form/utilities/find-model";
 
-var trueModel = { constructor: { typeKey: "modelName" } };
+var trueModel = { constructor: { modelName: "modelName" } };
 
-test("it returns the content or model that have constructor.typeKey", function(assert) {
+test("it returns the content or model that have constructor.modelName", function(assert) {
   var object = { content: trueModel };
 
   assert.equal(findModel(object), trueModel, "True model was found in .content");
