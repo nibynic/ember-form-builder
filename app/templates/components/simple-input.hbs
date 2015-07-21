@@ -4,13 +4,15 @@
     {{#simple-label for=inputElementId isRequired=isRequired}}
       {{input-component inputComponentName
         additionalAttributeNames=additionalAttributeNames modelValue=value
-        inputElementId=inputElementId class=inputClassName placeholder=placeholder}}
+        inputElementId=inputElementId class=inputClassName placeholder=placeholder
+        name=inputName}}
       {{label}}
     {{/simple-label}}
   {{else}}
     {{input-component inputComponentName
       additionalAttributeNames=additionalAttributeNames modelValue=value
-      inputElementId=inputElementId class=inputClassName placeholder=placeholder}}
+      inputElementId=inputElementId class=inputClassName placeholder=placeholder
+      name=inputName}}
   {{/if}}
   {{#if hasUnit}}
     <div class={{unitClassName}}>{{unit}}</div>

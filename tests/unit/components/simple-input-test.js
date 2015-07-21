@@ -56,6 +56,21 @@ test("it reflects value updates", function(assert) {
   assert.equal(component.$("input").val(), "Another test!");
 });
 
+test("it renders input name", function(assert) {
+  model.constructor.typeKey = "post";
+  var component = this.subject({
+    on: formBuilder,
+    as: type,
+    attr: attr
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.$("input").attr("name"), "post[title]");
+});
+
 test("it uses the classes from configuration", function(assert) {
   var component = this.subject({
     on: formBuilder,

@@ -18,6 +18,7 @@ var extension = {
   type: Ember.computed.alias("as"),
   object: Ember.computed.alias("builder.object"),
   _model: Ember.computed.alias("builder.model"),
+  modelName: Ember.computed.alias("builder.modelName"),
 
   init: function() {
     this._super();
@@ -85,6 +86,15 @@ var extension = {
 
   inputElementId: Ember.computed("elementId", function() {
     return this.get("elementId") + "Input";
+  }),
+
+  inputName: Ember.computed("modelName", "attr", function() {
+    var name = this.get("attr");
+    if (Ember.isPresent(this.get("modelName"))) {
+      name = this.get("modelName") + "[" + name + "]";
+    }
+
+    return name;
   }),
 
   label: Ember.computed("builder.translationKey", "attr", "labelTranslation", function() {
