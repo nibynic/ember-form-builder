@@ -360,8 +360,8 @@ test("it translates some attributes", function(assert) {
     "article.attributes.title": "Tytuł artykułu",
     "article.hints.title": "Maksymalnie 255 znaków",
     "article.placeholders.title": "Wpisz tytuł",
-    "post.attributes.title": "Tytuł posta",
-    "post.hints.title": "Maksymalnie 45 znaków",
+    "blogPost.attributes.title": "Tytuł posta",
+    "blogPost.hints.title": "Maksymalnie 45 znaków",
     "some.weird.label.translation.key": "Dziwny tytuł",
     "some.weird.hint.translation.key": "Dziwny hint",
     "some.weird.placeholder.translation.key": "Dziwny placeholder"
@@ -381,7 +381,7 @@ test("it translates some attributes", function(assert) {
   assert.equal(component.get("hint"), null, "Hint was omitted without translation key");
   assert.equal(component.get("placeholder"), null, "Placeholder was omitted without translation key");
 
-  model.constructor.modelName = "post";
+  model.constructor.modelName = "blog-post";
   // We don't expect model constructor changes in real life
   formBuilder.notifyPropertyChange("translationKey");
 

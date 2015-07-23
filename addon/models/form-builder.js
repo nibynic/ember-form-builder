@@ -31,7 +31,7 @@ export default Ember.Object.extend({
   }),
 
   translationKey: Ember.computed("model", function() {
-    return this.get("model.constructor.modelName");
+    return Ember.String.camelize(this.get("model.constructor.modelName") || "");
   }),
 
   _setSuccessStatus: function() {
