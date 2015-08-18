@@ -16,16 +16,14 @@ test("it translates some attributes", function(assert) {
     "simpleForm.isRequired": "Wymagane"
   };
 
-  Ember.I18n = { t: function(key) {
+  component.set("i18n", { t: function(key) {
       return translations[key] || "missing-translation " + key;
   }, exists: function(key) {
     return !!translations[key];
-  } };
+  } });
 
-  // We don't expect Ember.I18n to appear during runtime in real life
+  // We don't expect i18n to appear during runtime in real life
   component.notifyPropertyChange("requiredText");
 
   assert.equal(component.get("requiredText"), "Wymagane");
-
-  Ember.I18n = null;
 });

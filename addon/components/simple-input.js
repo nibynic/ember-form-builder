@@ -3,6 +3,7 @@ import humanize from "ember-simple-form/utilities/humanize";
 import guessType from "ember-simple-form/utilities/guess-type";
 
 var extension = {
+  i18n: Ember.inject.service(),
   // TODO: assertions
   class: null,
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
@@ -107,7 +108,7 @@ var extension = {
     }
 
     var result;
-    if (Ember.I18n && Ember.I18n.exists(key)) { result = Ember.I18n.t(key); }
+    if (this.get("i18n") && this.get("i18n").exists(key)) { result = this.get("i18n").t(key); }
     if (Ember.isEmpty(result)) { result = humanize(this.get("attr")); }
     return result;
   }),
@@ -137,7 +138,7 @@ var extension = {
       key = this.get("builder.translationKey") + ".hints." + this.get("attr");
     }
 
-    if (Ember.I18n && Ember.I18n.exists(key)) { return Ember.I18n.t(key); }
+    if (this.get("i18n") && this.get("i18n").exists(key)) { return this.get("i18n").t(key); }
   }),
 
   placeholder: Ember.computed("builder.translationKey", "attr", "placeholderTranslation", function() {
@@ -149,7 +150,7 @@ var extension = {
       key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
     }
 
-    if (Ember.I18n && Ember.I18n.exists(key)) { return Ember.I18n.t(key); }
+    if (this.get("i18n") && this.get("i18n").exists(key)) { return this.get("i18n").t(key); }
   })
 };
 

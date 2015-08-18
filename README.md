@@ -113,7 +113,7 @@ Custom translation key | `labelTranslation="custom.label.key"` | `hintTranslatio
 Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.actions.submit` | `not possible`
 Underlying Ember Data model's modelName (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | `not possible`
 Default | humanizes attribute name | empty | Looks up `simpleForm.actions.submit` | Looks up `simpleForm.isRequired`
-Without `Ember.I18n` | humanizes attribute name | empty | "Save" | "Required"
+Without `ember-i18n` | humanizes attribute name | empty | "Save" | "Required"
 
 ## Configuration
 

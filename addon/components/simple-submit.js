@@ -20,11 +20,11 @@ export default Ember.Component.extend({
     }
 
     var result;
-    if (Ember.I18n) {
-      if (Ember.I18n.exists(key)) {
-        result = Ember.I18n.t(key);
-      } else if (Ember.I18n.exists(defaultKey)) {
-        result = Ember.I18n.t(defaultKey);
+    if (this.get("i18n")) {
+      if (this.get("i18n").exists(key)) {
+        result = this.get("i18n").t(key);
+      } else if (this.get("i18n").exists(defaultKey)) {
+        result = this.get("i18n").t(defaultKey);
       }
     }
     if (Ember.isEmpty(result)) { result = "Save"; }
