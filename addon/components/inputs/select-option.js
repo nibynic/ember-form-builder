@@ -35,13 +35,13 @@ export default Ember.Component.extend({
     }));
     this.notifyPropertyChange("value");
 
-    Ember.defineProperty(this, "isSelected", Ember.computed("selectedValue", "value", {
+    Ember.defineProperty(this, "isSelected", Ember.computed("selectedValue", "selectedValue.[]", "value", {
       set: function(key) {
         return this.get(key);
       },
       get: function() {
         var selectedValue = this.get("selectedValue");
-      
+
         if (Ember.isArray(selectedValue)) {
           return selectedValue.indexOf(this.get("value")) > -1;
         } else if (!Ember.isArray(selectedValue)) {

@@ -104,6 +104,14 @@ test("it selects given values", function(assert) {
 
   assert.equal(component.$("option:selected").length, 1, 123);
   assert.equal(component.$("option:selected").attr("value"), 2);
+
+  Ember.run(function() {
+    component.get("modelValue").pushObject(1);
+  });
+
+  assert.equal(component.$("option:selected").length, 2, 123);
+  assert.ok(component.$("option:nth-child(1)").is(":selected"), "2");
+  assert.ok(component.$("option:nth-child(2)").is(":selected"), "3");
 });
 
 test("it updates value after changing", function(assert) {
