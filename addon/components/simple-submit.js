@@ -1,6 +1,8 @@
 import Ember from "ember";
 
 export default Ember.Component.extend({
+  i18n: Ember.inject.service(),
+  
   tagName: "button",
   type: "submit",
   attributeBindings: ["type"],
