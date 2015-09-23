@@ -1,5 +1,16 @@
-import SimpleFields from "ember-simple-form/components/simple-form";
+import Ember from "ember";
+import SimpleForm from "ember-simple-form/components/simple-form";
 
-export default SimpleFields.extend({
-  tagName: "div"
+export default SimpleForm.extend({
+  tagName: "div",
+
+  parentFormBuilder: Ember.computed.alias("on"),
+
+  didInsertElement() {
+    this.get("parentFormBuilder").addChild(this.get("formBuilder"));
+  },
+
+  willDestroy() {
+    this.get("parentFormBuilder").removeChild(this.get("formBuilder"));
+  }
 });

@@ -26,19 +26,7 @@ test("it handles submit", function(assert) {
   var submitFailedActionSent = false;
   var isValid = false;
 
-  var object = Ember.Object.create({
-    validate: function() {
-      validationPerformed = true;
-      this.set("isValid", isValid);
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        if (isValid) {
-          resolve();
-        } else {
-          reject();
-        }
-      });
-    }
-  });
+  var object = Ember.Object.create();
   var targetObject = Ember.Object.create({
     submit: function() {
       submitActionSent = true;
@@ -53,6 +41,17 @@ test("it handles submit", function(assert) {
     submitFailed: "submitFailed",
     targetObject: targetObject
   });
+  component.get("formBuilder").validate = function() {
+    validationPerformed = true;
+    this.set("isValid", isValid);
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      if (isValid) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  };
 
   this.render();
 

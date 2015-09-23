@@ -5,6 +5,9 @@ export default Ember.Object.extend({
   status: null,
   isValid: true,
   isLoading: Ember.computed.alias("model.isSaving"),
+  children: Ember.computed(function() {
+    return Ember.A([]);
+  }),
 
   init: function() {
     if (this.get("model").on) {
@@ -20,6 +23,35 @@ export default Ember.Object.extend({
       this.get("model").off("didUpdate", this, this._setSuccessStatus);
       this.get("model").off("becameInvalid", this, this._setFailureStatus);
     }
+  },
+
+  addChild(childFormBuilder) {
+    this.get("children").addObject(childFormBuilder);
+  },
+
+  removeChild(childFormBuilder) {
+    this.get("children").removeObject(childFormBuilder);
+  },
+
+  validate() {
+    var validations = [];
+
+    if (this.get("object.validate")) {
+      validations.push(this.get("object").validate());
+    } else {
+      validations.push(Ember.RSVP.resolve(true));
+    }
+
+    this.get("children").forEach((child) => {
+      validations.push(child.validate());
+    });
+
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      Ember.RSVP.Promise.all(validations).then(
+        () => { this.set("isValid", true); resolve(); },
+        () => { this.set("isValid", false); reject(); }
+      );
+    });
   },
 
   model: Ember.computed("object", function() {

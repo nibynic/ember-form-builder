@@ -8,17 +8,11 @@ export default Ember.Component.extend({
     event.preventDefault();
     var self = this;
 
-    if (!this.get("formBuilder.object.validate")) {
-      this.sendAction();
-    } else {
-      this.get("formBuilder.object").validate().then(function() {
-        self.set("formBuilder.isValid", true);
-        self.sendAction();
-      }, function() {
-        self.set("formBuilder.isValid", false);
-        self.sendAction("submitFailed");
-      });
-    }
+    this.get("formBuilder").validate().then(function() {
+      self.sendAction();
+    }, function() {
+      self.sendAction("submitFailed");
+    });
   },
 
   formBuilder: Ember.computed("for", "as", "translationKey", function() {
@@ -33,5 +27,7 @@ export default Ember.Component.extend({
       params.model = this.get("model");
     }
     return FormBuilder.create(params);
-  })
+  }),
+
+  isValid: Ember.computed.oneWay("formBuilder.isValid")
 });
