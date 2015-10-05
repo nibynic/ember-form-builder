@@ -3,7 +3,6 @@ import findModel from "ember-simple-form/utilities/find-model";
 
 export default Ember.Object.extend({
   status: null,
-  isValid: true,
   isLoading: Ember.computed.alias("model.isSaving"),
   children: Ember.computed(function() {
     return Ember.A([]);
@@ -56,6 +55,16 @@ export default Ember.Object.extend({
 
   model: Ember.computed("object", function() {
     return findModel(this.get("object"));
+  }),
+
+  isValid: Ember.computed("model.isValid", {
+    get() {
+      return Ember.isBlank(this.get("model.isValid")) ? true : this.get("model.isValid");
+    },
+
+    set(key, value) {
+      return value;
+    }
   }),
 
   modelName: Ember.computed("model", function() {

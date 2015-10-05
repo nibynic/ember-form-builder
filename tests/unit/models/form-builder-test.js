@@ -44,6 +44,19 @@ test("it is loading when the model is saving", function(assert) {
   assert.equal(builder.get("isLoading"), true);
 });
 
+test("isValid returns the model's validation status by default", function(assert) {
+  var model = Ember.Object.create({ isValid: true });
+  var builder = FormBuilder.create({
+    model: model
+  });
+
+  assert.equal(builder.get("isValid"), true);
+
+  model.set("isValid", false);
+
+  assert.equal(builder.get("isValid"), false);
+});
+
 test("validate() performs validation on the object and on the nested fields", function(assert) {
   var isValid = false;
   var nestedIsValid = false;
