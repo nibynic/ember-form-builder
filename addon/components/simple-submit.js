@@ -2,12 +2,14 @@ import Ember from "ember";
 
 export default Ember.Component.extend({
   i18n: Ember.inject.service(),
-  
+
   tagName: "button",
   type: "submit",
-  attributeBindings: ["type"],
+  attributeBindings: ["type", "isDisabled:disabled"],
 
-  builder: Ember.computed.alias("on"),
+  builder: Ember.computed.oneWay("on"),
+
+  isDisabled: Ember.computed.oneWay("builder.isLoading"),
 
   text: Ember.computed("builder.translationKey", "translation", function() {
     var key;

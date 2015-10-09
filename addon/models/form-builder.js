@@ -3,7 +3,7 @@ import findModel from "ember-simple-form/utilities/find-model";
 
 export default Ember.Object.extend({
   status: null,
-  isLoading: Ember.computed.alias("model.isSaving"),
+  isLoading: Ember.computed.oneWay("model.isSaving"),
   children: Ember.computed(function() {
     return Ember.A([]);
   }),

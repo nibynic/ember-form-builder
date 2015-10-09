@@ -77,3 +77,24 @@ test("it translates some attributes", function(assert) {
 
   assert.equal(component.get("text"), "Zapisz dziw");
 });
+
+test("it is disabled when the form builder is loading", function(assert) {
+  formBuilder.set("isLoading", false);
+  var component = this.subject({
+    on: formBuilder
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.get("isDisabled"), false, "is not disabled");
+  assert.equal(component.$().prop("disabled"), false, "has no disabled attribute");
+
+  Ember.run(function() {
+    formBuilder.set("isLoading", true);
+  });
+
+  assert.equal(component.get("isDisabled"), true, "is disabled");
+  assert.equal(component.$().prop("disabled"), true, "has disabled attribute");
+});
