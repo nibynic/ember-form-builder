@@ -37,7 +37,7 @@ var extension = {
   }),
 
   isRequired: Ember.computed("model", "attr", function() {
-    var presenceValidator = this.get("object.validations." + this.get("attr"));
+    var presenceValidator = this.get("object.validations." + this.get("attr") + ".presence");
     return presenceValidator && !presenceValidator.soft;
   }),
 
