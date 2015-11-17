@@ -2,7 +2,7 @@ import Ember from "ember";
 import configuration from "ember-simple-form/configuration";
 import ENV from "../config/environment";
 
-export var initialize = function(container, app) {
+export var initialize = function(app) {
   ENV.simpleForm = Ember.merge(configuration, ENV.simpleForm || {});
 }
 
