@@ -1,12 +1,11 @@
 import Ember from "ember";
 
-var assign = Ember.__loader.require("ember-metal/merge").assign;
 var Stream = Ember.__loader.require("ember-metal/streams/stream").default;
 
 export default {
   setupState: function(lastState, env, scope, params, hash) { // jshint ignore:line
     let componentPath = env.hooks.getValue(params[0]);
-    return assign({}, lastState, { componentPath, isComponentHelper: true });
+    return Object.assign({}, lastState, { componentPath, isComponentHelper: true });
   },
 
   render: function(morph, env, scope, params, hash, template, inverse, visitor) {

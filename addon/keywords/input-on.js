@@ -1,14 +1,12 @@
 import Ember from "ember";
 import { simpleInputAttributeNames } from "ember-simple-form/components/simple-input";
 
-var assign = Ember.__loader.require("ember-metal/merge").assign;
-
 export default {
   setupState: function(lastState, env, scope, params, hash) { // jshint ignore:line
     Ember.assert("You must provide 2 params: formBuilder and attributeName", params.length === 2);
     let componentPath = "simple-input";
 
-    return assign({}, lastState, { componentPath, isComponentHelper: true });
+    return Object.assign({}, lastState, { componentPath, isComponentHelper: true });
   },
 
   render: function(morph, env, scope, params, hash, template, inverse, visitor) {
