@@ -1,4 +1,3 @@
-import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 
 moduleForComponent("inputs/text-input", "Text Input component");

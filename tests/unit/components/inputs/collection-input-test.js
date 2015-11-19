@@ -1,11 +1,5 @@
 import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
-import FormBuilder from "ember-simple-form/models/form-builder";
-import inputComponent from "ember-simple-form/keywords/input-component";
-
-var attr = "category";
-var formBuilder;
-var model;
 
 moduleForComponent("inputs/collection-input", "Collection Input component", {
   needs: ["component:inputs/select-option", "template:components/inputs/select-option"]

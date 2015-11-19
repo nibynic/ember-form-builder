@@ -1,5 +1,5 @@
 import Ember from "ember";
-import { test, moduleFor } from "ember-qunit";
+import { test } from "ember-qunit";
 import FormBuilder from "ember-simple-form/models/form-builder";
 
 test("it updates status to success when created or updated", function(assert) {

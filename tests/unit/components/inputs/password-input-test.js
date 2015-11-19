@@ -1,4 +1,3 @@
-import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 
 moduleForComponent("inputs/password-input", "Password Input component");

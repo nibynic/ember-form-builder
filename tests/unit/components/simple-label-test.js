@@ -1,6 +1,4 @@
-import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
-import FormBuilder from "ember-simple-form/models/form-builder";
 
 moduleForComponent("simple-label", "Simple Label component", { });
 

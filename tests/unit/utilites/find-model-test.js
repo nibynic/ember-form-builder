@@ -1,5 +1,4 @@
-import Ember from "ember";
-import { test, moduleForComponent } from "ember-qunit";
+import { test } from "ember-qunit";
 import findModel from "ember-simple-form/utilities/find-model";
 
 var trueModel = { constructor: { modelName: "modelName" } };
