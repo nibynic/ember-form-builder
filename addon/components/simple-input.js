@@ -71,6 +71,16 @@ var extension = {
     }));
   }),
 
+  additionalAttributes: Ember.computed("additionalAttributeNames.[]", function() {
+    let proxy = Ember.Object.create({ content: this });
+    if (Ember.isArray(this.get("additionalAttributeNames"))) {
+      this.get("additionalAttributeNames").forEach((attributeName) => {
+        Ember.defineProperty(proxy, attributeName, Ember.computed.alias(`content.${attributeName}`));
+      });
+    }
+    return proxy;
+  }),
+
   wrapperClassName: Ember.computed(function() { return this.get("configuration.wrapperClass"); }),
   wrapperTypeClassName: Ember.computed("type", function() {
     return this.get("type") + "-input";

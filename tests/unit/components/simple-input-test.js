@@ -5,7 +5,8 @@ import configurationInitialiser from "../../../initializers/ember-simple-form-co
 import keywordsInitialiser from "../../../initializers/ember-simple-form-keywords";
 
 var type = "string";
-var defaultTypes = ["string", "text", "boolean", "number", "date", "password", "email", "tel"];
+var defaultTypes = ["string", "text", "boolean",
+  "number", "date", "password", "email", "tel"];
 var attr = "title";
 var formBuilder;
 var model;
@@ -18,6 +19,10 @@ var dependencies = defaultTypes.map(function(t) {
 });
 dependencies.push("component:simple-label");
 dependencies.push("template:components/simple-label");
+dependencies.push("component:inputs/collection-input");
+dependencies.push("template:components/inputs/collection-input");
+dependencies.push("component:inputs/select-option");
+dependencies.push("template:components/inputs/select-option");
 
 moduleForComponent("simple-input", "Simple Input component", {
   needs: dependencies,
@@ -53,6 +58,34 @@ test("it reflects value updates", function(assert) {
   });
 
   assert.equal(component.$("input").val(), "Another test!");
+});
+
+test("it proxies auxiliary attributes", function(assert) {
+  var component = this.subject({
+    on: formBuilder,
+    as: "collection",
+    collection: Ember.A(["a", "b", "c"]),
+    additionalAttributeNames: Ember.A(["collection"]),
+    attr: attr
+  });
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.equal(component.$("option").length, 3, "Initial options are correctly displayed");
+
+  Ember.run(function() {
+    component.get("collection").pushObject("d");
+  });
+
+  assert.equal(component.$("option").length, 4, "Updated options are correctly displayed");
+
+  Ember.run(function() {
+    component.set("collection", Ember.A(["e"]));
+  });
+
+  assert.equal(component.$("option").length, 1, "Replaced options are correctly displayed");
 });
 
 test("it renders input name", function(assert) {
