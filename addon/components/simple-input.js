@@ -36,8 +36,12 @@ var extension = {
     this.classNameBindings.push("hasUnit:" + this.get("configuration.wrapperWithUnitClass"));
   }),
 
-  isRequired: Ember.computed("model", "attr", function() {
-    var presenceValidator = this.get("object.validations." + this.get("attr") + ".presence");
+  validations: Ember.computed("model", "attr", function() {
+    return this.get("object.validations." + this.get("attr"));
+  }),
+
+  isRequired: Ember.computed("validations.presence", function() {
+    var presenceValidator = this.get("validations.presence");
     return presenceValidator && !presenceValidator.soft;
   }),
 
