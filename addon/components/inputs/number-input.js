@@ -14,7 +14,7 @@ export default Ember.TextField.extend(InputDefaultsMixin, {
     get() {
       var n = this.get("validations.numericality.greaterThan");
       if (Ember.isPresent(n)) {
-        return n * 1 - this.get("step");
+        return n * 1 + this.get("step");
       } else {
         return this.get("validations.numericality.greaterThanOrEqualTo");
       }
@@ -25,7 +25,7 @@ export default Ember.TextField.extend(InputDefaultsMixin, {
     get() {
       var n = this.get("validations.numericality.lessThan");
       if (Ember.isPresent(n)) {
-        return n * 1 + this.get("step");
+        return n * 1 - this.get("step");
       } else {
         return this.get("validations.numericality.lessThanOrEqualTo");
       }

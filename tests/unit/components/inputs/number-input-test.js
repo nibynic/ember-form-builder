@@ -20,8 +20,8 @@ test("it uses numericality validations", function(assert) {
     }
   });
 
-  assert.equal(component.get("min"), 4.99);
-  assert.equal(component.get("max"), 120.01);
+  assert.equal(component.get("min"), 5.01);
+  assert.equal(component.get("max"), 119.99);
   assert.equal(component.get("step"), 0.01);
 
   component.set("validations", {
