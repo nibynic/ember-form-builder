@@ -5,14 +5,14 @@
       {{component inputComponentName
         additionalAttributes=additionalAttributes modelValue=value
         inputElementId=inputElementId class=inputClassName placeholder=placeholder
-        name=inputName}}
+        name=inputName validations=validations}}
       {{label}}
     {{/simple-label}}
   {{else}}
     {{component inputComponentName
       additionalAttributes=additionalAttributes modelValue=value
       inputElementId=inputElementId class=inputClassName placeholder=placeholder
-      name=inputName}}
+      name=inputName validations=validations}}
   {{/if}}
   {{#if hasUnit}}
     <div class={{unitClassName}}>{{unit}}</div>
