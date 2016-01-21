@@ -2,7 +2,7 @@ import Ember from "ember";
 import InputDefaultsMixin from "ember-simple-form/mixins/input-defaults";
 
 function formatDate(date) {
-  if (date && date.toISOString()) {
+  if (date && date.toISOString) {
     return date.toISOString().substring(0, 10);
   } else {
     return null;
@@ -11,7 +11,7 @@ function formatDate(date) {
 
 export default Ember.TextField.extend(InputDefaultsMixin, {
   type: "date",
-  
+
   value: Ember.computed("modelValue", {
     get() {
       var date = this.get("modelValue");
