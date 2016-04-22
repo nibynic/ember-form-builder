@@ -21,7 +21,7 @@ moduleForComponent("simple-submit", "Simple Submit component", {
 
 test("it renders a submit button", function(assert) {
   var component = this.subject({
-    on: formBuilder
+    builder: formBuilder
   });
 
   Ember.run(function() {
@@ -36,7 +36,7 @@ test("it renders a submit button", function(assert) {
 test("it translates some attributes", function(assert) {
   model.constructor.modelName = null;
   var component = this.subject({
-    on: formBuilder
+    builder: formBuilder
   });
 
 
@@ -81,7 +81,7 @@ test("it translates some attributes", function(assert) {
 test("it is disabled when the form builder is loading", function(assert) {
   formBuilder.set("isLoading", false);
   var component = this.subject({
-    on: formBuilder
+    builder: formBuilder
   });
 
   Ember.run(function() {

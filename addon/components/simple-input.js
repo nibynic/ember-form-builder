@@ -2,20 +2,18 @@ import Ember from "ember";
 import humanize from "ember-simple-form/utilities/humanize";
 import guessType from "ember-simple-form/utilities/guess-type";
 
-var extension = {
+const extension = {
   i18n: Ember.inject.service(),
   // TODO: assertions
   class: null,
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
   hasFocusedOut: false,
-  on: null,
   as: Ember.computed("_model", "attr", function() {
     return guessType(this.get("_model"), this.get("attr"), this);
   }),
   attr: null,
   configuration: {},
 
-  builder: Ember.computed.alias("on"),
   type: Ember.computed.alias("as"),
   object: Ember.computed.alias("builder.object"),
   _model: Ember.computed.alias("builder.model"),
@@ -73,6 +71,18 @@ var extension = {
         return value;
       }
     }));
+  }),
+
+  additionalAttributeNames: Ember.computed("attrs", function() {
+    let additionalAttributeNames = [];
+
+    for(let key in this.get("attrs")) {
+      if (simpleInputAttributeNames.indexOf(key) < 0) {
+        additionalAttributeNames.push(key);
+      }
+    }
+
+    return additionalAttributeNames;
   }),
 
   additionalAttributes: Ember.computed("additionalAttributeNames.[]", function() {
@@ -168,9 +178,11 @@ var extension = {
   })
 };
 
-var simpleInputAttributeNames = Object.keys(extension);
+let simpleInputAttributeNames = Object.keys(extension).concat(["builder", "attr"]);
+const SimpleInput = Ember.Component.extend(extension);
 
-export default Ember.Component.extend(extension);
-export {
-  simpleInputAttributeNames
-};
+SimpleInput.reopenClass({
+  positionalParams: ["builder", "attr"]
+});
+
+export default SimpleInput;

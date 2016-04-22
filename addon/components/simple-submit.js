@@ -1,13 +1,11 @@
 import Ember from "ember";
 
-export default Ember.Component.extend({
+const SimpleSubmit = Ember.Component.extend({
   i18n: Ember.inject.service(),
 
   tagName: "button",
   type: "submit",
   attributeBindings: ["type", "isDisabled:disabled"],
-
-  builder: Ember.computed.oneWay("on"),
 
   isDisabled: Ember.computed.oneWay("builder.isLoading"),
 
@@ -35,3 +33,9 @@ export default Ember.Component.extend({
     return result;
   })
 });
+
+SimpleSubmit.reopenClass({
+  positionalParams: ["builder"]
+});
+
+export default SimpleSubmit;

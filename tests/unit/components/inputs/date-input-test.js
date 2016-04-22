@@ -9,7 +9,7 @@ test("it aliases modelValue as value", function(assert) {
     modelValue: date1
   });
 
-  assert.equal(component.get("value"), date1);
+  assert.equal(component.get("value"), "2010-11-01");
   component.set("modelValue", date2);
-  assert.equal(component.get("value"),  date2);
+  assert.equal(component.get("value"),  "2015-12-12");
 });

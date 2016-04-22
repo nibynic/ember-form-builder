@@ -2,7 +2,6 @@ import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 import FormBuilder from "ember-simple-form/models/form-builder";
 import configurationInitialiser from "../../../initializers/ember-simple-form-configuration";
-import keywordsInitialiser from "../../../initializers/ember-simple-form-keywords";
 
 var type = "string";
 var defaultTypes = ["string", "text", "boolean",
@@ -12,7 +11,6 @@ var formBuilder;
 var model;
 
 configurationInitialiser.initialize();
-keywordsInitialiser.initialize();
 
 var dependencies = defaultTypes.map(function(t) {
   return "component:inputs/" + t + "-input";
@@ -42,7 +40,7 @@ moduleForComponent("simple-input", "Simple Input component", {
 
 test("it reflects value updates", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -62,7 +60,7 @@ test("it reflects value updates", function(assert) {
 
 test("it proxies auxiliary attributes", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: "collection",
     collection: Ember.A(["a", "b", "c"]),
     additionalAttributeNames: Ember.A(["collection"]),
@@ -91,7 +89,7 @@ test("it proxies auxiliary attributes", function(assert) {
 test("it renders input name", function(assert) {
   model.constructor.modelName = "post";
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -105,7 +103,7 @@ test("it renders input name", function(assert) {
 
 test("it uses the classes from configuration", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -122,7 +120,7 @@ test("it uses the classes from configuration", function(assert) {
 
 test("it reflects error updates", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -171,7 +169,7 @@ test("it reflects error updates", function(assert) {
 
 test("it renders a hint when provided", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -193,7 +191,7 @@ test("it renders a hint when provided", function(assert) {
 
 test("it renders a placeholder when provided", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -213,7 +211,7 @@ test("it renders a placeholder when provided", function(assert) {
 
 test("it humanizes the property for use as label", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: "multiWordAttribute"
   });
@@ -228,7 +226,7 @@ test("it humanizes the property for use as label", function(assert) {
 
 test("it uses the provided label if it's provided", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr,
     label: "Custom title"
@@ -244,7 +242,7 @@ test("it uses the provided label if it's provided", function(assert) {
 
 test("it renders assigns the input's id as the label's for", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -258,7 +256,7 @@ test("it renders assigns the input's id as the label's for", function(assert) {
 
 test("it renders the label differently when it's inline", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr
   });
@@ -278,7 +276,7 @@ test("it renders the label differently when it's inline", function(assert) {
 
 test("it renders no label when it's set to false", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr,
     label: false
@@ -300,7 +298,7 @@ test("it renders no label when it's set to false", function(assert) {
 test("it renders the required mark", function(assert) {
   model.set("validations", { "name": { "presence": {} } });
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: "name"
   });
@@ -316,7 +314,7 @@ test("it renders the required mark", function(assert) {
 
 test("it renders unit when it's provided", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: "name"
   });
@@ -341,7 +339,7 @@ test("it renders unit when it's provided", function(assert) {
 defaultTypes.forEach(function(type) {
   test("it renders correctly for type \"" + type + "\"", function(assert) {
     var component = this.subject({
-      on: formBuilder,
+      builder: formBuilder,
       as: type,
       attr: attr
     });
@@ -360,7 +358,7 @@ defaultTypes.forEach(function(type) {
 
 test("it passes all external attributes to the input component", function(assert) {
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr,
     customAttr1: "asdf",
@@ -379,7 +377,7 @@ test("it passes all external attributes to the input component", function(assert
 test("it translates some attributes", function(assert) {
   model.constructor.modelName = null;
   var component = this.subject({
-    on: formBuilder,
+    builder: formBuilder,
     as: type,
     attr: attr,
     t: null

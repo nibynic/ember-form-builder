@@ -1,9 +1,18 @@
 import Ember from "ember";
 import InputDefaultsMixin from "ember-simple-form/mixins/input-defaults";
 
+function pad(number) {
+  if (number < 10) {
+    return "0" + number;
+  }
+  return number;
+}
+
 function formatDate(date) {
-  if (date && date.toISOString) {
-    return date.toISOString().substring(0, 10);
+  if (date && date.getFullYear && date.getMonth && date.getDate) {
+    return date.getFullYear() +
+        "-" + pad(date.getMonth() + 1) +
+        "-" + pad(date.getDate());
   } else {
     return null;
   }

@@ -128,7 +128,7 @@ test("it updates value after changing", function(assert) {
   });
 
   component.$("option").attr("selected", null);
-  component.$("option:nth-child(3)").attr("selected", "selected");
+  component.$("option:nth-child(3)").prop("selected", "selected");
   component.$().trigger("change");
 
   assert.equal(component.get("value.length"), 1);
@@ -140,7 +140,7 @@ test("it updates value after changing", function(assert) {
   });
 
   component.$("option").attr("selected", null);
-  component.$("option[value=3]").attr("selected", "selected");
+  component.$("option[value=3]").prop("selected", "selected");
   component.$().trigger("change");
 
   assert.equal(component.get("value.length"), 1);
