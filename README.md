@@ -7,9 +7,7 @@
 Ember Simple Form is an Ember Addon that enables you to assemble forms with
 labels, validations, hints without repeating yourself. It's strongly inspired by a Rails gem [SimpleForm](https://github.com/plataformatec/simple_form).
 
-__Note:__ this library only works with __Ember 1.11__* or newer and requires __Ember CLI__.
-
-_* We rely strongly on the `component` helper that's been introduced in 1.11._
+__Note:__ this library only works with __Ember 2.0__ or newer and requires __Ember CLI__.
 
 ## Installation
 
@@ -22,7 +20,7 @@ _Installation from GitHub is temporary until we publish to npm._
 ## Usage
 
 ```handlebars
-{{#simple-form for=controller action="submit" as |f|}}
+{{#simple-form for=this action="submit" as |f|}}
 
   {{input-on f "title"}}
   {{input-on f "category" collection=categories
@@ -61,7 +59,7 @@ You can easily extend any of the above inputs by overriding them and requiring a
 import TextInput from "ember-simple-form/components/inputs/text-input";
 
 export default TextInput.extend({
-  init: function() {
+  init() {
     this._super();
     this.attributeBindings.push("customAttribute");
   },
@@ -94,7 +92,7 @@ You can then use your input using the `as` option:
 
 Ember Simple Form supports validations out of the box. It will automatically mark inputs as erroneus and display error messages next to them whenever:
 
-* the form's subject (`for=controller`, remember?) has an `errors` object and there is at least one error in it for the input's attribute (e.g. `controller.errors.attributeName` contains an array of error messages) __and__
+* the form's subject (`for=this`, remember?) has an `errors` object and there is at least one error in it for the input's attribute (e.g. `errors.attributeName` contains an array of error messages) __and__
 * a user has focused out of the input at least once.
 
 This is compatible both with Ember Data's server-provided validation messages and with client-side validations provided by Ember Validation. However none of those libraries is required by Ember Simple Form.
@@ -141,8 +139,6 @@ Those are the default classes:
 You'll probably want to customize the markup Ember Simple Form generates. For that, you can override the default templates.
 
 Start by copying all or some of the [default templates](https://github.com/nibynic/ember-simple-form/tree/master/app/templates/components) to your app. Then modify whatever you want.
-
-Remember that Ember Simple Form is not yet stable and the templates are subject to change before we reach 1.0.0. Until then monitor the changes closely when upgrading.
 
 ## Legal ##
 
