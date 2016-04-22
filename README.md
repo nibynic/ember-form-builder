@@ -12,10 +12,8 @@ __Note:__ this library only works with __Ember 2.0__ or newer and requires __Emb
 ## Installation
 
 ```
-npm install --save-dev nibynic/ember-form-builder
+npm install --save-dev ember-form-builder
 ```
-
-_Installation from GitHub is temporary until we publish to npm._
 
 ## Usage
 
