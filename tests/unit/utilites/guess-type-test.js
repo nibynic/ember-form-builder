@@ -1,6 +1,6 @@
 import Ember from "ember";
 import { test } from "ember-qunit";
-import guessType from "ember-simple-form/utilities/guess-type";
+import guessType from "ember-form-builder/utilities/guess-type";
 
 var object = Ember.Object.create();
 var input = Ember.Object.create();

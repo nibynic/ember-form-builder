@@ -6,7 +6,7 @@ export default Ember.Component.extend({
 
   requiredText: Ember.computed(function() {
     var result;
-    var key = "simpleForm.isRequired";
+    var key = "formBuilder.isRequired";
     if (this.get("i18n") && this.get("i18n").exists(key)) { result = this.get("i18n").t(key); }
     if (Ember.isEmpty(result)) { result = "Required"; }
     return result;

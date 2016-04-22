@@ -1,7 +1,7 @@
 import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
-import FormBuilder from "ember-simple-form/models/form-builder";
-import configurationInitialiser from "../../../initializers/ember-simple-form-configuration";
+import FormBuilder from "ember-form-builder/models/form-builder";
+import configurationInitialiser from "../../../initializers/ember-form-builder-configuration";
 
 var type = "string";
 var defaultTypes = ["string", "text", "boolean",

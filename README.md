@@ -1,10 +1,10 @@
-# Ember Simple Form
+# Ember Form Builder
 
-[![Build Status](https://travis-ci.org/nibynic/ember-simple-form.svg)](https://travis-ci.org/nibynic/ember-simple-form)
+[![Build Status](https://travis-ci.org/nibynic/ember-form-builder.svg)](https://travis-ci.org/nibynic/ember-form-builder)
 
 ## About
 
-Ember Simple Form is an Ember Addon that enables you to assemble forms with
+Ember Form Builder is an Ember Addon that enables you to assemble forms with
 labels, validations, hints without repeating yourself. It's strongly inspired by a Rails gem [SimpleForm](https://github.com/plataformatec/simple_form).
 
 __Note:__ this library only works with __Ember 2.0__ or newer and requires __Ember CLI__.
@@ -12,7 +12,7 @@ __Note:__ this library only works with __Ember 2.0__ or newer and requires __Emb
 ## Installation
 
 ```
-npm install --save-dev nibynic/ember-simple-form
+npm install --save-dev nibynic/ember-form-builder
 ```
 
 _Installation from GitHub is temporary until we publish to npm._
@@ -20,7 +20,7 @@ _Installation from GitHub is temporary until we publish to npm._
 ## Usage
 
 ```handlebars
-{{#simple-form for=this action="submit" as |f|}}
+{{#form-builder for=this action="submit" as |f|}}
 
   {{input-on f "title"}}
   {{input-on f "category" collection=categories
@@ -31,12 +31,12 @@ _Installation from GitHub is temporary until we publish to npm._
 
   {{submit-on f}}
 
-{{/simple-form}}
+{{/form-builder}}
 ```
 
 ### Built-in inputs
 
-The following inputs types are built into Ember Simple Form:
+The following inputs types are built into Ember Form Builder:
 
 Type | Guessed when | HTML form
 --- | --- | ---
@@ -56,7 +56,7 @@ You can easily extend any of the above inputs by overriding them and requiring a
 
 ```js
 // In app/components/inputs/text-input.js
-import TextInput from "ember-simple-form/components/inputs/text-input";
+import TextInput from "ember-form-builder/components/inputs/text-input";
 
 export default TextInput.extend({
   init() {
@@ -90,19 +90,19 @@ You can then use your input using the `as` option:
 
 ### Validation with Ember Validations
 
-Ember Simple Form supports validations out of the box. It will automatically mark inputs as erroneus and display error messages next to them whenever:
+Ember Form Builder supports validations out of the box. It will automatically mark inputs as erroneus and display error messages next to them whenever:
 
 * the form's subject (`for=this`, remember?) has an `errors` object and there is at least one error in it for the input's attribute (e.g. `errors.attributeName` contains an array of error messages) __and__
 * a user has focused out of the input at least once.
 
-This is compatible both with Ember Data's server-provided validation messages and with client-side validations provided by Ember Validation. However none of those libraries is required by Ember Simple Form.
+This is compatible both with Ember Data's server-provided validation messages and with client-side validations provided by Ember Validation. However none of those libraries is required by Ember Form Builder.
 
 ### Translations with Ember-I18n
 
 You can easily cusomize labels and other texts by providing values through attributes in your templates but if your app is or might become international you might wish to integrate the forms with an i18n library.
-Ember Simple Form only supports Ember-I18n at the moment, however other solutions might be integrated in the future.
+Ember Form Builder only supports Ember-I18n at the moment, however other solutions might be integrated in the future.
 
-Ember Simple Form automatically detects Ember-I18n and tries to guess the translation keys.
+Ember Form Builder automatically detects Ember-I18n and tries to guess the translation keys.
 
  | label | hint | submit | required
 --- | --- | --- | --- | ---
@@ -110,14 +110,14 @@ Explicit | `label="My attribute"` | `hint="My hint"` | `text="My submit"` | `not
 Custom translation key | `labelTranslation="custom.label.key"` | `hintTranslation="custom.hint.key"` | `translation="custom.submit.key"` | `not possible`
 Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.actions.submit` | `not possible`
 Underlying Ember Data model's modelName (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | `not possible`
-Default | humanizes attribute name | empty | Looks up `simpleForm.actions.submit` | Looks up `simpleForm.isRequired`
+Default | humanizes attribute name | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
 Without `ember-i18n` | humanizes attribute name | empty | "Save" | "Required"
 
 ## Configuration
 
 ### Changing default classes
 
-Ember Simple Form exposes all the class names it uses via environment configuration. To override them, specify your values in `config/environment.js` under `simpleForm` key (e.g. `ENV.simpleForm.wrapperClass = "form-input"`).
+Ember Form Builder exposes all the class names it uses via environment configuration. To override them, specify your values in `config/environment.js` under `formBuilder` key (e.g. `ENV.formBuilder.wrapperClass = "form-input"`).
 
 Those are the default classes:
 
@@ -136,9 +136,9 @@ Those are the default classes:
 
 ### Overriding templates
 
-You'll probably want to customize the markup Ember Simple Form generates. For that, you can override the default templates.
+You'll probably want to customize the markup Ember Form Builder generates. For that, you can override the default templates.
 
-Start by copying all or some of the [default templates](https://github.com/nibynic/ember-simple-form/tree/master/app/templates/components) to your app. Then modify whatever you want.
+Start by copying all or some of the [default templates](https://github.com/nibynic/ember-form-builder/tree/master/app/templates/components) to your app. Then modify whatever you want.
 
 ## Legal ##
 

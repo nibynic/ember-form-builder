@@ -1,5 +1,5 @@
 import Ember from "ember";
-import InputDefaultsMixin from "ember-simple-form/mixins/input-defaults";
+import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 
 function pad(number) {
   if (number < 10) {

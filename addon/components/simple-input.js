@@ -1,6 +1,6 @@
 import Ember from "ember";
-import humanize from "ember-simple-form/utilities/humanize";
-import guessType from "ember-simple-form/utilities/guess-type";
+import humanize from "ember-form-builder/utilities/humanize";
+import guessType from "ember-form-builder/utilities/guess-type";
 
 const extension = {
   i18n: Ember.inject.service(),

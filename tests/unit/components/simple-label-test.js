@@ -11,7 +11,7 @@ test("it translates some attributes", function(assert) {
   assert.equal(component.get("requiredText"), "Required");
 
   var translations = {
-    "simpleForm.isRequired": "Wymagane"
+    "formBuilder.isRequired": "Wymagane"
   };
 
   component.set("i18n", { t: function(key) {

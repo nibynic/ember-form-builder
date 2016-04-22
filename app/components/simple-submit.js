@@ -1,4 +1,4 @@
 import Ember from "ember";
-import SimpleSubmit from "ember-simple-form/components/simple-submit";
+import SimpleSubmit from "ember-form-builder/components/simple-submit";
 
 export default SimpleSubmit;

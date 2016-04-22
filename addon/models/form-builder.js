@@ -1,5 +1,5 @@
 import Ember from "ember";
-import findModel from "ember-simple-form/utilities/find-model";
+import findModel from "ember-form-builder/utilities/find-model";
 
 export default Ember.Object.extend({
   status: null,

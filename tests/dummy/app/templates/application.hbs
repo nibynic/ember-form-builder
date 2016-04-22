@@ -2,7 +2,7 @@
 
 <h3>{{title}}</h3>
 
-{{#simple-form for=this as |f|}}
+{{#form-builder for=this as |f|}}
   asdf
   {{title}}
   <br/>
@@ -21,6 +21,6 @@
     optionValuePath="content" optionLabelPath="content.firstName" isMultiple=true}}
 
   {{submit-on f}}
-{{/simple-form}}
+{{/form-builder}}
 
 {{outlet}}

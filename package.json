@@ -1,6 +1,6 @@
 {
-  "name": "ember-simple-form",
-  "version": "0.0.0",
+  "name": "ember-form-builder",
+  "version": "1.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "directories": {
     "doc": "doc",

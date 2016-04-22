@@ -1,4 +1,4 @@
 import Ember from "ember";
-import CheckboxesInput from "ember-simple-form/components/inputs/checkboxes-input";
+import CheckboxesInput from "ember-form-builder/components/inputs/checkboxes-input";
 
 export default CheckboxesInput;

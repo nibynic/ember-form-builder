@@ -1,11 +1,11 @@
 import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
-import FormBuilder from "ember-simple-form/models/form-builder";
+import FormBuilder from "ember-form-builder/models/form-builder";
 
 var parentFormBuilder;
 var parentModel;
 
-moduleForComponent("simple-fields", "Simple Fields component", {
+moduleForComponent("fields-builder", "Simple Fields component", {
   beforeEach: function() {
     parentModel = Ember.Object.create({ title: "Testing testing 123" });
     parentFormBuilder = FormBuilder.create({

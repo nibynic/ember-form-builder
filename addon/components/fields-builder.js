@@ -1,7 +1,7 @@
 import Ember from "ember";
-import SimpleForm from "ember-simple-form/components/simple-form";
+import FormBuilder from "ember-form-builder/components/form-builder";
 
-export default SimpleForm.extend({
+export default FormBuilder.extend({
   tagName: "div",
 
   parentFormBuilder: Ember.computed.alias("on"),

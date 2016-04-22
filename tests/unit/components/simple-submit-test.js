@@ -1,6 +1,6 @@
 import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
-import FormBuilder from "ember-simple-form/models/form-builder";
+import FormBuilder from "ember-form-builder/models/form-builder";
 
 var formBuilder;
 var model;
@@ -46,7 +46,7 @@ test("it translates some attributes", function(assert) {
     "article.actions.submit": "Zapisz artykuł",
     "post.actions.submit": "Zapisz post",
     "some.weird.submit.translation.key": "Zapisz dziw",
-    "simpleForm.actions.submit": "Zapisz"
+    "formBuilder.actions.submit": "Zapisz"
   };
 
   component.set("i18n", { t: function(key) {

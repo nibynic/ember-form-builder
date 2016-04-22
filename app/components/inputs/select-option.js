@@ -1,4 +1,4 @@
 import Ember from "ember";
-import SelectOption from "ember-simple-form/components/inputs/select-option";
+import SelectOption from "ember-form-builder/components/inputs/select-option";
 
 export default SelectOption;

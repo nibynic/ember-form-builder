@@ -1,7 +1,7 @@
 import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 
-moduleForComponent("simple-form");
+moduleForComponent("form-builder");
 
 test("it renders with the right props", function(assert) {
   var component = this.subject();

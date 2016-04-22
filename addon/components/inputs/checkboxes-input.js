@@ -1,10 +1,10 @@
 import Ember from "ember";
-import CollectionInput from "ember-simple-form/components/inputs/collection-input";
+import CollectionInput from "ember-form-builder/components/inputs/collection-input";
 
 export default CollectionInput.extend({
   tagName: "div",
   optionComponentName: "inputs/checkbox-option",
-  
+
   change: function() {
     var indices = [];
     this.$("input").each( function(i, input) {

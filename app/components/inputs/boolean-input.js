@@ -1,4 +1,4 @@
 import Ember from "ember";
-import BooleanInput from "ember-simple-form/components/inputs/boolean-input";
+import BooleanInput from "ember-form-builder/components/inputs/boolean-input";
 
 export default BooleanInput;

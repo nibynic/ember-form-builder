@@ -1,5 +1,5 @@
 import { test } from "ember-qunit";
-import findModel from "ember-simple-form/utilities/find-model";
+import findModel from "ember-form-builder/utilities/find-model";
 
 var trueModel = { constructor: { modelName: "modelName" } };
 

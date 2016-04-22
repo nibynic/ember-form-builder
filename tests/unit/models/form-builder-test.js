@@ -1,6 +1,6 @@
 import Ember from "ember";
 import { test } from "ember-qunit";
-import FormBuilder from "ember-simple-form/models/form-builder";
+import FormBuilder from "ember-form-builder/models/form-builder";
 
 test("it updates status to success when created or updated", function(assert) {
   var model = Ember.Object.extend(Ember.Evented).create();

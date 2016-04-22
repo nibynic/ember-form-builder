@@ -11,7 +11,7 @@ const SimpleSubmit = Ember.Component.extend({
 
   text: Ember.computed("builder.translationKey", "translation", function() {
     var key;
-    var defaultKey = "simpleForm.actions.submit";
+    var defaultKey = "formBuilder.actions.submit";
 
     if (Ember.isPresent(this.get("translation"))) {
       key = this.get("translation");
