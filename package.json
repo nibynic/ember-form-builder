@@ -1,7 +1,7 @@
 {
   "name": "ember-form-builder",
-  "version": "1.0.1",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "1.0.2",
+  "description": "Simple and easily extensible form builder for Ember apps",
   "directories": {
     "doc": "doc",
     "test": "tests"
