@@ -18,6 +18,15 @@ const extension = {
   object: Ember.computed.alias("builder.object"),
   _model: Ember.computed.alias("builder.model"),
   modelName: Ember.computed.alias("builder.modelName"),
+  builder: Ember.computed({
+    set(key, value) {
+      if (value && value.builder) {
+        return value.builder;
+      } else {
+        return value;
+      }
+    }
+  }),
 
   init: function() {
     this._super();
@@ -182,7 +191,7 @@ let simpleInputAttributeNames = Object.keys(extension).concat(["builder", "attr"
 const SimpleInput = Ember.Component.extend(extension);
 
 SimpleInput.reopenClass({
-  positionalParams: ["builder", "attr"]
+  positionalParams: ["attr"]
 });
 
 export default SimpleInput;

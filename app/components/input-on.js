@@ -1,6 +1,4 @@
 import Ember from "ember";
-import SimpleInput from "./simple-input";
+import InputOn from "ember-form-builder/components/input-on";
 
-export default SimpleInput.extend({
-  layoutName: "components/simple-input"
-});
+export default InputOn;

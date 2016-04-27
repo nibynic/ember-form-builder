@@ -1,1 +1,5 @@
-{{yield formBuilder}}
+{{yield (hash
+  input=(component "simple-input" builder=formBuilder)
+  submit=(component "simple-submit" builder=formBuilder)
+  builder=formBuilder
+)}}

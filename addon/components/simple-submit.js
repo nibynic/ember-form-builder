@@ -8,6 +8,15 @@ const SimpleSubmit = Ember.Component.extend({
   attributeBindings: ["type", "isDisabled:disabled"],
 
   isDisabled: Ember.computed.oneWay("builder.isLoading"),
+  builder: Ember.computed({
+    set(key, value) {
+      if (value && value.builder) {
+        return value.builder;
+      } else {
+        return value;
+      }
+    }
+  }),
 
   text: Ember.computed("builder.translationKey", "translation", function() {
     var key;

@@ -21,14 +21,14 @@ npm install --save-dev ember-form-builder
 ```handlebars
 {{#form-builder for=this action="submit" as |f|}}
 
-  {{input-on f "title"}}
-  {{input-on f "category" collection=categories
+  {{f.input "title"}}
+  {{f.input "category" collection=categories
              optionValuePath="content.id" optionLabelPath="content.fullName"}}
-  {{input-on f "isPublished"}}
-  {{input-on f "publishedOn" as="date"}}
-  {{input-on f "price" unit="PLN" hint="Leave empty if this is a free article"}}
+  {{f.input "isPublished"}}
+  {{f.input "publishedOn" as="date"}}
+  {{f.input "price" unit="PLN" hint="Leave empty if this is a free article"}}
 
-  {{submit-on f}}
+  {{f.submit}}
 
 {{/form-builder}}
 ```
@@ -84,7 +84,7 @@ export default Ember.Component.extend({});
 You can then use your input using the `as` option:
 
 ```handlebars
-{{input-on f "description" as="your-type"}}
+{{f.input "description" as="your-type"}}
 ```
 
 ### Validation with Ember Validations
