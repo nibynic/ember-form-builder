@@ -1,4 +1,3 @@
-import Ember from "ember";
 import SimpleInput from "./simple-input";
 
 const InputOn = SimpleInput.extend({
