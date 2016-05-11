@@ -11,19 +11,13 @@ test("it exists", function (assert) {
   assert.ok(service);
 });
 
-test("Defaults to ember-intl when both i18n and ember-intl are present", function() {
+test("Defaults to ember-i18n when both i18n and ember-intl are present", function() {
   let service = this.subject();
   let intl = "ember-intl";
-  service.set("i18n", intl);
-  assert.equal(service.get("translationService"), intl);
-});
-
-test("Throws warning when no active translation service available", function() {
-  let service = this.subject();
+  let i18n = "i18n";
   service.setProperties({
-    intl: null,
-    i18n: null
+    i18n: i18n,
+    intl: intl
   });
-  // TODO: assert using sinon: http://sinonjs.org/qunit/
-  assert.ok(false);
+  assert.equal(service.get("translationService"), i18n);
 });

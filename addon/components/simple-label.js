@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   requiredText: Ember.computed(function() {
     var result;
     var key = "formBuilder.isRequired";
-    if (this.get("translationService.hasTranslationService") && this.get("translationService.translationService").exists(key)) { result = this.get("translationService.translationService").t(key); }
+    if (this.get("translationService.hasTranslationService") && this.get("translationService").exists(key)) { result = this.get("translationService").t(key); }
     if (Ember.isEmpty(result)) { result = "Required"; }
     return result;
   })

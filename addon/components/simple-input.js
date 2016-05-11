@@ -141,7 +141,7 @@ const extension = {
     }
 
     var result;
-    if (this.get("translationService.hasTranslationService") && this.get("translationService.translationService").exists(key)) { result = this.get("translationService.translationService").t(key); }
+    if (this.get("translationService.hasTranslationService") && this.get("translationService").exists(key)) { result = this.get("translationService").t(key); }
     if (Ember.isEmpty(result)) { result = humanize(this.get("attr")); }
     return result;
   }),
@@ -171,7 +171,7 @@ const extension = {
       key = this.get("builder.translationKey") + ".hints." + this.get("attr");
     }
 
-    if (this.get("translationService.hasTranslationService") && this.get("translationService.translationService").exists(key)) { return this.get("translationService.translationService").t(key); }
+    if (this.get("translationService.hasTranslationService") && this.get("translationService").exists(key)) { return this.get("translationService").t(key); }
   }),
 
   placeholder: Ember.computed("builder.translationKey", "attr", "placeholderTranslation", function() {
@@ -183,7 +183,7 @@ const extension = {
       key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
     }
 
-    if (this.get("translationService.hasTranslationService") && this.get("translationService.translationService").exists(key)) { return this.get("translationService.translationService").t(key); }
+    if (this.get("translationService.hasTranslationService") && this.get("translationService").exists(key)) { return this.get("translationService").t(key); }
   })
 };
 
