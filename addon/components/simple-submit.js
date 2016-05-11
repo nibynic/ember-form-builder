@@ -31,10 +31,10 @@ const SimpleSubmit = Ember.Component.extend({
 
     var result;
     if (this.get("translationService.hasTranslationService")) {
-      if (this.get("translationService.translationService").exists(key)) {
-        result = this.get("translationService.translationService").t(key);
-      } else if (this.get("translationService.translationService").exists(defaultKey)) {
-        result = this.get("translationService.translationService").t(defaultKey);
+      if (this.get("translationService").exists(key)) {
+        result = this.get("translationService").t(key);
+      } else if (this.get("translationService").exists(defaultKey)) {
+        result = this.get("translationService").t(defaultKey);
       }
     }
     if (Ember.isEmpty(result)) { result = "Save"; }

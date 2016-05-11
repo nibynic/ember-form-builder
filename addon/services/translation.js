@@ -6,7 +6,13 @@ export default Ember.Service.extend({
   translationServices: Ember.computed.collect("i18n", "intl"),
   hasTranslationService: Ember.computed.notEmpty("translationServices"),
   activeTranslationServices: Ember.computed("translationServices", function() {
-    return this.get("hasTranslationService") ? Ember.A() : this.get("translationServices").compact();
+    return this.get("hasTranslationService") ? this.get("translationServices").compact() : Ember.A();
   }),
-  translationService: Ember.computed.alias("activeTranslationServices.firstObject")
+  translationService: Ember.computed.alias("activeTranslationServices.firstObject"),
+  exists() {
+    return this.get("hasTranslationService") ? this.get("translationService").exists(...arguments) : false;
+  },
+  t() {
+    return this.get("hasTranslationService") ? this.get("translationService").t(...arguments) : false;
+  }
 });
