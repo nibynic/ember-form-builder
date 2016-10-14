@@ -66,8 +66,7 @@ const extension = {
 
   objectOrAttrChanged: Ember.observer("object", "attr", function() {
     var errorsAttribute = "object.errors." + this.get("attr");
-    var binding = Ember.Binding.from(errorsAttribute).to("errors");
-    binding.connect(this);
+    Ember.defineProperty(this, "errors", Ember.computed.reads(errorsAttribute));
 
     var valueAttribute = "object." + this.get("attr");
     Ember.defineProperty(this, "value", Ember.computed(valueAttribute, {
