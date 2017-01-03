@@ -11,7 +11,7 @@ test("it exists", function (assert) {
   assert.ok(service);
 });
 
-test("Defaults to ember-i18n when both i18n and ember-intl are present", function() {
+test("Defaults to ember-i18n when both i18n and ember-intl are present", function(assert) {
   let service = this.subject();
   let intl = "ember-intl";
   let i18n = "i18n";
