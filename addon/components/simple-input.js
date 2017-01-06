@@ -178,13 +178,9 @@ const extension = {
       key = this.get("builder.translationKey") + ".hints." + this.get("attr");
     }
 
-<<<<<<< HEAD
     if (this.get("translationService").exists(key)) {
       return this.get("translationService").t(key);
     }
-=======
-    if (this.get("translationService.hasTranslationService") && this.get("translationService").exists(key)) { return this.get("translationService").t(key); }
->>>>>>> 2bf5884ace42bc03f6cfd1fd65b2cd51eaaba517
   }),
 
   placeholder: Ember.computed("builder.translationKey", "attr", "placeholderTranslation", function() {
@@ -196,13 +192,9 @@ const extension = {
       key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
     }
 
-<<<<<<< HEAD
     if (this.get("translationService").exists(key)) {
       return this.get("translationService").t(key);
     }
-=======
-    if (this.get("translationService.hasTranslationService") && this.get("translationService").exists(key)) { return this.get("translationService").t(key); }
->>>>>>> 2bf5884ace42bc03f6cfd1fd65b2cd51eaaba517
   })
 };
 
