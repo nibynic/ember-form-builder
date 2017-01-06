@@ -39,8 +39,12 @@ const extension = {
   },
 
   setupClassNameBindings: Ember.on("init", function() {
-    this.classNameBindings.push("hasErrors:" + this.get("configuration.wrapperWithErrorsClass"));
-    this.classNameBindings.push("hasUnit:" + this.get("configuration.wrapperWithUnitClass"));
+    let newBindings = [
+      "hasErrors:" + this.get("configuration.wrapperWithErrorsClass"),
+      "hasUnit:" + this.get("configuration.wrapperWithUnitClass")
+    ];
+    let combinedBindings = (this.get("classNameBindings") || []).concat(newBindings);
+    this.set("classNameBindings", combinedBindings);
   }),
 
   validations: Ember.computed("model", "attr", function() {
