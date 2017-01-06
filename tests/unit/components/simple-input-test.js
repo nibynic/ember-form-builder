@@ -21,6 +21,7 @@ dependencies.push("component:inputs/collection-input");
 dependencies.push("template:components/inputs/collection-input");
 dependencies.push("component:inputs/select-option");
 dependencies.push("template:components/inputs/select-option");
+dependencies.push("service:formBuilderTranslations");
 
 moduleForComponent("simple-input", "Simple Input component", {
   needs: dependencies,
@@ -398,11 +399,16 @@ test("it translates some attributes", function(assert) {
     "some.weird.placeholder.translation.key": "Dziwny placeholder"
   };
 
-  component.set("i18n", { t: function(key) {
-      return translations[key] || "missing-translation " + key;
-  }, exists: function(key) {
-    return !!translations[key];
-  } });
+  Ember.defineProperty(component, "translationService", Ember.computed(function() {
+    return {
+      t(key) {
+        return translations[key] || "missing-translation " + key;
+      },
+      exists(key) {
+        return !!translations[key];
+      }
+    };
+  }));
 
   // We don't expect i18n to appear during runtime in real life
   component.notifyPropertyChange("label");

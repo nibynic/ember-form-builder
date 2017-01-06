@@ -1,7 +1,7 @@
 import Ember from "ember";
 
 const SimpleSubmit = Ember.Component.extend({
-  translationService: Ember.inject.service(),
+  translationService: Ember.inject.service("formBuilderTranslations"),
   tagName: "button",
   type: "submit",
   attributeBindings: ["type", "isDisabled:disabled"],
@@ -30,12 +30,10 @@ const SimpleSubmit = Ember.Component.extend({
     }
 
     var result;
-    if (this.get("translationService.hasTranslationService")) {
-      if (this.get("translationService").exists(key)) {
-        result = this.get("translationService").t(key);
-      } else if (this.get("translationService").exists(defaultKey)) {
-        result = this.get("translationService").t(defaultKey);
-      }
+    if (this.get("translationService").exists(key)) {
+      result = this.get("translationService").t(key);
+    } else if (this.get("translationService").exists(defaultKey)) {
+      result = this.get("translationService").t(defaultKey);
     }
     if (Ember.isEmpty(result)) { result = "Save"; }
     return result;
