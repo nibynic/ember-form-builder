@@ -7,7 +7,8 @@ var model;
 
 moduleForComponent("simple-submit", "Simple Submit component", {
   unit: true,
-  
+  needs: ["service:formBuilderTranslations"],
+
   beforeEach: function() {
     model = Ember.Object.create({ title: "Testing testing 123" });
     formBuilder = FormBuilder.create({
@@ -51,11 +52,16 @@ test("it translates some attributes", function(assert) {
     "formBuilder.actions.submit": "Zapisz"
   };
 
-  component.set("i18n", { t: function(key) {
-      return translations[key] || "missing-translation " + key;
-  }, exists: function(key) {
-    return !!translations[key];
-  } });
+  Ember.defineProperty(component, "translationService", Ember.computed(function() {
+    return {
+      t(key) {
+        return translations[key] || "missing-translation " + key;
+      },
+      exists(key) {
+        return !!translations[key];
+      }
+    };
+  }));
   // We don't expect i18n to appear during runtime in real life
   component.notifyPropertyChange("text");
 

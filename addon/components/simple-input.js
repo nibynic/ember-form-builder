@@ -3,7 +3,7 @@ import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
 
 const extension = {
-  i18n: Ember.inject.service(),
+  translationService: Ember.inject.service("formBuilderTranslations"),
   // TODO: assertions
   class: null,
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
@@ -144,8 +144,12 @@ const extension = {
     }
 
     var result;
-    if (this.get("i18n") && this.get("i18n").exists(key)) { result = this.get("i18n").t(key); }
-    if (Ember.isEmpty(result)) { result = humanize(this.get("attr")); }
+    if (this.get("translationService").exists(key)) {
+      result = this.get("translationService").t(key);
+    }
+    if (Ember.isEmpty(result)) {
+      result = humanize(this.get("attr"));
+    }
     return result;
   }),
 
@@ -174,7 +178,9 @@ const extension = {
       key = this.get("builder.translationKey") + ".hints." + this.get("attr");
     }
 
-    if (this.get("i18n") && this.get("i18n").exists(key)) { return this.get("i18n").t(key); }
+    if (this.get("translationService").exists(key)) {
+      return this.get("translationService").t(key);
+    }
   }),
 
   placeholder: Ember.computed("builder.translationKey", "attr", "placeholderTranslation", function() {
@@ -186,7 +192,9 @@ const extension = {
       key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
     }
 
-    if (this.get("i18n") && this.get("i18n").exists(key)) { return this.get("i18n").t(key); }
+    if (this.get("translationService").exists(key)) {
+      return this.get("translationService").t(key);
+    }
   })
 };
 

@@ -1,6 +1,10 @@
+import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 
-moduleForComponent("simple-label", "Simple Label component", { unit: true });
+moduleForComponent("simple-label", "Simple Label component", {
+  needs: ["service:formBuilderTranslations"],
+  unit: true
+});
 
 test("it translates some attributes", function(assert) {
   var component = this.subject({
@@ -14,11 +18,16 @@ test("it translates some attributes", function(assert) {
     "formBuilder.isRequired": "Wymagane"
   };
 
-  component.set("i18n", { t: function(key) {
-      return translations[key] || "missing-translation " + key;
-  }, exists: function(key) {
-    return !!translations[key];
-  } });
+  Ember.defineProperty(component, "translationService", Ember.computed(function() {
+    return {
+      t(key) {
+        return translations[key] || "missing-translation " + key;
+      },
+      exists(key) {
+        return !!translations[key];
+      }
+    };
+  }));
 
   // We don't expect i18n to appear during runtime in real life
   component.notifyPropertyChange("requiredText");
