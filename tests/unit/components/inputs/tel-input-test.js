@@ -1,6 +1,6 @@
 import { test, moduleForComponent } from "ember-qunit";
 
-moduleForComponent("inputs/tel-input", "Tel Input component");
+moduleForComponent("inputs/tel-input", "Tel Input component", { unit: true });
 
 test("it aliases modelValue as value", function(assert) {
   var component = this.subject({

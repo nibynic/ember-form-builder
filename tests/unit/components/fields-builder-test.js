@@ -6,6 +6,7 @@ var parentFormBuilder;
 var parentModel;
 
 moduleForComponent("fields-builder", "Simple Fields component", {
+  unit: true,
   beforeEach: function() {
     parentModel = Ember.Object.create({ title: "Testing testing 123" });
     parentFormBuilder = FormBuilder.create({

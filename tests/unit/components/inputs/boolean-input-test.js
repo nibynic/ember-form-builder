@@ -1,6 +1,6 @@
 import { test, moduleForComponent } from "ember-qunit";
 
-moduleForComponent("inputs/boolean-input", "Boolean Input component");
+moduleForComponent("inputs/boolean-input", "Boolean Input component", { unit: true });
 
 test("it aliases modelValue as value and checked", function(assert) {
   var component = this.subject({

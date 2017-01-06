@@ -24,6 +24,7 @@ dependencies.push("template:components/inputs/select-option");
 
 moduleForComponent("simple-input", "Simple Input component", {
   needs: dependencies,
+  unit: true,
 
   beforeEach: function() {
     model = Ember.Object.create({ title: "Testing testing 123" });

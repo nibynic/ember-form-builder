@@ -2,7 +2,8 @@ import Ember from "ember";
 import { test, moduleForComponent } from "ember-qunit";
 
 moduleForComponent("inputs/collection-input", "Collection Input component", {
-  needs: ["component:inputs/select-option", "template:components/inputs/select-option"]
+  needs: ["component:inputs/select-option", "template:components/inputs/select-option"],
+  unit: true
 });
 
 test("it renders collection of strings as options", function(assert) {

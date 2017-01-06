@@ -4,7 +4,8 @@ import { test, moduleForComponent } from "ember-qunit";
 moduleForComponent("inputs/checkboxes-input", "Checkboxes Input component", {
   needs: ["component:inputs/checkbox-option",
           "template:components/inputs/checkboxes-input",
-          "template:components/inputs/checkbox-option"]
+          "template:components/inputs/checkbox-option"],
+  unit: true
 });
 
 test("it renders collection of strings as radio buttons or checkboxes", function(assert) {

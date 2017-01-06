@@ -1,6 +1,6 @@
 import { test, moduleForComponent } from "ember-qunit";
 
-moduleForComponent("inputs/date-input", "Date Input component");
+moduleForComponent("inputs/date-input", "Date Input component", { unit: true });
 
 test("it aliases modelValue as value", function(assert) {
   var date1 = new Date(2010, 10, 1);

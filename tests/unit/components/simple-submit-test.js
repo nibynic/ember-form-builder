@@ -6,6 +6,8 @@ var formBuilder;
 var model;
 
 moduleForComponent("simple-submit", "Simple Submit component", {
+  unit: true,
+  
   beforeEach: function() {
     model = Ember.Object.create({ title: "Testing testing 123" });
     formBuilder = FormBuilder.create({

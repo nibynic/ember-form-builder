@@ -1,6 +1,6 @@
 import { test, moduleForComponent } from "ember-qunit";
 
-moduleForComponent("simple-label", "Simple Label component", { });
+moduleForComponent("simple-label", "Simple Label component", { unit: true });
 
 test("it translates some attributes", function(assert) {
   var component = this.subject({
