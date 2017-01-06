@@ -127,7 +127,7 @@ test("it updates value after changing", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  component.$("option").attr("selected", null);
+  component.$("option").prop("selected", false);
   component.$("option:nth-child(3)").prop("selected", "selected");
   component.$().trigger("change");
 
@@ -139,7 +139,7 @@ test("it updates value after changing", function(assert) {
     component.set("optionValuePath", "content.id");
   });
 
-  component.$("option").attr("selected", null);
+  component.$("option").prop("selected", false);
   component.$("option[value=3]").prop("selected", "selected");
   component.$().trigger("change");
 
