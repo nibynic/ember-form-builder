@@ -44,6 +44,20 @@ test("it is loading when the model is saving", function(assert) {
   assert.equal(builder.get("isLoading"), true);
 });
 
+test("isLoading can be overriden by object property", function(assert) {
+  var model = Ember.Object.extend(Ember.Evented).create({ isSaving: true });
+  var object = Ember.Object.extend(Ember.Evented).create({ isLoading: false });
+  var builder = FormBuilder.create({
+    model: model,
+    object: object
+  });
+
+  assert.equal(builder.get("isLoading"), false);
+
+  object.set("isLoading", true);
+  assert.equal(builder.get("isLoading"), true);
+});
+
 test("isValid returns the model's validation status by default", function(assert) {
   var model = Ember.Object.create({ isValid: true });
   var builder = FormBuilder.create({
