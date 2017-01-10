@@ -7,20 +7,20 @@
   {{title}}
   <br/>
 
-  {{input-on f "title" as="string" testAttr="asdfasdf"}}
+  {{f.input "title" as="string" testAttr="asdfasdf"}}
   {{currentProgrammerId}}
-  {{input-on f "currentProgrammerId" as="collection" collection=programmers
+  {{f.input "currentProgrammerId" as="collection" collection=programmers
     optionValuePath="content.id" optionLabelPath="content.firstName"}}
   <br/>
   {{currentProgrammer.id}}: {{currentProgrammer.firstName}}
-  {{input-on f "currentProgrammer" as="checkboxes" collection=programmers
+  {{f.input "currentProgrammer" as="checkboxes" collection=programmers
     optionValuePath="content" optionLabelPath="content.firstName"}}
 
   {{#each currentProgrammers as |programmer|}}{{programmer.firstName}}<br/>{{/each}}
-  {{input-on f "currentProgrammers" as="checkboxes" collection=programmers
+  {{f.input "currentProgrammers" as="checkboxes" collection=programmers
     optionValuePath="content" optionLabelPath="content.firstName" isMultiple=true}}
 
-  {{submit-on f}}
+  {{f.submit}}
 {{/form-builder}}
 
 {{outlet}}
