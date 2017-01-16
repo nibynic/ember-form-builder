@@ -439,3 +439,27 @@ test("it translates some attributes", function(assert) {
   assert.equal(component.get("hint"), "Dziwny hint");
   assert.equal(component.get("placeholder"), "Dziwny placeholder");
 });
+
+test("It has required attribute when it's required", function(assert) {
+  const component = this.subject({
+    builder: formBuilder,
+    as: type,
+    attr: attr
+  });
+
+  model.set("validations", {"name": {"presence": true}});
+
+  Ember.run(function() {
+    component.appendTo("#ember-testing");
+  });
+
+  assert.ok(component.get("isRequired"), "Is required");
+  assert.equal(component.$("input").attr("required"), "required");
+
+  Ember.run(function() {
+    component.set("inlineLabel", true);
+  });
+
+  // ensure inline also uses required, since it's in its own if/else in the template
+  assert.equal(component.$("input").attr("required"), "required");
+});
