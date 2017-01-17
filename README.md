@@ -94,7 +94,7 @@ Ember Form Builder supports validations out of the box. It will automatically ma
 * the form's subject (`for=this`, remember?) has an `errors` object and there is at least one error in it for the input's attribute (e.g. `errors.attributeName` contains an array of error messages) __and__
 * a user has focused out of the input at least once.
 
-This is compatible both with Ember Data's server-provided validation messages and with client-side validations provided by Ember Validation. However none of those libraries is required by Ember Form Builder.
+This is compatible both with Ember Data's server-provided validation messages and with client-side validations provided by [Ember Validation](https://github.com/DockYard/ember-validations). However none of those libraries is required by Ember Form Builder.
 
 ### Translations with Ember-I18n
 
