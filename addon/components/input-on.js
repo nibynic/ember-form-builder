@@ -5,7 +5,7 @@ const InputOn = SimpleInput.extend({
 });
 
 InputOn.reopenClass({
-  positionalParams: ["attr"]
+  positionalParams: ["builder", "attr"]
 });
 
 export default InputOn;
