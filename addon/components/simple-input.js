@@ -39,7 +39,7 @@ const extension = {
 
   init: function() {
     let config = Ember.getOwner(this).resolveRegistration("config:environment");
-    let formBuilderConfig = config.get("formBuilder");
+    let formBuilderConfig = config["formBuilder"];
     if (!Ember.isEmpty(formBuilderConfig)) this.set("config", formBuilderConfig);
 
     this._super();
