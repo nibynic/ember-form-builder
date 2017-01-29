@@ -12,7 +12,16 @@ const extension = {
     return guessType(this.get("_model"), this.get("attr"), this);
   }),
   attr: null,
-  configuration: {},
+  configuration: {
+      wrapperClass: "input", // input's root element
+      wrapperWithErrorsClass: "input-with-errors", // input's root element, when there are errors on this attribute
+      wrapperWithUnitClass: "has-unit", // input's root element, when a unit has been specified
+      unitClass: "input-unit", // unit element
+      errorsClass: "errors", // errors container
+      fieldClass: "field", // wrapper around input, errors, hint and unit
+      inputClass: "input-control", // the actual input
+      hintClass: "hint" // hint element
+  },
 
   type: Ember.computed.alias("as"),
   object: Ember.computed.alias("builder.object"),
@@ -29,6 +38,10 @@ const extension = {
   }),
 
   init: function() {
+    let config = Ember.getOwner(this).resolveRegistration("config:environment");
+    let formBuilderConfig = config.get("formBuilder");
+    if (!Ember.isEmpty(formBuilderConfig)) this.set("config", formBuilderConfig);
+
     this._super();
 
     this.objectOrAttrChanged();
@@ -57,7 +70,7 @@ const extension = {
   }),
 
   hasErrors: Ember.computed("hasFocusedOut", "builder.isValid", "errors", function() {
-    return (this.get("hasFocusedOut") || !this.get("builder.isValid")) && !Ember.isEmpty(this.get("errors"));
+    return (this.get("hasFocusedOut") && (!this.get("builder.isValid")) && !Ember.isEmpty(this.get("errors")));
   }),
 
   hasUnit: Ember.computed("unit", function() {
