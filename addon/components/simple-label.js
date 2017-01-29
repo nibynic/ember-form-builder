@@ -6,13 +6,14 @@ export default Ember.Component.extend({
   configuration: {
     labelClass: "label" // needs to mirror the config layout in simple-input
   },
-  classNames: Ember.computed.alias("configuration.labelClass"),
+  classNameBindings: ["configuration.labelClass"],
   attributeBindings: ["for"],
   init() {
     // TODO: put this config logic into a service
     let config = Ember.getOwner(this).resolveRegistration("config:environment");
     let formBuilderConfig = config["formBuilder"];
     if (!Ember.isEmpty(formBuilderConfig)) this.set("configuration", formBuilderConfig);
+    this._super();
   },
 
   requiredText: Ember.computed(function() {
