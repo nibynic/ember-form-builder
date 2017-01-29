@@ -21,6 +21,12 @@
     <div class={{hintClassName}}>{{hint}}</div>
   {{/if}}
   {{#if hasErrors}}
-    <div class={{errorsClassName}}>{{errorMessages}}</div>
+    <ul class="{{errorsClassName}}-list">
+      {{#each error as |errors|}}
+        <li class="{{errorsClassName}}-item">
+           <span class="{{errorsClassName}}" role="alert">{{error}}</span>
+        </li>
+      {{/each}}
+    </ul>
   {{/if}}
 </div>
