@@ -3,7 +3,9 @@ import { test } from "ember-qunit";
 import FormBuilder from "ember-form-builder/models/form-builder";
 
 test("it updates status to success when created or updated", function(assert) {
-  var model = Ember.Object.extend(Ember.Evented).create();
+  var modelClass = Ember.Object.extend(Ember.Evented);
+  modelClass.reopenClass({modelName: "fake-model"});
+  var model = modelClass.create();
   var builder = FormBuilder.create({
     model: model
   });
@@ -19,7 +21,9 @@ test("it updates status to success when created or updated", function(assert) {
 });
 
 test("it updates status to failure when became invalid", function(assert) {
-  var model = Ember.Object.extend(Ember.Evented).create();
+  var modelClass = Ember.Object.extend(Ember.Evented);
+  modelClass.reopenClass({modelName: "fake-model"});
+  var model = modelClass.create();
   var builder = FormBuilder.create({
     model: model
   });

@@ -3,7 +3,7 @@ import findModel from "ember-form-builder/utilities/find-model";
 
 export default Ember.Object.extend({
   status: null,
-  
+
   isLoading: Ember.computed("model.isSaving", "object.isLoading", function() {
     var objectIsLoading = this.get("object.isLoading");
     return objectIsLoading === true || objectIsLoading === false ?
@@ -16,7 +16,7 @@ export default Ember.Object.extend({
   }),
 
   init: function() {
-    if (this.get("model").on) {
+    if (this.get("isEmberData") && this.get("model").on) {
       this.get("model").on("didCreate", this, this._setSuccessStatus);
       this.get("model").on("didUpdate", this, this._setSuccessStatus);
       this.get("model").on("becameInvalid", this, this._setFailureStatus);
@@ -24,7 +24,7 @@ export default Ember.Object.extend({
   },
 
   willDestroy: function() {
-    if (this.get("model").off) {
+    if (this.get("isEmberData") && this.get("model").off) {
       this.get("model").off("didCreate", this, this._setSuccessStatus);
       this.get("model").off("didUpdate", this, this._setSuccessStatus);
       this.get("model").off("becameInvalid", this, this._setFailureStatus);
@@ -62,6 +62,10 @@ export default Ember.Object.extend({
 
   model: Ember.computed("object", function() {
     return findModel(this.get("object"));
+  }),
+
+  isEmberData: Ember.computed("model", function() {
+    return Ember.isPresent(this.get("model.constructor.modelName"));
   }),
 
   isValid: Ember.computed("model.isValid", {
