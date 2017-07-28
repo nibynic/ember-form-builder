@@ -35,7 +35,7 @@ const extension = {
   },
 
   focusOut: function() {
-    Ember.run.scheduleOnce("afterRender", this, this.set, "hasFocusedOut", true);
+    this.set("hasFocusedOut", true);
   },
 
   setupClassNameBindings: Ember.on("init", function() {
