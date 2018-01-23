@@ -103,7 +103,7 @@ Ember Form Builder only supports Ember-I18n at the moment, however other solutio
 
 Ember Form Builder automatically detects Ember-I18n and tries to guess the translation keys.
 
- | label | hint | submit | required
+use case | label | hint | submit | required
 --- | --- | --- | --- | ---
 Explicit | `label="My attribute"` | `hint="My hint"` | `text="My submit"` | `not possible`
 Custom translation key | `labelTranslation="custom.label.key"` | `hintTranslation="custom.hint.key"` | `translation="custom.submit.key"` | `not possible`
