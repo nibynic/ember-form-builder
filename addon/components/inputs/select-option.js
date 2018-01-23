@@ -40,12 +40,13 @@ export default Ember.Component.extend({
         return this.get(key);
       },
       get: function() {
-        var selectedValue = this.get("selectedValue");
+        var selectedValue = this.get("selectedValue.content") || this.get("selectedValue");
+        var value = this.get("value.content") || this.get("value");
 
         if (Ember.isArray(selectedValue)) {
-          return selectedValue.indexOf(this.get("value")) > -1;
+          return selectedValue.indexOf(value) > -1;
         } else if (!Ember.isArray(selectedValue)) {
-          return selectedValue === this.get("value");
+          return selectedValue === value;
         }
       }
     }));
