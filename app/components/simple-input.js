@@ -6,6 +6,6 @@ SimpleInput.reopen({
   configuration: Ember.computed(function() {
     return ENV.formBuilder;
   })
-})
+});
 
 export default SimpleInput;
