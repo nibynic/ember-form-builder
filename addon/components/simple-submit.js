@@ -1,13 +1,17 @@
-import Ember from "ember";
+import { isPresent, isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
+import { oneWay } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-const SimpleSubmit = Ember.Component.extend({
-  translationService: Ember.inject.service("formBuilderTranslations"),
+const SimpleSubmit = Component.extend({
+  translationService: service("formBuilderTranslations"),
   tagName: "button",
   type: "submit",
   attributeBindings: ["type", "isDisabled:disabled"],
 
-  isDisabled: Ember.computed.oneWay("builder.isLoading"),
-  builder: Ember.computed({
+  isDisabled: oneWay("builder.isLoading"),
+  builder: computed({
     set(key, value) {
       if (value && value.builder) {
         return value.builder;
@@ -17,13 +21,13 @@ const SimpleSubmit = Ember.Component.extend({
     }
   }),
 
-  text: Ember.computed("builder.translationKey", "translation", function() {
+  text: computed("builder.translationKey", "translation", function() {
     var key;
     var defaultKey = "formBuilder.actions.submit";
 
-    if (Ember.isPresent(this.get("translation"))) {
+    if (isPresent(this.get("translation"))) {
       key = this.get("translation");
-    } else if (Ember.isPresent(this.get("builder.translationKey"))) {
+    } else if (isPresent(this.get("builder.translationKey"))) {
       key = this.get("builder.translationKey") + ".actions.submit";
     } else {
       key = defaultKey;
@@ -35,7 +39,7 @@ const SimpleSubmit = Ember.Component.extend({
     } else if (this.get("translationService").exists(defaultKey)) {
       result = this.get("translationService").t(defaultKey);
     }
-    if (Ember.isEmpty(result)) { result = "Save"; }
+    if (isEmpty(result)) { result = "Save"; }
     return result;
   })
 });

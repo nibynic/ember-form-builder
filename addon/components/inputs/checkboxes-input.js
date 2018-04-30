@@ -1,4 +1,4 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
 import CollectionInput from "ember-form-builder/components/inputs/collection-input";
 
 export default CollectionInput.extend({
@@ -15,11 +15,11 @@ export default CollectionInput.extend({
     this._setSelection(indices);
   },
 
-  inputType: Ember.computed("isMultiple", function() {
+  inputType: computed("isMultiple", function() {
     return this.get("isMultiple") ? "checkbox" : "radio";
   }),
 
-  inputName: Ember.computed("elementId", function() {
+  inputName: computed("elementId", function() {
     return this.get("elementId") + "-radio";
   })
 });

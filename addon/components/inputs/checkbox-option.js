@@ -1,13 +1,14 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import SelectOption from "ember-form-builder/components/inputs/select-option";
 
 export default SelectOption.extend({
   tagName: "div",
   attributeBindings: [],
 
-  isChecked: Ember.computed.alias("isSelected"),
+  isChecked: alias("isSelected"),
 
-  inputElementId: Ember.computed("elementId", function() {
+  inputElementId: computed("elementId", function() {
     return this.get("elementId") + "-input";
   })
 });

@@ -1,4 +1,5 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
+import TextField from '@ember/component/text-field';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 
 function pad(number) {
@@ -18,10 +19,10 @@ function formatDate(date) {
   }
 }
 
-export default Ember.TextField.extend(InputDefaultsMixin, {
+export default TextField.extend(InputDefaultsMixin, {
   type: "date",
 
-  value: Ember.computed("modelValue", {
+  value: computed("modelValue", {
     get() {
       var date = this.get("modelValue");
       return formatDate(date);

@@ -1,25 +1,29 @@
-import Ember from "ember";
+import { A } from '@ember/array';
+import { collect, reads, notEmpty } from '@ember/object/computed';
+import { getOwner } from '@ember/application';
+import { computed } from '@ember/object';
+import Service from '@ember/service';
 
-export default Ember.Service.extend({
-  i18n: Ember.computed(function() {
-    let owner = Ember.getOwner(this);
+export default Service.extend({
+  i18n: computed(function() {
+    let owner = getOwner(this);
     return owner.lookup("service:i18n");
   }),
 
-  intl: Ember.computed(function() {
-    let owner = Ember.getOwner(this);
+  intl: computed(function() {
+    let owner = getOwner(this);
     return owner.lookup("service:intl");
   }),
 
-  translationServices: Ember.computed.collect("i18n", "intl"),
+  translationServices: collect("i18n", "intl"),
 
-  activeTranslationServices: Ember.computed("translationServices.@each", function() {
-    return Ember.A(this.get("translationServices").compact());
+  activeTranslationServices: computed("translationServices.@each", function() {
+    return A(this.get("translationServices").compact());
   }),
 
-  translationService: Ember.computed.reads("activeTranslationServices.firstObject"),
+  translationService: reads("activeTranslationServices.firstObject"),
 
-  hasTranslationService: Ember.computed.notEmpty("translationService"),
+  hasTranslationService: notEmpty("translationService"),
 
   exists() {
     if (this.get("hasTranslationService")) {

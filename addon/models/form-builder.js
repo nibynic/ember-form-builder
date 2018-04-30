@@ -1,18 +1,22 @@
-import Ember from "ember";
+import { camelize } from '@ember/string';
+import { isPresent, isBlank } from '@ember/utils';
+import { resolve, Promise as EmberPromise } from 'rsvp';
+import { A } from '@ember/array';
+import EmberObject, { computed } from '@ember/object';
 import findModel from "ember-form-builder/utilities/find-model";
 
-export default Ember.Object.extend({
+export default EmberObject.extend({
   status: null,
 
-  isLoading: Ember.computed("model.isSaving", "object.isLoading", function() {
+  isLoading: computed("model.isSaving", "object.isLoading", function() {
     var objectIsLoading = this.get("object.isLoading");
     return objectIsLoading === true || objectIsLoading === false ?
       objectIsLoading : this.get("model.isSaving");
   }),
 
 
-  children: Ember.computed(function() {
-    return Ember.A([]);
+  children: computed(function() {
+    return A([]);
   }),
 
   init: function() {
@@ -45,32 +49,32 @@ export default Ember.Object.extend({
     if (this.get("object.validate")) {
       validations.push(this.get("object").validate());
     } else {
-      validations.push(Ember.RSVP.resolve(true));
+      validations.push(resolve(true));
     }
 
     this.get("children").forEach((child) => {
       validations.push(child.validate());
     });
 
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      Ember.RSVP.Promise.all(validations).then(
+    return new EmberPromise((resolve, reject) => {
+      EmberPromise.all(validations).then(
         () => { this.set("isValid", true); resolve(); },
         () => { this.set("isValid", false); reject(); }
       );
     });
   },
 
-  model: Ember.computed("object", function() {
+  model: computed("object", function() {
     return findModel(this.get("object"));
   }),
 
-  isEmberData: Ember.computed("model", function() {
-    return Ember.isPresent(this.get("model.constructor.modelName"));
+  isEmberData: computed("model", function() {
+    return isPresent(this.get("model.constructor.modelName"));
   }),
 
-  isValid: Ember.computed("model.isValid", {
+  isValid: computed("model.isValid", {
     get() {
-      return Ember.isBlank(this.get("model.isValid")) ? true : this.get("model.isValid");
+      return isBlank(this.get("model.isValid")) ? true : this.get("model.isValid");
     },
 
     set(key, value) {
@@ -78,12 +82,12 @@ export default Ember.Object.extend({
     }
   }),
 
-  modelName: Ember.computed("model", function() {
+  modelName: computed("model", function() {
     return this.get("model.constructor.modelName");
   }),
 
-  translationKey: Ember.computed("model", function() {
-    return Ember.String.camelize(this.get("model.constructor.modelName") || "");
+  translationKey: computed("model", function() {
+    return camelize(this.get("model.constructor.modelName") || "");
   }),
 
   _setSuccessStatus: function() {

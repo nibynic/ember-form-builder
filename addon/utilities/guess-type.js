@@ -1,4 +1,4 @@
-import Ember from "ember";
+import { get } from '@ember/object';
 
 function typeForProperty(object, property) {
   try {
@@ -23,7 +23,7 @@ export default function(object, attribute, input) {
     return "boolean";
   }
 
-  if (Ember.get(input, "collection")) {
+  if (get(input, "collection")) {
     return "collection";
   }
 

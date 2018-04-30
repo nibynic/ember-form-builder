@@ -1,4 +1,8 @@
-import Ember from "ember";
+import { run } from '@ember/runloop';
+import EmberObject, {
+  defineProperty,
+  computed
+} from '@ember/object';
 import { test, moduleForComponent } from "ember-qunit";
 import FormBuilder from "ember-form-builder/models/form-builder";
 
@@ -10,7 +14,7 @@ moduleForComponent("simple-submit", "Simple Submit component", {
   needs: ["service:formBuilderTranslations"],
 
   beforeEach: function() {
-    model = Ember.Object.create({ title: "Testing testing 123" });
+    model = EmberObject.create({ title: "Testing testing 123" });
     formBuilder = FormBuilder.create({
       object: model
     });
@@ -27,7 +31,7 @@ test("it renders a submit button", function(assert) {
     builder: formBuilder
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -52,7 +56,7 @@ test("it translates some attributes", function(assert) {
     "formBuilder.actions.submit": "Zapisz"
   };
 
-  Ember.defineProperty(component, "translationService", Ember.computed(function() {
+  defineProperty(component, "translationService", computed(function() {
     return {
       t(key) {
         return translations[key] || "missing-translation " + key;
@@ -92,14 +96,14 @@ test("it is disabled when the form builder is loading", function(assert) {
     builder: formBuilder
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.get("isDisabled"), false, "is not disabled");
   assert.equal(component.$().prop("disabled"), false, "has no disabled attribute");
 
-  Ember.run(function() {
+  run(function() {
     formBuilder.set("isLoading", true);
   });
 

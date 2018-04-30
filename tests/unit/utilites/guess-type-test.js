@@ -1,9 +1,10 @@
-import Ember from "ember";
+import { A } from '@ember/array';
+import EmberObject, { computed } from '@ember/object';
 import { test } from "ember-qunit";
 import guessType from "ember-form-builder/utilities/guess-type";
 
-var object = Ember.Object.create();
-var input = Ember.Object.create();
+var object = EmberObject.create();
+var input = EmberObject.create();
 
 test("it detects password by attribute", function(assert) {
   assert.equal(guessType(object, "password", input), "password");
@@ -23,26 +24,26 @@ test("it detects boolean by attribute", function(assert) {
 });
 
 test("it detects collection when a collection param is available", function(assert) {
-  input = Ember.Object.create({ collection: Ember.A() });
+  input = EmberObject.create({ collection: A() });
   assert.equal(guessType(object, "role", input), "collection");
-  input = Ember.Object.create();
+  input = EmberObject.create();
 });
 
 test("it recognizes Ember Data attribute types", function(assert) {
-  Ember.A(["string", "number", "date", "boolean"]).forEach(function(type) {
-    object = Ember.Object.extend({
-      someProperty: Ember.computed(function() { }).meta({ type: type })
+  A(["string", "number", "date", "boolean"]).forEach(function(type) {
+    object = EmberObject.extend({
+      someProperty: computed(function() { }).meta({ type: type })
     }).create();
 
     assert.equal(guessType(object, "someProperty", input), type);
-    object = Ember.Object.create();
+    object = EmberObject.create();
   });
 });
 
 test("it returns 'string' by default", function(assert) {
-  object = Ember.Object.create();
+  object = EmberObject.create();
 
   assert.equal(guessType(object, "role", input), "string");
 
-  object = Ember.Object.create();
+  object = EmberObject.create();
 });

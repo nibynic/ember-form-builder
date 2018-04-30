@@ -1,5 +1,5 @@
+import { defineProperty, computed } from '@ember/object';
 import { moduleFor, test } from "ember-qunit";
-import Ember from "ember";
 
 moduleFor("service:form-builder-translations", "Unit | Service | formBuilderTranslation", {
   // Specify the other units that are required for this test.
@@ -29,7 +29,7 @@ test("Forwards the t and exists methods", function(assert) {
   let service = this.subject();
   let key = "testTranslationKey";
 
-  Ember.defineProperty(service, "translationService", Ember.computed(function() {
+  defineProperty(service, "translationService", computed(function() {
     return {
       t(k) {
         assert.equal(k, key, `The t method is called with the given key`);

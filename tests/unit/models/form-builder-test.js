@@ -1,9 +1,12 @@
-import Ember from "ember";
+import { run } from '@ember/runloop';
+import { Promise as EmberPromise } from 'rsvp';
+import Evented from '@ember/object/evented';
+import EmberObject from '@ember/object';
 import { test } from "ember-qunit";
 import FormBuilder from "ember-form-builder/models/form-builder";
 
 test("it updates status to success when created or updated", function(assert) {
-  var modelClass = Ember.Object.extend(Ember.Evented);
+  var modelClass = EmberObject.extend(Evented);
   modelClass.reopenClass({modelName: "fake-model"});
   var model = modelClass.create();
   var builder = FormBuilder.create({
@@ -21,7 +24,7 @@ test("it updates status to success when created or updated", function(assert) {
 });
 
 test("it updates status to failure when became invalid", function(assert) {
-  var modelClass = Ember.Object.extend(Ember.Evented);
+  var modelClass = EmberObject.extend(Evented);
   modelClass.reopenClass({modelName: "fake-model"});
   var model = modelClass.create();
   var builder = FormBuilder.create({
@@ -37,7 +40,7 @@ test("it updates status to failure when became invalid", function(assert) {
 });
 
 test("it is loading when the model is saving", function(assert) {
-  var model = Ember.Object.extend(Ember.Evented).create({ isSaving: false });
+  var model = EmberObject.extend(Evented).create({ isSaving: false });
   var builder = FormBuilder.create({
     model: model
   });
@@ -49,8 +52,8 @@ test("it is loading when the model is saving", function(assert) {
 });
 
 test("isLoading can be overriden by object property", function(assert) {
-  var model = Ember.Object.extend(Ember.Evented).create({ isSaving: true });
-  var object = Ember.Object.extend(Ember.Evented).create({ isLoading: false });
+  var model = EmberObject.extend(Evented).create({ isSaving: true });
+  var object = EmberObject.extend(Evented).create({ isLoading: false });
   var builder = FormBuilder.create({
     model: model,
     object: object
@@ -63,7 +66,7 @@ test("isLoading can be overriden by object property", function(assert) {
 });
 
 test("isValid returns the model's validation status by default", function(assert) {
-  var model = Ember.Object.create({ isValid: true });
+  var model = EmberObject.create({ isValid: true });
   var builder = FormBuilder.create({
     model: model
   });
@@ -80,10 +83,10 @@ test("validate() performs validation on the object and on the nested fields", fu
   var nestedIsValid = false;
   var validationPerformed = false;
   var nestedValidationWasPerformed = false;
-  var model = Ember.Object.create({
+  var model = EmberObject.create({
     validate() {
       validationPerformed = true;
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new EmberPromise(function(resolve, reject) {
         if (isValid) {
           resolve();
         } else {
@@ -92,10 +95,10 @@ test("validate() performs validation on the object and on the nested fields", fu
       });
     }
   });
-  var nestedModel = Ember.Object.create({
+  var nestedModel = EmberObject.create({
     validate() {
       nestedValidationWasPerformed = true;
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new EmberPromise(function(resolve, reject) {
         if (nestedIsValid) {
           resolve();
         } else {
@@ -111,17 +114,18 @@ test("validate() performs validation on the object and on the nested fields", fu
     object: nestedModel
   }));
 
-  Ember.run(function() {
+  run(function() {
     builder.validate();
   });
 
 
   assert.ok(validationPerformed, "Validation was performed");
+  assert.ok(nestedValidationWasPerformed, "Nested validation was performed");
   assert.ok(!builder.get("isValid"), "Form was invalid");
 
   nestedIsValid = true;
 
-  Ember.run(function() {
+  run(function() {
     builder.validate();
   });
 
@@ -130,7 +134,7 @@ test("validate() performs validation on the object and on the nested fields", fu
   isValid = true;
   nestedIsValid = false;
 
-  Ember.run(function() {
+  run(function() {
     builder.validate();
   });
 
@@ -139,7 +143,7 @@ test("validate() performs validation on the object and on the nested fields", fu
   isValid = true;
   nestedIsValid = true;
 
-  Ember.run(function() {
+  run(function() {
     builder.validate();
   });
 

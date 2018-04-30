@@ -1,4 +1,5 @@
-import Ember from "ember";
+import { run } from '@ember/runloop';
+import { A } from '@ember/array';
 import { test, moduleForComponent } from "ember-qunit";
 
 moduleForComponent("inputs/checkboxes-input", "Checkboxes Input component", {
@@ -10,11 +11,11 @@ moduleForComponent("inputs/checkboxes-input", "Checkboxes Input component", {
 
 test("it renders collection of strings as radio buttons or checkboxes", function(assert) {
   var component = this.subject({
-    collection: Ember.A(["Cooking", "Sports", "Politics"]),
+    collection: A(["Cooking", "Sports", "Politics"]),
     modelValue: "Cooking"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -25,8 +26,8 @@ test("it renders collection of strings as radio buttons or checkboxes", function
   assert.equal(component.$("input[type=radio][value=Sports]").attr("value"), "Sports");
   assert.equal(component.$("input[type=radio][value=Politics]").attr("value"), "Politics");
 
-  Ember.run(function() {
-    component.set("modelValue", Ember.A(["Cooking"]));
+  run(function() {
+    component.set("modelValue", A(["Cooking"]));
     component.set("isMultiple", true);
   });
 
@@ -41,7 +42,7 @@ test("it renders collection of strings as radio buttons or checkboxes", function
 
 test("it renders collection objects as inputs", function(assert) {
   var component = this.subject({
-    collection: Ember.A([{
+    collection: A([{
       id: 1, name: "Cooking", slug: "cooking", headline: "For kitchen geeks!"
     }, {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
@@ -53,7 +54,7 @@ test("it renders collection objects as inputs", function(assert) {
     }
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -64,7 +65,7 @@ test("it renders collection objects as inputs", function(assert) {
   assert.equal(component.$("input[type=radio][value=2]").attr("value"), "2");
   assert.equal(component.$("input[type=radio][value=3]").attr("value"), "3");
 
-  Ember.run(function() {
+  run(function() {
     component.set("optionLabelPath", "content.headline");
     component.set("optionValuePath", "content.slug");
   });
@@ -78,7 +79,7 @@ test("it renders collection objects as inputs", function(assert) {
 });
 
 test("it selects given values", function(assert) {
-  var collection = Ember.A([{
+  var collection = A([{
     id: 1, name: "Cooking"
   }, {
     id: 2, name: "Sports"
@@ -91,22 +92,22 @@ test("it selects given values", function(assert) {
     optionValuePath: "content"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.$("input[type=radio]:checked").length, 1);
   assert.ok(component.$("div:nth-child(2) input[type=radio]").is(":checked"));
 
-  Ember.run(function() {
+  run(function() {
     component.set("modelValue", collection[2]);
   });
 
   assert.equal(component.$("input[type=radio]:checked").length, 1);
   assert.ok(component.$("div:nth-child(3) input[type=radio]").is(":checked"));
 
-  Ember.run(function() {
-    component.set("modelValue", Ember.A([collection[2]]));
+  run(function() {
+    component.set("modelValue", A([collection[2]]));
     component.set("isMultiple", true);
   });
 
@@ -117,7 +118,7 @@ test("it selects given values", function(assert) {
 
 test("it updates value after changing", function(assert) {
   var component = this.subject({
-    collection: Ember.A([{
+    collection: A([{
       id: 1, name: "Cooking"
     }, {
       id: 2, name: "Sports"
@@ -130,7 +131,7 @@ test("it updates value after changing", function(assert) {
     optionValuePath: "content"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -140,8 +141,8 @@ test("it updates value after changing", function(assert) {
   assert.equal(component.get("value.id"), 3);
   assert.equal(component.get("value.name"), "Politics");
 
-  Ember.run(function() {
-    component.set("modelValue", Ember.A());
+  run(function() {
+    component.set("modelValue", A());
     component.set("isMultiple", true);
   });
 

@@ -1,18 +1,20 @@
-import Ember from "ember";
+import { A } from '@ember/array';
+import { computed } from '@ember/object';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-  title: Ember.computed(function() {
+export default Controller.extend({
+  title: computed(function() {
     return "test 123";
   }),
 
-  programmers: Ember.A([
+  programmers: A([
     { firstName: "Yehuda", id: 1 },
     { firstName: "Tom",    id: 2 }
   ]),
 
   currentProgrammerId: 2,
   currentProgrammer: null,
-  currentProgrammers: Ember.A()
+  currentProgrammers: A()
 
   // programmers: ["Tom", "Yehuda"],
   // currentProgrammer: "Tom"

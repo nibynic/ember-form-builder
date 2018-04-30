@@ -1,4 +1,4 @@
-import Ember from "ember";
+import { defineProperty, computed } from '@ember/object';
 import { test, moduleForComponent } from "ember-qunit";
 
 moduleForComponent("simple-label", "Simple Label component", {
@@ -18,7 +18,7 @@ test("it translates some attributes", function(assert) {
     "formBuilder.isRequired": "Wymagane"
   };
 
-  Ember.defineProperty(component, "translationService", Ember.computed(function() {
+  defineProperty(component, "translationService", computed(function() {
     return {
       t(key) {
         return translations[key] || "missing-translation " + key;

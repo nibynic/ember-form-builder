@@ -1,19 +1,21 @@
-import Ember from "ember";
+import { isPresent } from '@ember/utils';
+import { computed } from '@ember/object';
+import TextField from '@ember/component/text-field';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 
-export default Ember.TextField.extend(InputDefaultsMixin, {
+export default TextField.extend(InputDefaultsMixin, {
   type: "number",
 
-  step: Ember.computed("validations.numericality.onlyInteger", {
+  step: computed("validations.numericality.onlyInteger", {
     get() {
       return this.get("validations.numericality.onlyInteger") ? 1 : 0.01;
     }
   }),
 
-  min: Ember.computed("validations.numericality.greaterThan", "validations.numericality.greaterThanOrEqualTo", "step", {
+  min: computed("validations.numericality.{greaterThan,greaterThanOrEqualTo}", "step", {
     get() {
       var n = this.get("validations.numericality.greaterThan");
-      if (Ember.isPresent(n)) {
+      if (isPresent(n)) {
         return n * 1 + this.get("step");
       } else {
         return this.get("validations.numericality.greaterThanOrEqualTo");
@@ -21,10 +23,10 @@ export default Ember.TextField.extend(InputDefaultsMixin, {
     }
   }),
 
-  max: Ember.computed("validations.numericality.lessThan", "validations.numericality.lessThanOrEqualTo", "step", {
+  max: computed("validations.numericality.{lessThan,lessThanOrEqualTo}", "step", {
     get() {
       var n = this.get("validations.numericality.lessThan");
-      if (Ember.isPresent(n)) {
+      if (isPresent(n)) {
         return n * 1 - this.get("step");
       } else {
         return this.get("validations.numericality.lessThanOrEqualTo");

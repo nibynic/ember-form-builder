@@ -1,7 +1,10 @@
-import Ember from "ember";
+import { oneWay } from '@ember/object/computed';
+import { isPresent } from '@ember/utils';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 import FormBuilder from "ember-form-builder/models/form-builder";
 
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: "form",
 
   submit: function(event) {
@@ -15,19 +18,19 @@ export default Ember.Component.extend({
     });
   },
 
-  formBuilder: Ember.computed("for", "as", "translationKey", function() {
+  formBuilder: computed("for", "as", "translationKey", function() {
     var params = {
       object: this.get("for"),
       name: this.get("as")
     };
-    if (Ember.isPresent(this.get("translationKey"))) {
+    if (isPresent(this.get("translationKey"))) {
       params.translationKey = this.get("translationKey");
     }
-    if (Ember.isPresent(this.get("model"))) {
+    if (isPresent(this.get("model"))) {
       params.model = this.get("model");
     }
     return FormBuilder.create(params);
   }),
 
-  isValid: Ember.computed.oneWay("formBuilder.isValid")
+  isValid: oneWay("formBuilder.isValid")
 });

@@ -1,4 +1,9 @@
-import Ember from "ember";
+import { A } from '@ember/array';
+import { run } from '@ember/runloop';
+import EmberObject, {
+  defineProperty,
+  computed
+} from '@ember/object';
 import { test, moduleForComponent } from "ember-qunit";
 import FormBuilder from "ember-form-builder/models/form-builder";
 import configurationInitialiser from "../../../initializers/ember-form-builder-configuration";
@@ -28,7 +33,7 @@ moduleForComponent("simple-input", "Simple Input component", {
   unit: true,
 
   beforeEach: function() {
-    model = Ember.Object.create({ title: "Testing testing 123" });
+    model = EmberObject.create({ title: "Testing testing 123" });
     formBuilder = FormBuilder.create({
       object: model
     });
@@ -47,13 +52,13 @@ test("it reflects value updates", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.$("input").val(), "Testing testing 123");
 
-  Ember.run(function() {
+  run(function() {
     model.set("title", "Another test!");
   });
 
@@ -64,25 +69,25 @@ test("it proxies auxiliary attributes", function(assert) {
   var component = this.subject({
     builder: formBuilder,
     as: "collection",
-    collection: Ember.A(["a", "b", "c"]),
-    additionalAttributeNames: Ember.A(["collection"]),
+    collection: A(["a", "b", "c"]),
+    additionalAttributeNames: A(["collection"]),
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.$("option").length, 3, "Initial options are correctly displayed");
 
-  Ember.run(function() {
+  run(function() {
     component.get("collection").pushObject("d");
   });
 
   assert.equal(component.$("option").length, 4, "Updated options are correctly displayed");
 
-  Ember.run(function() {
-    component.set("collection", Ember.A(["e"]));
+  run(function() {
+    component.set("collection", A(["e"]));
   });
 
   assert.equal(component.$("option").length, 1, "Replaced options are correctly displayed");
@@ -96,7 +101,7 @@ test("it renders input name", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -110,7 +115,7 @@ test("it uses the classes from configuration", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -127,7 +132,7 @@ test("it reflects error updates", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -136,9 +141,9 @@ test("it reflects error updates", function(assert) {
   assert.equal(component.$(".errors").text(), "", "No errors are displayed");
   // assert.equal(component.$("input").val(), "Testing testing 123");
 
-  Ember.run(function() {
-    model.set("errors", Ember.Object.create({
-      title: Ember.A(["can't be blank", "is too short"])
+  run(function() {
+    model.set("errors", EmberObject.create({
+      title: A(["can't be blank", "is too short"])
     }));
   });
 
@@ -146,7 +151,7 @@ test("it reflects error updates", function(assert) {
   assert.ok(!component.$().is(".input-with-errors"), "Wrapper element has no error class assigned if wasn't focused out.");
   assert.equal(component.$(".errors").text(), "", "No errors are displayed if wasn't focused out");
 
-  Ember.run(function() {
+  run(function() {
     formBuilder.set("isValid", false);
   });
 
@@ -154,13 +159,13 @@ test("it reflects error updates", function(assert) {
   assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned when builder is invalid.");
   assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errors are displayed when builder is invalid");
 
-  Ember.run(function() {
+  run(function() {
     formBuilder.set("isValid", true);
   });
 
   assert.ok(!component.get("hasErrors"), "Just to be sure it stopped displaying errors.");
 
-  Ember.run(function() {
+  run(function() {
     component.focusOut();
   });
 
@@ -176,14 +181,14 @@ test("it renders a hint when provided", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.ok(!component.get("hasHint"));
   assert.equal(component.$(".hint").length, 0);
 
-  Ember.run(function() {
+  run(function() {
     component.set("hint", "This is a hint");
   });
 
@@ -198,13 +203,13 @@ test("it renders a placeholder when provided", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.$("input").attr("placeholder"), undefined);
 
-  Ember.run(function() {
+  run(function() {
     component.set("placeholder", "This is a placeholder");
   });
 
@@ -218,7 +223,7 @@ test("it humanizes the property for use as label", function(assert) {
     attr: "multiWordAttribute"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -234,7 +239,7 @@ test("it uses the provided label if it's provided", function(assert) {
     label: "Custom title"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -249,7 +254,7 @@ test("it renders assigns the input's id as the label's for", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -263,13 +268,13 @@ test("it renders the label differently when it's inline", function(assert) {
     attr: attr
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.$("label+.field").length, 1, "The label is rendered before the field");
 
-  Ember.run(function() {
+  run(function() {
     component.set("inlineLabel", true);
   });
 
@@ -284,13 +289,13 @@ test("it renders no label when it's set to false", function(assert) {
     label: false
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.$("label").length, 0, "There is no label in regular layout");
 
-  Ember.run(function() {
+  run(function() {
     component.set("inlineLabel", true);
   });
 
@@ -305,7 +310,7 @@ test("it renders the required mark", function(assert) {
     attr: "name"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -321,7 +326,7 @@ test("it renders unit when it's provided", function(assert) {
     attr: "name"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -329,7 +334,7 @@ test("it renders unit when it's provided", function(assert) {
   assert.ok(!component.$().is(".has-unit"), "Has no has-unit class");
   assert.equal(component.$(".input-unit").length, 0, "Unit was not rendered");
 
-  Ember.run(function() {
+  run(function() {
     component.set("unit", "PLN");
   });
 
@@ -346,7 +351,7 @@ defaultTypes.forEach(function(type) {
       attr: attr
     });
 
-    Ember.run(function() {
+    run(function() {
       component.appendTo("#ember-testing");
     });
 
@@ -368,7 +373,7 @@ test("it passes all external attributes to the input component", function(assert
     inputAttributeNames: ["customAttr1", "collection"]
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -399,7 +404,7 @@ test("it translates some attributes", function(assert) {
     "some.weird.placeholder.translation.key": "Dziwny placeholder"
   };
 
-  Ember.defineProperty(component, "translationService", Ember.computed(function() {
+  defineProperty(component, "translationService", computed(function() {
     return {
       t(key) {
         return translations[key] || "missing-translation " + key;

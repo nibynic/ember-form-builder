@@ -1,18 +1,21 @@
-import Ember from "ember";
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import { A, isArray } from '@ember/array';
+import Component from '@ember/component';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 
-export default Ember.Component.extend(InputDefaultsMixin, {
+export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
   attributeBindings: ["isMultiple:multiple"],
   isMultiple: false,
-  collection: Ember.A(),
+  collection: A(),
   optionValuePath: "content.id",
   optionLabelPath: "content.name",
   modelValue: null,
   optionComponentName: "inputs/select-option",
 
   didInsertElement: function() {
-    if (Ember.isEmpty(this.get("value"))) {
+    if (isEmpty(this.get("value"))) {
       this.change();
     }
   },
@@ -26,15 +29,15 @@ export default Ember.Component.extend(InputDefaultsMixin, {
   _setSelection: function(indicies) {
     var selection = this.get("collection").objectsAt(indicies);
     var valuePath = this.get("optionValuePath");
-    var newValues = Ember.A(selection.map(function(item) {
+    var newValues = A(selection.map(function(item) {
       if (typeof item === "string" || valuePath === "content") {
         return item;
       } else {
-        return Ember.get(item, valuePath.replace(/^content\./, ""));
+        return get(item, valuePath.replace(/^content\./, ""));
       }
     }));
 
-    if (Ember.isArray(this.get("value"))) {
+    if (isArray(this.get("value"))) {
       this.get("value").replace(0, this.get("value.length"), newValues);
     } else {
       this.set("value", newValues.get("firstObject"));

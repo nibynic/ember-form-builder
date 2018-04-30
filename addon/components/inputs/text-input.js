@@ -1,4 +1,4 @@
-import Ember from "ember";
+import TextArea from '@ember/component/text-area';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 
-export default Ember.TextArea.extend(InputDefaultsMixin);
+export default TextArea.extend(InputDefaultsMixin);

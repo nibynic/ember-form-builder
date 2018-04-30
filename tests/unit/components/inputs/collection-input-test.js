@@ -1,4 +1,5 @@
-import Ember from "ember";
+import { run } from '@ember/runloop';
+import { A } from '@ember/array';
 import { test, moduleForComponent } from "ember-qunit";
 
 moduleForComponent("inputs/collection-input", "Collection Input component", {
@@ -8,11 +9,11 @@ moduleForComponent("inputs/collection-input", "Collection Input component", {
 
 test("it renders collection of strings as options", function(assert) {
   var component = this.subject({
-    collection: Ember.A(["Cooking", "Sports", "Politics"]),
+    collection: A(["Cooking", "Sports", "Politics"]),
     modelValue: "Cooking"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -26,7 +27,7 @@ test("it renders collection of strings as options", function(assert) {
 
 test("it renders collection objects as options", function(assert) {
   var component = this.subject({
-    collection: Ember.A([{
+    collection: A([{
       id: 1, name: "Cooking", slug: "cooking", headline: "For kitchen geeks!"
     }, {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
@@ -38,7 +39,7 @@ test("it renders collection objects as options", function(assert) {
     }
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -49,7 +50,7 @@ test("it renders collection objects as options", function(assert) {
   assert.equal(component.$("option:nth-child(2)").attr("value"), "2");
   assert.equal(component.$("option:nth-child(3)").attr("value"), "3");
 
-  Ember.run(function() {
+  run(function() {
     component.set("optionLabelPath", "content.headline");
     component.set("optionValuePath", "content.slug");
   });
@@ -63,7 +64,7 @@ test("it renders collection objects as options", function(assert) {
 });
 
 test("it selects given values", function(assert) {
-  var collection = Ember.A([{
+  var collection = A([{
     id: 1, name: "Cooking"
   }, {
     id: 2, name: "Sports"
@@ -76,31 +77,31 @@ test("it selects given values", function(assert) {
     optionValuePath: "content"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
   assert.equal(component.$("option:selected").length, 1, 123123);
   assert.ok(component.$("option:nth-child(2)").is(":selected"), "1");
 
-  Ember.run(function() {
+  run(function() {
     component.set("isMultiple", true);
-    component.set("modelValue", Ember.A([collection[1], collection[2]]));
+    component.set("modelValue", A([collection[1], collection[2]]));
   });
 
   assert.equal(component.$("option:selected").length, 2, 234);
   assert.ok(component.$("option:nth-child(2)").is(":selected"), "2");
   assert.ok(component.$("option:nth-child(3)").is(":selected"), "3");
 
-  Ember.run(function() {
+  run(function() {
     component.set("optionValuePath", "content.id");
-    component.set("modelValue", Ember.A([2]));
+    component.set("modelValue", A([2]));
   });
 
   assert.equal(component.$("option:selected").length, 1, 123);
   assert.equal(component.$("option:selected").attr("value"), 2);
 
-  Ember.run(function() {
+  run(function() {
     component.get("modelValue").pushObject(1);
   });
 
@@ -110,7 +111,7 @@ test("it selects given values", function(assert) {
 });
 
 test("it updates value after changing", function(assert) {
-  var collection = Ember.A([{
+  var collection = A([{
     id: 1, name: "Cooking"
   }, {
     id: 2, name: "Sports"
@@ -120,11 +121,11 @@ test("it updates value after changing", function(assert) {
   var component = this.subject({
     collection: collection,
     isMultiple: true,
-    modelValue: Ember.A([collection[0], collection[1]]),
+    modelValue: A([collection[0], collection[1]]),
     optionValuePath: "content"
   });
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 
@@ -136,7 +137,7 @@ test("it updates value after changing", function(assert) {
   assert.equal(component.get("value.firstObject.id"), 3);
   assert.equal(component.get("value.firstObject.name"), "Politics");
 
-  Ember.run(function() {
+  run(function() {
     component.set("optionValuePath", "content.id");
   });
 
@@ -150,13 +151,13 @@ test("it updates value after changing", function(assert) {
 
 test("it sets the value after being displayed", function(assert) {
   var component = this.subject({
-    collection: Ember.A(["Cooking", "Sports", "Politics"]),
+    collection: A(["Cooking", "Sports", "Politics"]),
     modelValue: null
   });
 
   assert.equal(component.get("value"), null);
 
-  Ember.run(function() {
+  run(function() {
     component.appendTo("#ember-testing");
   });
 

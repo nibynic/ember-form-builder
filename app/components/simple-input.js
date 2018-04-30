@@ -1,9 +1,9 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
 import ENV from "../config/environment";
 import SimpleInput from "ember-form-builder/components/simple-input";
 
 SimpleInput.reopen({
-  configuration: Ember.computed(function() {
+  configuration: computed(function() {
     return ENV.formBuilder;
   })
 });

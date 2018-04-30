@@ -1,17 +1,20 @@
-import Ember from "ember";
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-  translationService: Ember.inject.service("formBuilderTranslations"),
+export default Component.extend({
+  translationService: service("formBuilderTranslations"),
   tagName: "label",
   attributeBindings: ["for"],
 
-  requiredText: Ember.computed(function() {
+  requiredText: computed(function() {
     var result;
     var key = "formBuilder.isRequired";
     if (this.get("translationService").exists(key)) {
       result = this.get("translationService").t(key);
     }
-    if (Ember.isEmpty(result)) { result = "Required"; }
+    if (isEmpty(result)) { result = "Required"; }
     return result;
   })
 });

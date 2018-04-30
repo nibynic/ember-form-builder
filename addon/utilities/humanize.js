@@ -1,5 +1,5 @@
-import Ember from "ember";
+import { capitalize, underscore } from '@ember/string';
 
 export default function(string) {
-  return Ember.String.capitalize(Ember.String.underscore(string).split("_").join(" "));
+  return capitalize(underscore(string).split("_").join(" "));
 }

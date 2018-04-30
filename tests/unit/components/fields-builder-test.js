@@ -1,4 +1,4 @@
-import Ember from "ember";
+import EmberObject from '@ember/object';
 import { test, moduleForComponent } from "ember-qunit";
 import FormBuilder from "ember-form-builder/models/form-builder";
 
@@ -8,7 +8,7 @@ var parentModel;
 moduleForComponent("fields-builder", "Simple Fields component", {
   unit: true,
   beforeEach: function() {
-    parentModel = Ember.Object.create({ title: "Testing testing 123" });
+    parentModel = EmberObject.create({ title: "Testing testing 123" });
     parentFormBuilder = FormBuilder.create({
       object: parentModel
     });
@@ -21,7 +21,7 @@ moduleForComponent("fields-builder", "Simple Fields component", {
 });
 
 test("it renders with the right props", function(assert) {
-  var object = Ember.Object.create();
+  var object = EmberObject.create();
   var component = this.subject({
     on: parentFormBuilder,
     for: object
@@ -35,7 +35,7 @@ test("it renders with the right props", function(assert) {
 });
 
 test("it registers and unregisters itself with the parent form builder", function(assert) {
-  var object = Ember.Object.create();
+  var object = EmberObject.create();
   var component = this.subject({
     on: parentFormBuilder,
     for: object

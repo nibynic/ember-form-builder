@@ -1,4 +1,5 @@
-import Ember from "ember";
+import { Promise as EmberPromise } from 'rsvp';
+import EmberObject from '@ember/object';
 import { test, moduleForComponent } from "ember-qunit";
 
 moduleForComponent("form-builder", "Form Builder component", { unit: true });
@@ -26,8 +27,8 @@ test("it handles submit", function(assert) {
   var submitFailedActionSent = false;
   var isValid = false;
 
-  var object = Ember.Object.create();
-  var targetObject = Ember.Object.create({
+  var object = EmberObject.create();
+  var target = EmberObject.create({
     submit: function() {
       submitActionSent = true;
     },
@@ -39,12 +40,12 @@ test("it handles submit", function(assert) {
     for: object,
     action: "submit",
     submitFailed: "submitFailed",
-    targetObject: targetObject
+    target
   });
   component.get("formBuilder").validate = function() {
     validationPerformed = true;
     this.set("isValid", isValid);
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       if (isValid) {
         resolve();
       } else {
