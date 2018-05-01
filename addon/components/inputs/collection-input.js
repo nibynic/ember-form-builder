@@ -1,6 +1,7 @@
 import { get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { A, isArray } from '@ember/array';
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 
@@ -13,6 +14,22 @@ export default Component.extend(InputDefaultsMixin, {
   optionLabelPath: "content.name",
   modelValue: null,
   optionComponentName: "inputs/select-option",
+
+  resolvedCollection: computed("collection.content", {
+    get() {
+      if (this.get("collection") && this.get("collection").then) {
+        this.get("collection").then((result) => {
+          this.set("resolvedCollection", result);
+        });
+        return A();
+      } else {
+        return this.get("collection");
+      }
+    },
+    set(key, value) {
+      return value;
+    }
+  }),
 
   didInsertElement: function() {
     if (isEmpty(this.get("value"))) {

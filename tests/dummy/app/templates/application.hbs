@@ -20,6 +20,11 @@
   {{f.input "currentProgrammers" as="checkboxes" collection=programmers
     optionValuePath="content" optionLabelPath="content.firstName" isMultiple=true}}
 
+  <br/>
+  {{currentDeferredProgrammerId}}
+  {{f.input "currentDeferredProgrammerId" as="collection" collection=deferredProgrammers
+    optionValuePath="content.id" optionLabelPath="content.firstName"}}
+
   {{f.submit}}
 {{/form-builder}}
 
