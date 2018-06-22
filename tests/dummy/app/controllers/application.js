@@ -24,7 +24,6 @@ export default Controller.extend({
     ]);
     return new Promise(function(resolve) {
       setTimeout(() => {
-        console.debug("timeout");
         resolve(programmers);
       }, 100);
     });
