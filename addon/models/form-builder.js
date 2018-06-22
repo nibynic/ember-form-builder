@@ -1,5 +1,5 @@
 import { camelize } from '@ember/string';
-import { isPresent, isBlank } from '@ember/utils';
+import { isPresent } from '@ember/utils';
 import { resolve, Promise as EmberPromise } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
@@ -7,6 +7,8 @@ import findModel from "ember-form-builder/utilities/find-model";
 
 export default EmberObject.extend({
   status: null,
+
+  isValid: true,
 
   isLoading: computed("model.isSaving", "object.isLoading", function() {
     var objectIsLoading = this.get("object.isLoading");
@@ -72,15 +74,9 @@ export default EmberObject.extend({
     return isPresent(this.get("model.constructor.modelName"));
   }),
 
-  isValid: computed("model.isValid", {
-    get() {
-      return isBlank(this.get("model.isValid")) ? true : this.get("model.isValid");
-    },
-
-    set(key, value) {
-      return value;
-    }
-  }),
+  errorsPathFor(attribute) {
+    return `object.errors.${attribute}`;
+  },
 
   modelName: computed("model", function() {
     return this.get("model.constructor.modelName");

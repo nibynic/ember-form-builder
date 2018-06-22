@@ -79,7 +79,7 @@ const extension = {
   }),
 
   objectOrAttrChanged: observer("object", "attr", function() {
-    var errorsAttribute = "object.errors." + this.get("attr");
+    var errorsAttribute = this.get('builder').errorsPathFor(this.get('attr'));
     defineProperty(this, "errors", reads(errorsAttribute));
 
     var valueAttribute = "object." + this.get("attr");

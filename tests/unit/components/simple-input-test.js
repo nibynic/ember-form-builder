@@ -35,7 +35,10 @@ moduleForComponent("simple-input", "Simple Input component", {
   beforeEach: function() {
     model = EmberObject.create({ title: "Testing testing 123" });
     formBuilder = FormBuilder.create({
-      object: model
+      object: model,
+      errorsPathFor(attr) {
+        return `object.errorsMock.${attr}`;
+      }
     });
   },
 
@@ -142,9 +145,9 @@ test("it reflects error updates", function(assert) {
   // assert.equal(component.$("input").val(), "Testing testing 123");
 
   run(function() {
-    model.set("errors", EmberObject.create({
-      title: A(["can't be blank", "is too short"])
-    }));
+    model.set("errorsMock", {
+      title: ["can't be blank", "is too short"]
+    });
   });
 
   assert.ok(!component.get("hasErrors"), "Component has no errors if wasn't focused out.");

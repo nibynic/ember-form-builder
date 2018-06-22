@@ -129,7 +129,8 @@ Those are the default classes:
   errorsClass: "errors", // errors container
   fieldClass: "field", // wrapper around input, errors, hint and unit
   inputClass: "input-control", // the actual input
-  hintClass: "hint" // hint element
+  hintClass: "hint", // hint element
+  validationsAddon: "ember-validations" // name of the validations addon. Supported values: "ember-validations" and "ember-cp-validations"
 }
 ```
 

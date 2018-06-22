@@ -2,8 +2,10 @@ import { run } from '@ember/runloop';
 import { Promise as EmberPromise } from 'rsvp';
 import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
-import { test } from "ember-qunit";
+import { test, module } from "ember-qunit";
 import FormBuilder from "ember-form-builder/models/form-builder";
+
+module('Unit | Models | FormBuilder | main');
 
 test("it updates status to success when created or updated", function(assert) {
   var modelClass = EmberObject.extend(Evented);
@@ -63,19 +65,6 @@ test("isLoading can be overriden by object property", function(assert) {
 
   object.set("isLoading", true);
   assert.equal(builder.get("isLoading"), true);
-});
-
-test("isValid returns the model's validation status by default", function(assert) {
-  var model = EmberObject.create({ isValid: true });
-  var builder = FormBuilder.create({
-    model: model
-  });
-
-  assert.equal(builder.get("isValid"), true);
-
-  model.set("isValid", false);
-
-  assert.equal(builder.get("isValid"), false);
 });
 
 test("validate() performs validation on the object and on the nested fields", function(assert) {
