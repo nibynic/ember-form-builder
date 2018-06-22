@@ -1,6 +1,6 @@
 import { camelize } from '@ember/string';
 import { isPresent } from '@ember/utils';
-import { resolve, Promise as EmberPromise } from 'rsvp';
+import { Promise as EmberPromise } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
 import findModel from "ember-form-builder/utilities/find-model";
@@ -48,11 +48,7 @@ export default EmberObject.extend({
   validate() {
     var validations = [];
 
-    if (this.get("object.validate")) {
-      validations.push(this.get("object").validate());
-    } else {
-      validations.push(resolve(true));
-    }
+    validations.push(this.validateObject());
 
     this.get("children").forEach((child) => {
       validations.push(child.validate());
@@ -74,10 +70,6 @@ export default EmberObject.extend({
     return isPresent(this.get("model.constructor.modelName"));
   }),
 
-  errorsPathFor(attribute) {
-    return `object.errors.${attribute}`;
-  },
-
   modelName: computed("model", function() {
     return this.get("model.constructor.modelName");
   }),
@@ -93,5 +85,9 @@ export default EmberObject.extend({
   _setFailureStatus: function() {
     this.set("isValid", false);
     this.set("status", "failure");
-  }
+  },
+
+  // defined in validations mixin
+  errorsPathFor() {},
+  validateObject() {}
 });
