@@ -66,8 +66,12 @@ const extension = {
     return presenceValidator && !presenceValidator.soft;
   }),
 
-  hasErrors: computed("hasFocusedOut", "builder.isValid", "errors", function() {
-    return (this.get("hasFocusedOut") || !this.get("builder.isValid")) && !isEmpty(this.get("errors"));
+  canValidate: computed("hasFocusedOut", "builder.isValid", function() {
+    return this.get("hasFocusedOut") || !this.get("builder.isValid");
+  }),
+
+  hasErrors: computed("canValidate", "errors", function() {
+    return this.get("canValidate") && !isEmpty(this.get("errors"));
   }),
 
   hasUnit: computed("unit", function() {
