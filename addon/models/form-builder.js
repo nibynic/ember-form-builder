@@ -1,9 +1,7 @@
 import { camelize } from '@ember/string';
-import { isPresent } from '@ember/utils';
 import { Promise as EmberPromise } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
-import findModel from "ember-form-builder/utilities/find-model";
 
 export default EmberObject.extend({
   status: null,
@@ -16,26 +14,9 @@ export default EmberObject.extend({
       objectIsLoading : this.get("model.isSaving");
   }),
 
-
   children: computed(function() {
     return A([]);
   }),
-
-  init: function() {
-    if (this.get("isEmberData") && this.get("model").on) {
-      this.get("model").on("didCreate", this, this._setSuccessStatus);
-      this.get("model").on("didUpdate", this, this._setSuccessStatus);
-      this.get("model").on("becameInvalid", this, this._setFailureStatus);
-    }
-  },
-
-  willDestroy: function() {
-    if (this.get("isEmberData") && this.get("model").off) {
-      this.get("model").off("didCreate", this, this._setSuccessStatus);
-      this.get("model").off("didUpdate", this, this._setSuccessStatus);
-      this.get("model").off("becameInvalid", this, this._setFailureStatus);
-    }
-  },
 
   addChild(childFormBuilder) {
     this.get("children").addObject(childFormBuilder);
@@ -62,20 +43,16 @@ export default EmberObject.extend({
     });
   },
 
-  model: computed("object", function() {
-    return findModel(this.get("object"));
+  model: computed('object.model', function() {
+    if (this.isModel(this.get('object.model'))) {
+      return this.get('object.model');
+    } else {
+      return this.get('object');
+    }
   }),
 
-  isEmberData: computed("model", function() {
-    return isPresent(this.get("model.constructor.modelName"));
-  }),
-
-  modelName: computed("model", function() {
-    return this.get("model.constructor.modelName");
-  }),
-
-  translationKey: computed("model", function() {
-    return camelize(this.get("model.constructor.modelName") || "");
+  translationKey: computed('modelName', function() {
+    return camelize(this.get('modelName') || '');
   }),
 
   _setSuccessStatus: function() {
@@ -89,5 +66,9 @@ export default EmberObject.extend({
 
   // defined in validations mixin
   errorsPathFor() {},
-  validateObject() {}
+  validateObject() {},
+
+  // defined in data mixin
+  modelName: '',
+  isModel(/* modelCandidate */) {}
 });

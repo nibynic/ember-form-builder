@@ -87,14 +87,30 @@ You can then use your input using the `as` option:
 {{f.input "description" as="your-type"}}
 ```
 
-### Validation with Ember Validations
+### Validation
 
-Ember Form Builder supports validations out of the box. It will automatically mark inputs as erroneus and display error messages next to them whenever:
+Ember Form Builder will automatically mark inputs as erroneus and display error messages next to them whenever:
 
-* the form's subject (`for=this`, remember?) has an `errors` object and there is at least one error in it for the input's attribute (e.g. `errors.attributeName` contains an array of error messages) __and__
+* the input's attribute is invalid __and__
 * a user has focused out of the input at least once.
 
-This is compatible both with Ember Data's server-provided validation messages and with client-side validations provided by [Ember Validation](https://github.com/DockYard/ember-validations). However none of those libraries is required by Ember Form Builder.
+Ember Form Builder supports these validation addons:
+
+* [Ember Validations](https://github.com/DockYard/ember-validations) (default) - this is compatible also with Ember Data's server-provided validation messages,
+* [Ember CP Validations](https://github.com/DockYard/ember-validations)
+
+You can set your choice in the [configuration](#configuration). None of those libraries is required by Ember Form Builder.
+
+### Data layer
+
+Ember Form Builder will automatically detect model name and then use it in input name generation and translation lookup.
+
+Ember Form Builder supports these data addons:
+
+* [Ember Data](https://github.com/emberjs/data) (default),
+* [Ember-Orbit](https://github.com/orbitjs/ember-orbit)
+
+You can set your choice in the [configuration](#configuration). None of those libraries is required by Ember Form Builder.
 
 ### Translations with Ember-I18n
 
@@ -108,7 +124,7 @@ use case | label | hint | submit | required
 Explicit | `label="My attribute"` | `hint="My hint"` | `text="My submit"` | `not possible`
 Custom translation key | `labelTranslation="custom.label.key"` | `hintTranslation="custom.hint.key"` | `translation="custom.submit.key"` | `not possible`
 Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.actions.submit` | `not possible`
-Underlying Ember Data model's modelName (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | `not possible`
+Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | `not possible`
 Default | humanizes attribute name | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
 Without `ember-i18n` | humanizes attribute name | empty | "Save" | "Required"
 
@@ -130,7 +146,8 @@ Those are the default classes:
   fieldClass: "field", // wrapper around input, errors, hint and unit
   inputClass: "input-control", // the actual input
   hintClass: "hint", // hint element
-  validationsAddon: "ember-validations" // name of the validations addon. Supported values: "ember-validations" and "ember-cp-validations"
+  validationsAddon: "ember-validations", // name of the validations addon. Supported values: "ember-validations" and "ember-cp-validations"
+  dataAddon: "ember-data" // name of the data addon. Supported values: "ember-data" and "ember-orbit"
 }
 ```
 

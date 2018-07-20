@@ -7,5 +7,6 @@ export default {
   fieldClass: "field",
   inputClass: "input-control",
   hintClass: "hint",
-  validationsAddon: 'ember-validations'
+  validationsAddon: 'ember-validations',
+  dataAddon: 'ember-data'
 };
