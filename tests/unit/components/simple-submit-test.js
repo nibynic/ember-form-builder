@@ -14,7 +14,7 @@ moduleForComponent("simple-submit", "Simple Submit component", {
   needs: ["service:formBuilderTranslations"],
 
   beforeEach: function() {
-    model = EmberObject.create({ title: "Testing testing 123" });
+    model = EmberObject.extend({}).create({ title: "Testing testing 123" });
     formBuilder = FormBuilder.create({
       object: model
     });

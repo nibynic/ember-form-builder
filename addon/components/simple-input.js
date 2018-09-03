@@ -11,12 +11,14 @@ import EmberObject, {
 import { inject as service } from '@ember/service';
 import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
+import { dasherize } from '@ember/string';
 
 const extension = {
   translationService: service("formBuilderTranslations"),
   // TODO: assertions
   class: null,
-  classNameBindings: ["wrapperClassName", "wrapperTypeClassName"],
+  classNameBindings: ["wrapperClassName", "wrapperTypeClassName", 'attributeClassName',
+    'modelClassName'],
   hasFocusedOut: false,
   as: computed("_model", "attr", function() {
     return guessType(this.get("_model"), this.get("attr"), this);
@@ -130,6 +132,14 @@ const extension = {
   fieldClassName: computed(function() { return this.get("configuration.fieldClass"); }),
   inputClassName: computed(function() { return this.get("configuration.inputClass"); }),
   hintClassName: computed(function() { return this.get("configuration.hintClass"); }),
+  attributeClassName: computed('attr', function() {
+    let attr = this.get('attr');
+    return attr ? `${dasherize(attr)}-attr-input` : null;
+  }),
+  modelClassName: computed('modelName', function() {
+    let modelName = this.get('modelName');
+    return  modelName ? `${dasherize(modelName)}-model-input` : null;
+  }),
 
   inputComponentName: computed("attr", "builder", function() {
     return "inputs/" + this.get("type") + "-input";

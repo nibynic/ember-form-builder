@@ -33,7 +33,7 @@ moduleForComponent("simple-input", "Simple Input component", {
   unit: true,
 
   beforeEach: function() {
-    model = EmberObject.create({ title: "Testing testing 123" });
+    model = EmberObject.extend({}).create({ title: "Testing testing 123" });
     formBuilder = FormBuilder.create({
       object: model,
       errorsPathFor(attr) {
@@ -96,19 +96,21 @@ test("it proxies auxiliary attributes", function(assert) {
   assert.equal(component.$("option").length, 1, "Replaced options are correctly displayed");
 });
 
-test("it renders input name", function(assert) {
-  model.constructor.modelName = "post";
+test("it renders input name and class", function(assert) {
+  model.constructor.modelName = "blogPost";
   var component = this.subject({
     builder: formBuilder,
     as: type,
-    attr: attr
+    attr: 'postTitle'
   });
 
   run(function() {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input").attr("name"), "post[title]");
+  assert.equal(component.$("input").attr("name"), "blogPost[postTitle]");
+  assert.ok(component.element.className.match('post-title-attr-input'), 'should set post-title-attr-input class for .input element');
+  assert.ok(component.element.className.match('blog-post-model-input'), 'should set blog-post-model-input class for .input element');
 });
 
 test("it uses the classes from configuration", function(assert) {
