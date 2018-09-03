@@ -51,6 +51,7 @@
     "ember-addon"
   ],
   "dependencies": {
+    "babel-plugin-ember-modules-api-polyfill": "^2.3.2",
     "ember-cli-babel": "^6.6.0",
     "ember-cli-update": "^0.21.3"
   },
