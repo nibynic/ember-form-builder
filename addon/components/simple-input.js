@@ -12,6 +12,7 @@ import { inject as service } from '@ember/service';
 import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
 import { dasherize } from '@ember/string';
+import { pluralize } from 'ember-inflector';
 
 const extension = {
   translationService: service("formBuilderTranslations"),
@@ -149,12 +150,16 @@ const extension = {
     return this.get("elementId") + "Input";
   }),
 
-  inputName: computed("modelName", "attr", function() {
+  inputName: computed("modelName", "attr", "index", function() {
+    var modelName = this.get("modelName");
     var name = this.get("attr");
-    if (isPresent(this.get("modelName"))) {
-      name = this.get("modelName") + "[" + name + "]";
+    var index = this.get("index");
+    if (isPresent(modelName)) {
+      if (isPresent(index)) {
+        modelName = pluralize(modelName) + "[" + index + "]";
+      }
+      name = modelName + "[" + name + "]";
     }
-
     return name;
   }),
 
