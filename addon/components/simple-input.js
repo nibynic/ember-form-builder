@@ -13,6 +13,7 @@ import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
 import { dasherize } from '@ember/string';
 import { pluralize } from 'ember-inflector';
+import { once } from '@ember/runloop';
 
 const extension = {
   translationService: service("formBuilderTranslations"),
@@ -48,7 +49,11 @@ const extension = {
   },
 
   focusOut: function() {
-    this.set("hasFocusedOut", true);
+    once(this, this.handleFocusOut);
+  },
+
+  handleFocusOut() {
+    this.set('hasFocusedOut', true);
   },
 
   setupClassNameBindings: on("init", function() {
