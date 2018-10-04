@@ -20,9 +20,11 @@ export default Component.extend({
 
   formBuilder: computed("for", "as", "translationKey", function() {
     var params = {
-      object: this.get("for"),
-      name: this.get("as")
+      object: this.get("for")
     };
+    if (isPresent(this.get('as'))) {
+      params.modelName = this.get('as');
+    }
     if (isPresent(this.get("translationKey"))) {
       params.translationKey = this.get("translationKey");
     }

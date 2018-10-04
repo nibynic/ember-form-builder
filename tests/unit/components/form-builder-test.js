@@ -14,6 +14,18 @@ test("it renders with the right props", function(assert) {
   assert.equal(component._state, "inDOM");
 });
 
+test("it sets model name", function(assert) {
+  var object = EmberObject.extend().reopenClass({
+    modelName: 'default-type'
+  }).create();
+  var component = this.subject({
+    for: object,
+    as: 'overriden-type'
+  });
+
+  assert.equal(component.get('formBuilder.modelName'), 'overriden-type');
+});
+
 test("it inserts a form tag into DOM", function(assert) {
   var component = this.subject();
   this.render();
