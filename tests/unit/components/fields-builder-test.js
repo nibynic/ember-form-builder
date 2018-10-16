@@ -44,9 +44,40 @@ test("it registers and unregisters itself with the parent form builder", functio
   this.render();
 
   assert.equal(parentFormBuilder.get("children.lastObject"), component.get("formBuilder"));
+  assert.equal(component.get('formBuilder.parent'), parentFormBuilder);
   assert.equal(component.get("formBuilder.object"), object);
 
   component.willDestroy();
 
   assert.equal(parentFormBuilder.get("children.length"), 0);
+  assert.equal(component.get('formBuilder.parent'), null);
+});
+
+test("it registers and unregisters itself with the parent form builder", function(assert) {
+  var object = EmberObject.create();
+  var component = this.subject({
+    on: parentFormBuilder,
+    for: object
+  });
+
+  this.render();
+
+  assert.equal(parentFormBuilder.get("children.lastObject"), component.get("formBuilder"));
+  assert.equal(component.get("formBuilder.object"), object);
+
+  component.willDestroy();
+
+  assert.equal(parentFormBuilder.get("children.length"), 0);
+});
+
+test("it sets name", function(assert) {
+  parentFormBuilder.set('name', 'sampleModel');
+  var component = this.subject({
+    as: 'sample-child',
+    on: parentFormBuilder
+  });
+
+  this.render();
+
+  assert.equal(component.get('formBuilder.name'), 'sampleModel[sampleChild]');
 });

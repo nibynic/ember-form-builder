@@ -26,6 +26,18 @@ test("it sets model name", function(assert) {
   assert.equal(component.get('formBuilder.modelName'), 'overriden-type');
 });
 
+test("it sets name", function(assert) {
+  var component = this.subject({
+    as: 'sample-model'
+  });
+
+  assert.equal(component.get('formBuilder.name'), 'sampleModel');
+
+  component.set('index', 0);
+
+  assert.equal(component.get('formBuilder.name'), 'sampleModels[0]');
+});
+
 test("it inserts a form tag into DOM", function(assert) {
   var component = this.subject();
   this.render();

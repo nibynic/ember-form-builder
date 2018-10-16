@@ -12,7 +12,6 @@ import { inject as service } from '@ember/service';
 import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
 import { dasherize } from '@ember/string';
-import { pluralize } from 'ember-inflector';
 import { once } from '@ember/runloop';
 
 const extension = {
@@ -28,10 +27,10 @@ const extension = {
   attr: null,
   configuration: {},
 
-  type: alias("as"),
-  object: alias("builder.object"),
-  _model: alias("builder.model"),
-  modelName: alias("builder.modelName"),
+  type:       reads("as"),
+  object:     reads("builder.object"),
+  _model:     reads("builder.model"),
+  modelName:  reads("builder.modelName"),
   builder: computed({
     set(key, value) {
       if (value && value.builder) {
@@ -155,15 +154,11 @@ const extension = {
     return this.get("elementId") + "Input";
   }),
 
-  inputName: computed("modelName", "attr", "index", function() {
-    var modelName = this.get("modelName");
-    var name = this.get("attr");
-    var index = this.get("index");
-    if (isPresent(modelName)) {
-      if (isPresent(index)) {
-        modelName = pluralize(modelName) + "[" + index + "]";
-      }
-      name = modelName + "[" + name + "]";
+  inputName: computed('builder.name', 'attr', function() {
+    var prefix = this.get('builder.name');
+    var name = this.get('attr');
+    if (isPresent(prefix)) {
+      name = prefix + '[' + name + ']';
     }
     return name;
   }),

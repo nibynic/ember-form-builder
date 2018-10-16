@@ -97,7 +97,8 @@ test("it proxies auxiliary attributes", function(assert) {
 });
 
 test("it renders input name and class", function(assert) {
-  model.constructor.modelName = "blogPost";
+  formBuilder.set('name', 'article');
+  formBuilder.set('modelName', 'blogPost');
   var component = this.subject({
     builder: formBuilder,
     as: type,
@@ -108,14 +109,9 @@ test("it renders input name and class", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input").attr("name"), "blogPost[postTitle]");
+  assert.equal(component.$("input").attr("name"), "article[postTitle]");
   assert.ok(component.element.className.match('post-title-attr-input'), 'should set post-title-attr-input class for .input element');
   assert.ok(component.element.className.match('blog-post-model-input'), 'should set blog-post-model-input class for .input element');
-
-  run(function() {
-    component.set('index', 0);
-  });
-  assert.equal(component.$("input").attr("name"), "blogPosts[0][postTitle]");
 });
 
 test("it uses the classes from configuration", function(assert) {

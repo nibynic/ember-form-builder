@@ -2,6 +2,8 @@ import { camelize } from '@ember/string';
 import { Promise as EmberPromise } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
+import { pluralize } from 'ember-inflector';
+import { isBlank } from '@ember/utils';
 
 export default EmberObject.extend({
   status: null,
@@ -20,10 +22,12 @@ export default EmberObject.extend({
 
   addChild(childFormBuilder) {
     this.get("children").addObject(childFormBuilder);
+    childFormBuilder.set('parent', this);
   },
 
   removeChild(childFormBuilder) {
     this.get("children").removeObject(childFormBuilder);
+    childFormBuilder.set('parent', null);
   },
 
   validate() {
@@ -53,6 +57,19 @@ export default EmberObject.extend({
 
   translationKey: computed('modelName', function() {
     return camelize(this.get('modelName') || '');
+  }),
+
+  name: computed('modelName', 'parent.name', 'index', function() {
+    let prefix = camelize(this.get('parent.name') || '');
+    let name = camelize(this.get('modelName') || '');
+    let index = this.get('index');
+    if (typeof index === 'number') {
+      name = pluralize(name);
+    }
+    return A([ prefix, name, index ])
+      .reject(isBlank).map(
+        (n, i) => i > 0 ? `[${n}]` : n
+      ).join('');
   }),
 
   _setSuccessStatus: function() {

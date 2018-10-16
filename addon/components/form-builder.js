@@ -18,19 +18,21 @@ export default Component.extend({
     });
   },
 
-  formBuilder: computed("for", "as", "translationKey", function() {
-    var params = {
-      object: this.get("for")
+  formBuilder: computed("for", "as", "translationKey", 'index', function() {
+    let params = {};
+    let mapping = {
+      for: 'object',
+      as: 'modelName',
+      translationKey: 'translationKey',
+      model: 'model',
+      index: 'index'
     };
-    if (isPresent(this.get('as'))) {
-      params.modelName = this.get('as');
-    }
-    if (isPresent(this.get("translationKey"))) {
-      params.translationKey = this.get("translationKey");
-    }
-    if (isPresent(this.get("model"))) {
-      params.model = this.get("model");
-    }
+    Object.entries(mapping).forEach(([from, to]) => {
+      let value = this.get(from);
+      if (isPresent(value)) {
+        params[to] = value;
+      }
+    });
     return FormBuilder.create(params);
   }),
 
