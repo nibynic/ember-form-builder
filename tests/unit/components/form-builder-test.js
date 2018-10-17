@@ -26,6 +26,20 @@ test("it sets model name", function(assert) {
   assert.equal(component.get('formBuilder.modelName'), 'overriden-type');
 });
 
+test("it allows empty model name", function(assert) {
+  var object = EmberObject.extend().reopenClass({
+    modelName: 'default-type'
+  }).create();
+  var component = this.subject({
+    for: object,
+    as: ''
+  });
+
+  assert.equal(component.get('formBuilder.modelName'), '');
+  assert.equal(component.get('formBuilder.translationKey'), '');
+  assert.equal(component.get('formBuilder.name'), '');
+});
+
 test("it sets name", function(assert) {
   var component = this.subject({
     as: 'sample-model'

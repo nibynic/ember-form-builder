@@ -33,6 +33,9 @@ export default Component.extend({
         params[to] = value;
       }
     });
+    if (this.get('as') === '') {
+      params.modelName = this.get('as');
+    }
     return FormBuilder.create(params);
   }),
 
