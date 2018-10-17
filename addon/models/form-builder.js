@@ -63,7 +63,7 @@ export default EmberObject.extend({
     let prefix = camelize(this.get('parent.name') || '');
     let name = camelize(this.get('modelName') || '');
     let index = this.get('index');
-    if (typeof index === 'number') {
+    if (!isBlank(index)) {
       name = pluralize(name);
     }
     return A([ prefix, name, index ])
