@@ -44,7 +44,7 @@ export default Component.extend(InputDefaultsMixin, {
   },
 
   _setSelection: function(indicies) {
-    var selection = this.get("collection").objectsAt(indicies);
+    var selection = this.get("resolvedCollection").objectsAt(indicies);
     var valuePath = this.get("optionValuePath");
     var newValues = A(selection.map(function(item) {
       if (typeof item === "string" || valuePath === "content") {
