@@ -278,7 +278,7 @@ test("it renders the label differently when it's inline", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("label+.field").length, 1, "The label is rendered before the field");
+  assert.equal(component.$(".simple-input-label+.field").length, 1, "The label is rendered before the field");
 
   run(function() {
     component.set("inlineLabel", true);

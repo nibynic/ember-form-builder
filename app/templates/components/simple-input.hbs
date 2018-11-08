@@ -1,4 +1,8 @@
-{{#if hasLabel}}{{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}{{/if}}
+{{#if hasLabel}}
+  <div class="simple-input-label">
+    {{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}
+  </div>
+{{/if}}
 <div class={{fieldClassName}}>
   {{#if hasInlineLabel}}
     {{#simple-label for=inputElementId isRequired=isRequired}}
