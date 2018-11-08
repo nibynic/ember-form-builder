@@ -285,6 +285,7 @@ test("it renders the label differently when it's inline", function(assert) {
   });
 
   assert.equal(component.$("label>input").length, 1, "The label contains the input");
+  assert.ok(component.$().is('.inline-label'), 'The component gets inline-label class');
 });
 
 test("it renders no label when it's set to false", function(assert) {

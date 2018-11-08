@@ -19,7 +19,7 @@ const extension = {
   // TODO: assertions
   class: null,
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName", 'attributeClassName',
-    'modelClassName'],
+    'modelClassName', 'inlineLabel'],
   hasFocusedOut: false,
   as: computed("_model", "attr", function() {
     return guessType(this.get("_model"), this.get("attr"), this);
