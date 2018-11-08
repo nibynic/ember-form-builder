@@ -1,6 +1,6 @@
 import { computed } from '@ember/object';
 import TextField from '@ember/component/text-field';
-import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
+import InputDefaultsMixin from 'ember-form-builder/mixins/input-defaults';
 
 function pad(number, length = 2) {
   let result = number.toString();
@@ -14,29 +14,33 @@ function pad(number, length = 2) {
 function formatDate(date) {
   if (date && date.getFullYear && date.getMonth && date.getDate) {
     return pad(date.getFullYear(), 4) +
-        "-" + pad(date.getMonth() + 1) +
-        "-" + pad(date.getDate());
+        '-' + pad(date.getMonth() + 1) +
+        '-' + pad(date.getDate());
   } else {
     return null;
   }
 }
 
 export default TextField.extend(InputDefaultsMixin, {
-  type: "date",
+  type: 'date',
 
-  value: computed("modelValue", {
+  value: computed('modelValue', {
     get() {
-      var date = this.get("modelValue");
+      var date = this.get('modelValue');
       return formatDate(date);
     },
     set(key, value) {
-      var timestamp = Date.parse(value);
-      if (isNaN(timestamp)) {
-        return value;
+      if (value.length === 0) {
+        this.set('modelValue', undefined);
       } else {
-        var date = new Date(timestamp);
-        this.set("modelValue", date);
-        return formatDate(date);
+        var timestamp = Date.parse(value + 'T00:00');
+        if (isNaN(timestamp)) {
+          return value;
+        } else {
+          var date = new Date(timestamp);
+          this.set('modelValue', date);
+          return formatDate(date);
+        }
       }
     }
   })

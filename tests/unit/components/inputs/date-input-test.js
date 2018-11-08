@@ -13,3 +13,16 @@ test("it aliases modelValue as value", function(assert) {
   component.set("modelValue", date2);
   assert.equal(component.get("value"),  "2015-12-12");
 });
+
+test("it parses dates", function(assert) {
+  var date = new Date(2015, 11, 12);
+  var component = this.subject();
+
+  component.set('value', '2015-12-12');
+
+  assert.equal(component.get('modelValue').getTime(), date.getTime());
+
+  component.set('value', '');
+
+  assert.equal(component.get('modelValue'), undefined);
+});
