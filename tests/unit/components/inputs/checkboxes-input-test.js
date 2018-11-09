@@ -11,7 +11,7 @@ moduleForComponent("inputs/checkboxes-input", "Checkboxes Input component", {
 
 test("it renders collection of strings as radio buttons or checkboxes", function(assert) {
   var component = this.subject({
-    collection: A(["Cooking", "Sports", "Politics"]),
+    collection: ["Cooking", "Sports", "Politics"],
     modelValue: "Cooking"
   });
 
@@ -27,7 +27,7 @@ test("it renders collection of strings as radio buttons or checkboxes", function
   assert.equal(component.$("input[type=radio][value=Politics]").attr("value"), "Politics");
 
   run(function() {
-    component.set("modelValue", A(["Cooking"]));
+    component.set("modelValue", ["Cooking"]);
     component.set("isMultiple", true);
   });
 
@@ -42,13 +42,13 @@ test("it renders collection of strings as radio buttons or checkboxes", function
 
 test("it renders collection objects as inputs", function(assert) {
   var component = this.subject({
-    collection: A([{
+    collection: [{
       id: 1, name: "Cooking", slug: "cooking", headline: "For kitchen geeks!"
     }, {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
     }, {
       id: 3, name: "Politics", slug: "politics", headline: "For nerds"
-    }]),
+    }],
     modelValue: {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
     }
@@ -79,13 +79,13 @@ test("it renders collection objects as inputs", function(assert) {
 });
 
 test("it selects given values", function(assert) {
-  var collection = A([{
+  var collection = [{
     id: 1, name: "Cooking"
   }, {
     id: 2, name: "Sports"
   }, {
     id: 3, name: "Politics"
-  }]);
+  }];
   var component = this.subject({
     collection: collection,
     modelValue: collection[1],
@@ -118,13 +118,13 @@ test("it selects given values", function(assert) {
 
 test("it updates value after changing", function(assert) {
   var component = this.subject({
-    collection: A([{
+    collection: [{
       id: 1, name: "Cooking"
     }, {
       id: 2, name: "Sports"
     }, {
       id: 3, name: "Politics"
-    }]),
+    }],
     modelValue: {
       id: 1, name: "Cooking"
     },
@@ -142,7 +142,7 @@ test("it updates value after changing", function(assert) {
   assert.equal(component.get("value.name"), "Politics");
 
   run(function() {
-    component.set("modelValue", A());
+    component.set("modelValue", []);
     component.set("isMultiple", true);
   });
 

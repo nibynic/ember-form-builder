@@ -8,7 +8,7 @@ import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
   attributeBindings: ["isMultiple:multiple"],
-  collection: A(),
+  collection: null,
   optionValuePath: "content.id",
   optionLabelPath: "content.name",
   modelValue: null,
@@ -20,7 +20,7 @@ export default Component.extend(InputDefaultsMixin, {
         this.get("collection").then((result) => {
           this.set("resolvedCollection", result);
         });
-        return A();
+        return [];
       } else {
         return this.get("collection");
       }
@@ -43,7 +43,7 @@ export default Component.extend(InputDefaultsMixin, {
   },
 
   _setSelection: function(indicies) {
-    var selection = this.get("resolvedCollection").objectsAt(indicies);
+    var selection = A(this.get("resolvedCollection")).objectsAt(indicies);
     var valuePath = this.get("optionValuePath");
     var newValues = A(selection.map(function(item) {
       if (typeof item === "string" || valuePath === "content") {
@@ -54,7 +54,7 @@ export default Component.extend(InputDefaultsMixin, {
     }));
 
     if (isArray(this.get("value"))) {
-      this.get("value").replace(0, this.get("value.length"), newValues);
+      A(this.get("value")).replace(0, this.get("value.length"), newValues);
     } else {
       this.set("value", newValues.get("firstObject"));
     }

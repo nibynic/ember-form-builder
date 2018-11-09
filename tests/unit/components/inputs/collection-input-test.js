@@ -9,7 +9,7 @@ moduleForComponent("inputs/collection-input", "Collection Input component", {
 
 test("it renders collection of strings as options", function(assert) {
   var component = this.subject({
-    collection: A(["Cooking", "Sports", "Politics"]),
+    collection: ["Cooking", "Sports", "Politics"],
     modelValue: "Cooking"
   });
 
@@ -27,13 +27,13 @@ test("it renders collection of strings as options", function(assert) {
 
 test("it renders collection objects as options", function(assert) {
   var component = this.subject({
-    collection: A([{
+    collection: [{
       id: 1, name: "Cooking", slug: "cooking", headline: "For kitchen geeks!"
     }, {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
     }, {
       id: 3, name: "Politics", slug: "politics", headline: "For nerds"
-    }]),
+    }],
     modelValue: {
       id: 2, name: "Sports", slug: "sports", headline: "For couch potatos"
     }
@@ -64,13 +64,13 @@ test("it renders collection objects as options", function(assert) {
 });
 
 test("it selects given values", function(assert) {
-  var collection = A([{
+  var collection = [{
     id: 1, name: "Cooking"
   }, {
     id: 2, name: "Sports"
   }, {
     id: 3, name: "Politics"
-  }]);
+  }];
   var component = this.subject({
     collection: collection,
     modelValue: collection[1],
@@ -86,7 +86,7 @@ test("it selects given values", function(assert) {
 
   run(function() {
     component.set("isMultiple", true);
-    component.set("modelValue", A([collection[1], collection[2]]));
+    component.set("modelValue", [collection[1], collection[2]]);
   });
 
   assert.equal(component.$("option:selected").length, 2, 234);
@@ -111,17 +111,17 @@ test("it selects given values", function(assert) {
 });
 
 test("it updates value after changing", function(assert) {
-  var collection = A([{
+  var collection = [{
     id: 1, name: "Cooking"
   }, {
     id: 2, name: "Sports"
   }, {
     id: 3, name: "Politics"
-  }]);
+  }];
   var component = this.subject({
     collection: collection,
     isMultiple: true,
-    modelValue: A([collection[0], collection[1]]),
+    modelValue: [collection[0], collection[1]],
     optionValuePath: "content"
   });
 
@@ -151,7 +151,7 @@ test("it updates value after changing", function(assert) {
 
 test("it sets the value after being displayed", function(assert) {
   var component = this.subject({
-    collection: A(["Cooking", "Sports", "Politics"]),
+    collection: ["Cooking", "Sports", "Politics"],
     modelValue: null
   });
 
