@@ -8,7 +8,6 @@ import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
   attributeBindings: ["isMultiple:multiple"],
-  isMultiple: false,
   collection: A(),
   optionValuePath: "content.id",
   optionLabelPath: "content.name",
@@ -59,5 +58,9 @@ export default Component.extend(InputDefaultsMixin, {
     } else {
       this.set("value", newValues.get("firstObject"));
     }
-  }
+  },
+
+  isMultiple: computed('modelValue', function() {
+    return isArray(this.get('modelValue'));
+  })
 });

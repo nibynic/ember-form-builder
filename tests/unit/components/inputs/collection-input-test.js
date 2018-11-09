@@ -163,3 +163,15 @@ test("it sets the value after being displayed", function(assert) {
 
   assert.equal(component.get("value"), "Cooking");
 });
+
+test("it detects multiple mode", function(assert) {
+  var component = this.subject({
+    modelValue: null
+  });
+
+  assert.equal(component.get('isMultiple'), false);
+
+  component.set('modelValue', []);
+
+  assert.equal(component.get('isMultiple'), true);
+});
