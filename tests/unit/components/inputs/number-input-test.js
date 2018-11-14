@@ -10,6 +10,12 @@ test("it aliases modelValue as value", function(assert) {
   assert.equal(component.get("value"), 113);
   component.set("modelValue", 312);
   assert.equal(component.get("value"),  312);
+
+  component.set('value', '333');
+  assert.strictEqual(component.get('modelValue'), 333, 'should normalize values to integer');
+
+  component.set('value', '');
+  assert.strictEqual(component.get('modelValue'), undefined, 'empty values should become undefined');
 });
 
 test("it uses numericality validations", function(assert) {

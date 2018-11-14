@@ -6,6 +6,18 @@ import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 export default TextField.extend(InputDefaultsMixin, {
   type: "number",
 
+  value: computed('modelValue', {
+    get() {
+      return this.get('modelValue');
+    },
+    set(k, v) {
+      v = parseFloat(v);
+      v = isNaN(v) ? undefined : v;
+      this.set('modelValue', v);
+      return v;
+    }
+  }),
+
   step: computed("validations.numericality.onlyInteger", {
     get() {
       return this.get("validations.numericality.onlyInteger") ? 1 : 0.01;
