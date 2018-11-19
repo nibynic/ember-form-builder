@@ -4,12 +4,13 @@ import Component from '@ember/component';
 
 export default Component.extend({
   tagName: "option",
-  attributeBindings: ["value", "isSelected:selected"],
+  attributeBindings: ["valueAttr:value", "isSelected:selected"],
 
   init: function() {
     this._super();
     this.labelPathDidChange();
     this.valuePathDidChange();
+    this.valueAttrPathDidChange();
   },
 
   labelPathDidChange: observer("labelPath", function() {
@@ -53,5 +54,18 @@ export default Component.extend({
       }
     }));
     this.notifyPropertyChange("isSelected");
+  }),
+
+  valueAttrPathDidChange: observer("valueAttrPath", function() {
+    var valueAttrPath = this.get("valueAttrPath");
+
+    defineProperty(this, "valueAttr", computed("content", valueAttrPath, function() {
+      if (typeof this.get("content") === "string") {
+        return this.get("content");
+      } else {
+        return this.get(valueAttrPath);
+      }
+    }));
+    this.notifyPropertyChange("valueAttr");
   })
 });

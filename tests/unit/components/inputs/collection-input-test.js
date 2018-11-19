@@ -58,9 +58,9 @@ test("it renders collection objects as options", function(assert) {
   assert.equal(component.$("option:nth-child(1)").text().replace(/\s$/, ""), "For kitchen geeks!");
   assert.equal(component.$("option:nth-child(2)").text().replace(/\s$/, ""), "For couch potatos");
   assert.equal(component.$("option:nth-child(3)").text().replace(/\s$/, ""), "For nerds");
-  assert.equal(component.$("option:nth-child(1)").attr("value"), "cooking");
-  assert.equal(component.$("option:nth-child(2)").attr("value"), "sports");
-  assert.equal(component.$("option:nth-child(3)").attr("value"), "politics");
+  assert.equal(component.$("option:nth-child(1)").attr("value"), "1");
+  assert.equal(component.$("option:nth-child(2)").attr("value"), "2");
+  assert.equal(component.$("option:nth-child(3)").attr("value"), "3");
 });
 
 test("it selects given values", function(assert) {
@@ -73,25 +73,26 @@ test("it selects given values", function(assert) {
   }];
   var component = this.subject({
     collection: collection,
-    modelValue: collection[1],
-    optionValuePath: "content"
+    modelValue: collection[0],
+    optionValuePath: "content",
+    optionValueAttrPath: 'content.name'
   });
 
   run(function() {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("option:selected").length, 1, 123123);
-  assert.ok(component.$("option:nth-child(2)").is(":selected"), "1");
+  assert.equal(component.$("option:selected").length, 1);
+  assert.ok(component.$("option[value=Cooking]").is(":selected"), "1");
 
   run(function() {
     component.set("isMultiple", true);
     component.set("modelValue", [collection[1], collection[2]]);
   });
 
-  assert.equal(component.$("option:selected").length, 2, 234);
-  assert.ok(component.$("option:nth-child(2)").is(":selected"), "2");
-  assert.ok(component.$("option:nth-child(3)").is(":selected"), "3");
+  assert.equal(component.$("option:selected").length, 2);
+  assert.ok(component.$("option[value=Sports]").is(":selected"), "2");
+  assert.ok(component.$("option[value=Politics]").is(":selected"), "3");
 
   run(function() {
     component.set("optionValuePath", "content.id");
@@ -99,15 +100,15 @@ test("it selects given values", function(assert) {
   });
 
   assert.equal(component.$("option:selected").length, 1, 123);
-  assert.equal(component.$("option:selected").attr("value"), 2);
+  assert.equal(component.$("option:selected").attr("value"), 'Sports');
 
   run(function() {
     component.get("modelValue").pushObject(1);
   });
 
   assert.equal(component.$("option:selected").length, 2, 123);
-  assert.ok(component.$("option:nth-child(1)").is(":selected"), "2");
-  assert.ok(component.$("option:nth-child(2)").is(":selected"), "3");
+  assert.ok(component.$("option[value=Cooking]").is(":selected"), "1");
+  assert.ok(component.$("option[value=Sports]").is(":selected"), "2");
 });
 
 test("it updates value after changing", function(assert) {

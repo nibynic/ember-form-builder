@@ -57,7 +57,7 @@ test("it renders collection objects as inputs", function(assert) {
   run(function() {
     component.appendTo("#ember-testing");
   });
-
+  
   assert.equal(component.$("label:has(input[type=radio][value=1])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Cooking");
   assert.equal(component.$("label:has(input[type=radio][value=2])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Sports");
   assert.equal(component.$("label:has(input[type=radio][value=3])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Politics");
@@ -67,7 +67,7 @@ test("it renders collection objects as inputs", function(assert) {
 
   run(function() {
     component.set("optionLabelPath", "content.headline");
-    component.set("optionValuePath", "content.slug");
+    component.set("optionValueAttrPath", "content.slug");
   });
 
   assert.equal(component.$("label:has(input[type=radio][value=cooking])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "For kitchen geeks!");

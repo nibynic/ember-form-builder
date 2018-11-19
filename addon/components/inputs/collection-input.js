@@ -1,7 +1,6 @@
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import { A, isArray } from '@ember/array';
-import { computed } from '@ember/object';
 import Component from '@ember/component';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 
@@ -9,7 +8,8 @@ export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
   attributeBindings: ["isMultiple:multiple"],
   collection: null,
-  optionValuePath: "content.id",
+  optionValuePath: "content",
+  optionValueAttrPath: "content.id",
   optionLabelPath: "content.name",
   modelValue: null,
   optionComponentName: "inputs/select-option",
