@@ -58,9 +58,9 @@ test("it renders collection objects as options", function(assert) {
   assert.equal(component.$("option:nth-child(1)").text().replace(/\s$/, ""), "For kitchen geeks!");
   assert.equal(component.$("option:nth-child(2)").text().replace(/\s$/, ""), "For couch potatos");
   assert.equal(component.$("option:nth-child(3)").text().replace(/\s$/, ""), "For nerds");
-  assert.equal(component.$("option:nth-child(1)").attr("value"), "1");
-  assert.equal(component.$("option:nth-child(2)").attr("value"), "2");
-  assert.equal(component.$("option:nth-child(3)").attr("value"), "3");
+  assert.equal(component.$("option:nth-child(1)").attr("value"), "cooking");
+  assert.equal(component.$("option:nth-child(2)").attr("value"), "sports");
+  assert.equal(component.$("option:nth-child(3)").attr("value"), "politics");
 });
 
 test("it selects given values", function(assert) {
@@ -75,7 +75,7 @@ test("it selects given values", function(assert) {
     collection: collection,
     modelValue: collection[0],
     optionValuePath: "content",
-    optionValueAttrPath: 'content.name'
+    optionStringValuePath: 'value.name'
   });
 
   run(function() {
@@ -96,19 +96,20 @@ test("it selects given values", function(assert) {
 
   run(function() {
     component.set("optionValuePath", "content.id");
+    component.set("optionStringValuePath", "value");
     component.set("modelValue", A([2]));
   });
 
   assert.equal(component.$("option:selected").length, 1, 123);
-  assert.equal(component.$("option:selected").attr("value"), 'Sports');
+  assert.equal(component.$("option:selected").attr("value"), "2");
 
   run(function() {
     component.get("modelValue").pushObject(1);
   });
 
   assert.equal(component.$("option:selected").length, 2, 123);
-  assert.ok(component.$("option[value=Cooking]").is(":selected"), "1");
-  assert.ok(component.$("option[value=Sports]").is(":selected"), "2");
+  assert.ok(component.$("option[value=1]").is(":selected"), "1");
+  assert.ok(component.$("option[value=2]").is(":selected"), "2");
 });
 
 test("it updates value after changing", function(assert) {
@@ -140,6 +141,7 @@ test("it updates value after changing", function(assert) {
 
   run(function() {
     component.set("optionValuePath", "content.id");
+    component.set('optionStringValuePath', 'value');
   });
 
   component.$("option").prop("selected", false);

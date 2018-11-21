@@ -9,7 +9,7 @@ export default Component.extend(InputDefaultsMixin, {
   attributeBindings: ["isMultiple:multiple"],
   collection: null,
   optionValuePath: "content",
-  optionValueAttrPath: "content.id",
+  optionStringValuePath: "value.id",
   optionLabelPath: "content.name",
   modelValue: null,
   optionComponentName: "inputs/select-option",
