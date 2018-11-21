@@ -118,7 +118,8 @@ test("it uses the classes from configuration", function(assert) {
   var component = this.subject({
     builder: formBuilder,
     as: type,
-    attr: attr
+    attr: attr,
+    fieldClass: 'additional-class'
   });
 
   run(function() {
@@ -128,6 +129,7 @@ test("it uses the classes from configuration", function(assert) {
   assert.ok(component.$().is(".input"), "Wrapper element has the configured wrapper class.");
   assert.ok(component.$().is(".string-input"), "Wrapper element has a type-based class.");
   assert.equal(component.$(".field").length, 1, "Field element has the configured class.");
+  assert.equal(component.$(".field.additional-class").length, 1, "Additional classes can be passed.");
   assert.ok(component.$("input").is(".input-control"), "Wrapper element has a type-based class.");
 });
 

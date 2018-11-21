@@ -14,6 +14,15 @@ import guessType from "ember-form-builder/utilities/guess-type";
 import { dasherize } from '@ember/string';
 import { once } from '@ember/runloop';
 
+function mergedClass(name) {
+  return computed(`${name}Class`, function() {
+    return [
+      this.get(`configuration.${name}Class`),
+      this.get(`${name}Class`)
+    ].join(' ');
+  })
+}
+
 const extension = {
   translationService: service("formBuilderTranslations"),
   // TODO: assertions
@@ -128,15 +137,15 @@ const extension = {
     return proxy;
   }),
 
-  wrapperClassName: computed(function() { return this.get("configuration.wrapperClass"); }),
+  wrapperClassName: mergedClass('wrapper'),
   wrapperTypeClassName: computed("type", function() {
     return this.get("type") + "-input";
   }),
-  unitClassName: computed(function() { return this.get("configuration.unitClass"); }),
-  errorsClassName: computed(function() { return this.get("configuration.errorsClass"); }),
-  fieldClassName: computed(function() { return this.get("configuration.fieldClass"); }),
-  inputClassName: computed(function() { return this.get("configuration.inputClass"); }),
-  hintClassName: computed(function() { return this.get("configuration.hintClass"); }),
+  unitClassName:    mergedClass('unit'),
+  errorsClassName:  mergedClass('errors'),
+  fieldClassName:   mergedClass('field'),
+  inputClassName:   mergedClass('input'),
+  hintClassName:    mergedClass('hint'),
   attributeClassName: computed('attr', function() {
     let attr = this.get('attr');
     return attr ? `${dasherize(attr)}-attr-input` : null;
