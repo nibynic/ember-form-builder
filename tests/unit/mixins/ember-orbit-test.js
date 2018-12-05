@@ -15,7 +15,10 @@ module('Unit | Mixin | EmberOrbitMixin', function() {
   });
 
   test('detects EmberOrbit model', function(assert) {
-    var validModel = EmberObject.extend({}).reopenClass({attributes: {}}).create();
+    var validModel = EmberObject.extend({}).reopenClass({
+      attributes: {},
+      relationships: {}
+    }).create();
     var invalidModel = EmberObject.create();
     var builder = FormBuilder.create();
 

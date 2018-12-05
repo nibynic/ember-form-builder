@@ -5,6 +5,6 @@ export default Mixin.create({
   modelName: reads('model.type'),
 
   isModel(object) {
-    return object && object.constructor.hasOwnProperty('attributes');
+    return object && object.constructor.attributes && object.constructor.relationships;
   }
 });
