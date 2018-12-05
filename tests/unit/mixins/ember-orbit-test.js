@@ -7,7 +7,7 @@ const FormBuilder = FormBuilderBase.extend(EmberOrbitMixin);
 
 module('Unit | Mixin | EmberOrbitMixin', function() {
   test('detects model name', function(assert) {
-    var model = EmberObject.extend({}).reopenClass({typeKey: 'fake-model'}).create();
+    var model = EmberObject.extend({type: 'fake-model'}).create();
     var builder = FormBuilder.create({
       model: model
     });
@@ -15,7 +15,7 @@ module('Unit | Mixin | EmberOrbitMixin', function() {
   });
 
   test('detects EmberOrbit model', function(assert) {
-    var validModel = EmberObject.extend({}).reopenClass({typeKey: "fake-model"}).create();
+    var validModel = EmberObject.extend({}).reopenClass({attributes: {}}).create();
     var invalidModel = EmberObject.create();
     var builder = FormBuilder.create();
 
