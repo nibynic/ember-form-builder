@@ -15,6 +15,34 @@ module('Unit | Mixin | EmberValidationsMixin', function() {
     assert.equal(builder.errorsPathFor('firstName'), 'object.errors.firstName');
   });
 
+  test("provides validations path for a given attribute", function(assert) {
+    var model = EmberObject.create();
+    var builder = FormBuilder.create({
+      model: model
+    });
+    assert.equal(builder.validationsPathFor('firstName'), 'object.validations.firstName');
+  });
+
+  test("normalizes validations", function(assert) {
+    var model = EmberObject.create();
+    var builder = FormBuilder.create({
+      model: model
+    });
+    assert.deepEqual(builder.normalizeValidations({
+      presence: true,
+      numericality: {
+        greaterThan: 1,
+        greaterThanOrEqualTo: 2,
+        lessThan: 3,
+        lessThanOrEqualTo: 4,
+        onlyInteger: true
+      }
+    }), {
+      required: true,
+      number: { gt: 1, gte: 2, lt: 3, lte: 4, integer: true }
+    });
+  });
+
   test("provides normalized validate()", async function(assert) {
     var object = EmberObject.create({
       validate: reject

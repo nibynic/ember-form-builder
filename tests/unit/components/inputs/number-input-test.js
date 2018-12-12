@@ -22,7 +22,7 @@ test("it uses numericality validations", function(assert) {
   var component = this.subject({
     modelValue: 113,
     validations: {
-      numericality: {greaterThan: 5, lessThan: 120}
+      number: {gt: 5, lt: 120}
     }
   });
 
@@ -31,7 +31,7 @@ test("it uses numericality validations", function(assert) {
   assert.equal(component.get("step"), 0.01);
 
   component.set("validations", {
-    numericality: {greaterThanOrEqualTo: 5, lessThanOrEqualTo: 120, onlyInteger: true}
+    number: {gte: 5, lte: 120, integer: true}
   });
 
   assert.equal(component.get("min"), 5);

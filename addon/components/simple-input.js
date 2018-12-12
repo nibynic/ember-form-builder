@@ -77,10 +77,7 @@ const extension = {
     return this.get("object.validations." + this.get("attr"));
   }),
 
-  isRequired: computed("validations.presence", function() {
-    var presenceValidator = this.get("validations.presence");
-    return presenceValidator && !presenceValidator.soft;
-  }),
+  isRequired: reads("validations.required"),
 
   canValidate: computed("hasFocusedOut", "builder.isValid", function() {
     return this.get("hasFocusedOut") || !this.get("builder.isValid");
@@ -101,6 +98,13 @@ const extension = {
   objectOrAttrChanged: observer("object", "attr", function() {
     var errorsAttribute = this.get('builder').errorsPathFor(this.get('attr'));
     defineProperty(this, "errors", reads(errorsAttribute));
+
+    var validationsAttribute = this.get('builder').validationsPathFor(this.get('attr'));
+    defineProperty(this, "validations", computed(validationsAttribute, function() {
+      return this.get('builder').normalizeValidations(
+        this.get(validationsAttribute)
+      );
+    }));
 
     var valueAttribute = "object." + this.get("attr");
     defineProperty(this, "value", computed(valueAttribute, {

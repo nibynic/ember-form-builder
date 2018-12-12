@@ -83,6 +83,8 @@ export default EmberObject.extend({
 
   // defined in validations mixin
   errorsPathFor() {},
+  validationsPathFor() {},
+  normalizeValidations() {},
   validateObject() {},
 
   // defined in data mixin

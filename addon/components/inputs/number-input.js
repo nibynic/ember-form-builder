@@ -18,30 +18,30 @@ export default TextField.extend(InputDefaultsMixin, {
     }
   }),
 
-  step: computed("validations.numericality.onlyInteger", {
+  step: computed("validations.number.integer", {
     get() {
-      return this.get("validations.numericality.onlyInteger") ? 1 : 0.01;
+      return this.get("validations.number.integer") ? 1 : 0.01;
     }
   }),
 
-  min: computed("validations.numericality.{greaterThan,greaterThanOrEqualTo}", "step", {
+  min: computed("validations.number.{gt,gte}", "step", {
     get() {
-      var n = this.get("validations.numericality.greaterThan");
+      var n = this.get("validations.number.gt");
       if (isPresent(n)) {
         return n * 1 + this.get("step");
       } else {
-        return this.get("validations.numericality.greaterThanOrEqualTo");
+        return this.get("validations.number.gte");
       }
     }
   }),
 
-  max: computed("validations.numericality.{lessThan,lessThanOrEqualTo}", "step", {
+  max: computed("validations.number.{lt,lte}", "step", {
     get() {
-      var n = this.get("validations.numericality.lessThan");
+      var n = this.get("validations.number.lt");
       if (isPresent(n)) {
         return n * 1 - this.get("step");
       } else {
-        return this.get("validations.numericality.lessThanOrEqualTo");
+        return this.get("validations.number.lte");
       }
     }
   }),
