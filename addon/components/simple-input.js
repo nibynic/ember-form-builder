@@ -102,14 +102,14 @@ const extension = {
     var errorsAttribute = this.get('builder').errorsPathFor(this.get('attr'));
     defineProperty(this, "errors", reads(errorsAttribute));
 
-    var stringValueibute = "object." + this.get("attr");
-    defineProperty(this, "value", computed(stringValueibute, {
+    var valueAttribute = "object." + this.get("attr");
+    defineProperty(this, "value", computed(valueAttribute, {
       get: function() {
-        return this.get(stringValueibute);
+        return this.get(valueAttribute);
       },
 
       set: function(key, value) {
-        this.set(stringValueibute, value);
+        this.set(valueAttribute, value);
         return value;
       }
     }));
