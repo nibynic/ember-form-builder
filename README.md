@@ -112,12 +112,12 @@ Ember Form Builder supports these data addons:
 
 You can set your choice in the [configuration](#configuration). None of those libraries is required by Ember Form Builder.
 
-### Translations with Ember-I18n
+### Translations
 
-You can easily cusomize labels and other texts by providing values through attributes in your templates but if your app is or might become international you might wish to integrate the forms with an i18n library.
-Ember Form Builder only supports Ember-I18n at the moment, however other solutions might be integrated in the future.
+You can easily cusomize labels and other texts by providing values through attributes in your templates but if your app is or might become international you might wish to integrate the forms with an internationalization library.
+Ember Form Builder supports `ember-intl` and `ember-i18n` at the moment, however other solutions might be integrated in the future.
 
-Ember Form Builder automatically detects Ember-I18n and tries to guess the translation keys.
+Ember Form Builder automatically detects internationalization addon and tries to guess the translation keys.
 
 use case | label | hint | submit | required
 --- | --- | --- | --- | ---
@@ -126,7 +126,7 @@ Custom translation key | `labelTranslation="custom.label.key"` | `hintTranslatio
 Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.actions.submit` | `not possible`
 Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | `not possible`
 Default | humanizes attribute name | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
-Without `ember-i18n` | humanizes attribute name | empty | "Save" | "Required"
+Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | "Save" | "Required"
 
 ## Configuration
 
