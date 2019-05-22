@@ -7,7 +7,7 @@ export default CollectionInput.extend({
 
   change: function() {
     var indices = [];
-    this.$("input").each( function(i, input) {
+    this.element.querySelectorAll('input').forEach(function(input, i) {
       if(input.checked) {
         indices.push(i);
       }

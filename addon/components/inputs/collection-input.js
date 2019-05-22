@@ -37,9 +37,8 @@ export default Component.extend(InputDefaultsMixin, {
   },
 
   change: function() {
-    this._setSelection(this.$("option:selected").map(function() {
-      return this.index;
-    }).toArray());
+    let selected = Array.prototype.slice.call(this.element.querySelectorAll('option:checked'));
+    this._setSelection(selected.map((el) => el.index));
   },
 
   _setSelection: function(indicies) {
