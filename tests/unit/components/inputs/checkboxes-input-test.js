@@ -19,24 +19,28 @@ test("it renders collection of strings as radio buttons or checkboxes", function
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("label:has(input[type=radio][value=Cooking])").text().replace(/\s/g, ""), "Cooking");
-  assert.equal(component.$("label:has(input[type=radio][value=Sports])").text().replace(/\s/g, ""), "Sports");
-  assert.equal(component.$("label:has(input[type=radio][value=Politics])").text().replace(/\s/g, ""), "Politics");
-  assert.equal(component.$("input[type=radio][value=Cooking]").attr("value"), "Cooking");
-  assert.equal(component.$("input[type=radio][value=Sports]").attr("value"), "Sports");
-  assert.equal(component.$("input[type=radio][value=Politics]").attr("value"), "Politics");
+  let options = component.element.querySelectorAll('label');
+
+  assert.dom(options[0]).hasText('Cooking');
+  assert.dom(options[1]).hasText('Sports');
+  assert.dom(options[2]).hasText('Politics');
+  assert.dom(options[0].querySelector('input')).hasAttribute('value', 'Cooking');
+  assert.dom(options[1].querySelector('input')).hasAttribute('value', 'Sports');
+  assert.dom(options[2].querySelector('input')).hasAttribute('value', 'Politics');
 
   run(function() {
     component.set("modelValue", ["Cooking"]);
     component.set("isMultiple", true);
   });
 
-  assert.equal(component.$("label:has(input[type=checkbox][value=Cooking])").text().replace(/\s/g, ""), "Cooking");
-  assert.equal(component.$("label:has(input[type=checkbox][value=Sports])").text().replace(/\s/g, ""), "Sports");
-  assert.equal(component.$("label:has(input[type=checkbox][value=Politics])").text().replace(/\s/g, ""), "Politics");
-  assert.equal(component.$("input[type=checkbox][value=Cooking]").attr("value"), "Cooking");
-  assert.equal(component.$("input[type=checkbox][value=Sports]").attr("value"), "Sports");
-  assert.equal(component.$("input[type=checkbox][value=Politics]").attr("value"), "Politics");
+  options = component.element.querySelectorAll('label');
+
+  assert.dom(options[0]).hasText('Cooking');
+  assert.dom(options[1]).hasText('Sports');
+  assert.dom(options[2]).hasText('Politics');
+  assert.dom(options[0].querySelector('input')).hasAttribute('value', 'Cooking');
+  assert.dom(options[1].querySelector('input')).hasAttribute('value', 'Sports');
+  assert.dom(options[2].querySelector('input')).hasAttribute('value', 'Politics');
 
 });
 
@@ -58,24 +62,28 @@ test("it renders collection objects as inputs", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("label:has(input[type=radio][value=1])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Cooking");
-  assert.equal(component.$("label:has(input[type=radio][value=2])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Sports");
-  assert.equal(component.$("label:has(input[type=radio][value=3])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "Politics");
-  assert.equal(component.$("input[type=radio][value=1]").attr("value"), "1");
-  assert.equal(component.$("input[type=radio][value=2]").attr("value"), "2");
-  assert.equal(component.$("input[type=radio][value=3]").attr("value"), "3");
+  let options = component.element.querySelectorAll('label');
+
+  assert.dom(options[0]).hasText('Cooking');
+  assert.dom(options[1]).hasText('Sports');
+  assert.dom(options[2]).hasText('Politics');
+  assert.dom(options[0].querySelector('input')).hasAttribute('value', '1');
+  assert.dom(options[1].querySelector('input')).hasAttribute('value', '2');
+  assert.dom(options[2].querySelector('input')).hasAttribute('value', '3');
 
   run(function() {
     component.set("optionLabelPath", "content.headline");
     component.set("optionStringValuePath", "value.slug");
   });
 
-  assert.equal(component.$("label:has(input[type=radio][value=cooking])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "For kitchen geeks!");
-  assert.equal(component.$("label:has(input[type=radio][value=sports])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "For couch potatos");
-  assert.equal(component.$("label:has(input[type=radio][value=politics])").text().replace(/\s+$/, "").replace(/^\s+/, ""), "For nerds");
-  assert.equal(component.$("input[type=radio][value=cooking]").attr("value"), "cooking");
-  assert.equal(component.$("input[type=radio][value=sports]").attr("value"), "sports");
-  assert.equal(component.$("input[type=radio][value=politics]").attr("value"), "politics");
+  options = component.element.querySelectorAll('label');
+
+  assert.dom(options[0]).hasText('For kitchen geeks!');
+  assert.dom(options[1]).hasText('For couch potatos');
+  assert.dom(options[2]).hasText('For nerds');
+  assert.dom(options[0].querySelector('input')).hasAttribute('value', 'cooking');
+  assert.dom(options[1].querySelector('input')).hasAttribute('value', 'sports');
+  assert.dom(options[2].querySelector('input')).hasAttribute('value', 'politics');
 });
 
 test("it selects given values", function(assert) {
@@ -96,23 +104,23 @@ test("it selects given values", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input[type=radio]:checked").length, 1);
-  assert.ok(component.$("div:nth-child(2) input[type=radio]").is(":checked"));
+  assert.dom('input[type=radio]:checked').exists({ count: 1 });
+  assert.dom('input[type=radio][value="2"]').isChecked();
 
   run(function() {
     component.set("modelValue", collection[2]);
   });
 
-  assert.equal(component.$("input[type=radio]:checked").length, 1);
-  assert.ok(component.$("div:nth-child(3) input[type=radio]").is(":checked"));
+  assert.dom('input[type=radio]:checked').exists({ count: 1 });
+  assert.dom('input[type=radio][value="3"]').isChecked();
 
   run(function() {
     component.set("modelValue", A([collection[2]]));
     component.set("isMultiple", true);
   });
 
-  assert.equal(component.$("input[type=checkbox]:checked").length, 1);
-  assert.ok(component.$("div:nth-child(3) input[type=checkbox]").is(":checked"));
+  assert.dom('input[type=checkbox]:checked').exists({ count: 1 });
+  assert.dom('input[type=checkbox][value="3"]').isChecked();
 
 });
 
@@ -135,8 +143,9 @@ test("it updates value after changing", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  component.$("input").prop("checked", false);
-  component.$("input").eq(2).prop("checked", true).trigger("change");
+  component.element.querySelector('input[value="1"]').checked = false;
+  component.element.querySelector('input[value="3"]').checked = true;
+  component.element.querySelector('input[value="3"]').dispatchEvent(new Event('change', { bubbles: true }));
 
   assert.equal(component.get("value.id"), 3);
   assert.equal(component.get("value.name"), "Politics");
@@ -146,16 +155,17 @@ test("it updates value after changing", function(assert) {
     component.set("isMultiple", true);
   });
 
-  component.$("input").prop("checked", false);
-  component.$("input").eq(0).prop("checked", true).trigger("change");
-  component.$("input").eq(2).prop("checked", true).trigger("change");
+  component.element.querySelector('input[value="1"]').checked = true;
+  component.element.querySelector('input[value="3"]').checked = true;
+  component.element.querySelector('input[value="3"]').dispatchEvent(new Event('change', { bubbles: true }));
 
   assert.equal(component.get("value.firstObject.id"), 1);
   assert.equal(component.get("value.firstObject.name"), "Cooking");
   assert.equal(component.get("value.lastObject.id"), 3);
   assert.equal(component.get("value.lastObject.name"), "Politics");
 
-  component.$("div:nth-child(1) input").prop("checked", false).trigger("change");
+  component.element.querySelector('input[value="1"]').checked = false;
+  component.element.querySelector('input[value="1"]').dispatchEvent(new Event('change', { bubbles: true }));
 
   assert.equal(component.get("value.firstObject.id"), 3);
   assert.equal(component.get("value.firstObject.name"), "Politics");

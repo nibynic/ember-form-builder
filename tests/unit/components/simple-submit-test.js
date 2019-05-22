@@ -35,9 +35,9 @@ test("it renders a submit button", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$().prop("tagName"), "BUTTON");
-  assert.equal(component.$().prop("type"), "submit");
-  assert.equal(component.$().text().replace(/\s/, ""), "Save");
+  assert.dom(component.element).matchesSelector('button');
+  assert.dom(component.element).hasAttribute('type', 'submit');
+  assert.dom(component.element).hasText('Save');
 });
 
 test("it translates some attributes", function(assert) {
@@ -101,12 +101,12 @@ test("it is disabled when the form builder is loading", function(assert) {
   });
 
   assert.equal(component.get("isDisabled"), false, "is not disabled");
-  assert.equal(component.$().prop("disabled"), false, "has no disabled attribute");
+  assert.dom(component.element).isNotDisabled("has no disabled attribute");
 
   run(function() {
     formBuilder.set("isLoading", true);
   });
 
   assert.equal(component.get("isDisabled"), true, "is disabled");
-  assert.equal(component.$().prop("disabled"), true, "has disabled attribute");
+  assert.dom(component.element).isDisabled("has disabled attribute");
 });

@@ -56,7 +56,7 @@ test("it inserts a form tag into DOM", function(assert) {
   var component = this.subject();
   this.render();
 
-  assert.ok(component.$().is("form"));
+  assert.dom(component.element).matchesSelector('form');
 });
 
 test("it handles submit", function(assert) {
@@ -94,14 +94,14 @@ test("it handles submit", function(assert) {
 
   this.render();
 
-  component.$().trigger("submit");
+  component.element.dispatchEvent(new Event('submit', { bubbles: true }));
 
   assert.ok(validationPerformed, "Validation was performed");
   assert.ok(submitFailedActionSent, "Submit failed action was sent");
   assert.ok(!component.get("formBuilder.isValid"), "Form was invalid");
 
   isValid = true;
-  component.$().trigger("submit");
+  component.element.dispatchEvent(new Event('submit', { bubbles: true }));
 
   assert.ok(submitActionSent, "Submit action was sent");
   assert.ok(component.get("formBuilder.isValid"), "Form was valid");

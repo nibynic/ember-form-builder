@@ -59,13 +59,13 @@ test("it reflects value updates", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input").val(), "Testing testing 123");
+  assert.dom('input').hasValue("Testing testing 123");
 
   run(function() {
     model.set("title", "Another test!");
   });
 
-  assert.equal(component.$("input").val(), "Another test!");
+  assert.dom('input').hasValue("Another test!");
 });
 
 test("it proxies auxiliary attributes", function(assert) {
@@ -81,19 +81,19 @@ test("it proxies auxiliary attributes", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("option").length, 3, "Initial options are correctly displayed");
+  assert.dom('option').exists({ count: 3 }, "Initial options are correctly displayed");
 
   run(function() {
     component.get("collection").pushObject("d");
   });
 
-  assert.equal(component.$("option").length, 4, "Updated options are correctly displayed");
+  assert.dom('option').exists({ count: 4 }, "Updated options are correctly displayed");
 
   run(function() {
     component.set("collection", A(["e"]));
   });
 
-  assert.equal(component.$("option").length, 1, "Replaced options are correctly displayed");
+  assert.dom('option').exists({ count: 1 }, "Replaced options are correctly displayed");
 });
 
 test("it renders input name and class", function(assert) {
@@ -109,9 +109,9 @@ test("it renders input name and class", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input").attr("name"), "article[postTitle]");
-  assert.ok(component.element.className.match('post-title-attr-input'), 'should set post-title-attr-input class for .input element');
-  assert.ok(component.element.className.match('blog-post-model-input'), 'should set blog-post-model-input class for .input element');
+  assert.dom('input').hasAttribute('name', 'article[postTitle]');
+  assert.dom(component.element).hasClass('post-title-attr-input', 'should set post-title-attr-input class for .input element');
+  assert.dom(component.element).hasClass('post-title-attr-input', 'should set blog-post-model-input class for .input element');
 });
 
 test("it uses the classes from configuration", function(assert) {
@@ -126,11 +126,11 @@ test("it uses the classes from configuration", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.ok(component.$().is(".input"), "Wrapper element has the configured wrapper class.");
-  assert.ok(component.$().is(".string-input"), "Wrapper element has a type-based class.");
-  assert.equal(component.$(".field").length, 1, "Field element has the configured class.");
-  assert.equal(component.$(".field.additional-class").length, 1, "Additional classes can be passed.");
-  assert.ok(component.$("input").is(".input-control"), "Wrapper element has a type-based class.");
+  assert.dom(component.element).hasClass('input', "Wrapper element has the configured wrapper class.");
+  assert.dom(component.element).hasClass('string-input', "Wrapper element has a type-based class.");
+  assert.dom('.field').exists({ count: 1}, "Field element has the configured class.");
+  assert.dom('.field.additional-class').exists({ count: 1}, "Additional classes can be passed.");
+  assert.dom('input').hasClass('input-control', "Wrapper element has a type-based class.");
 });
 
 test("it reflects error updates", function(assert) {
@@ -145,9 +145,9 @@ test("it reflects error updates", function(assert) {
   });
 
   assert.ok(!component.get("hasErrors"), "Component has no errors.");
-  assert.ok(!component.$().is(".input-with-errors"), "Wrapper element has no error class assigned.");
-  assert.equal(component.$(".errors").text(), "", "No errors are displayed");
-  // assert.equal(component.$("input").val(), "Testing testing 123");
+  assert.dom(component.element).doesNotHaveClass('input-with-errors', "Wrapper element has no error class assigned.");
+  assert.dom('.errors').doesNotExist();
+  assert.dom('input').hasValue("Testing testing 123");
 
   run(function() {
     model.set("errorsMock", {
@@ -156,16 +156,16 @@ test("it reflects error updates", function(assert) {
   });
 
   assert.ok(!component.get("hasErrors"), "Component has no errors if wasn't focused out.");
-  assert.ok(!component.$().is(".input-with-errors"), "Wrapper element has no error class assigned if wasn't focused out.");
-  assert.equal(component.$(".errors").text(), "", "No errors are displayed if wasn't focused out");
+  assert.dom(component.element).doesNotHaveClass('input-with-errors', "Wrapper element has no error class assigned if wasn't focused out.");
+  assert.dom('.errors').doesNotExist("No errors are displayed if wasn't focused out");
 
   run(function() {
     formBuilder.set("isValid", false);
   });
 
   assert.ok(component.get("hasErrors"), "Component has errors when builder is invalid.");
-  assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned when builder is invalid.");
-  assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errors are displayed when builder is invalid");
+  assert.dom(component.element).hasClass('input-with-errors', "Wrapper element has an error class assigned when builder is invalid.");
+  assert.dom('.errors').hasText("can't be blank, is too short", "The errors are displayed when builder is invalid");
 
   run(function() {
     formBuilder.set("isValid", true);
@@ -178,8 +178,8 @@ test("it reflects error updates", function(assert) {
   });
 
   assert.ok(component.get("hasErrors"), "Component has errors.");
-  assert.ok(component.$().is(".input-with-errors"), "Wrapper element has an error class assigned.");
-  assert.equal(component.$(".errors").text(), "can't be blank, is too short", "The errors are displayed");
+  assert.dom(component.element).hasClass('input-with-errors', "Wrapper element has an error class assigned.");
+  assert.dom('.errors').hasText("can't be blank, is too short", "The errors are displayed");
 });
 
 test("it renders a hint when provided", function(assert) {
@@ -194,14 +194,14 @@ test("it renders a hint when provided", function(assert) {
   });
 
   assert.ok(!component.get("hasHint"));
-  assert.equal(component.$(".hint").length, 0);
+  assert.dom('.hint').doesNotExist();
 
   run(function() {
     component.set("hint", "This is a hint");
   });
 
   assert.ok(component.get("hasHint"));
-  assert.equal(component.$(".hint").text(), "This is a hint");
+  assert.dom('.hint').hasText("This is a hint");
 });
 
 test("it renders a placeholder when provided", function(assert) {
@@ -215,13 +215,13 @@ test("it renders a placeholder when provided", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("input").attr("placeholder"), undefined);
+  assert.dom('input').doesNotHaveAttribute('placeholder');
 
   run(function() {
     component.set("placeholder", "This is a placeholder");
   });
 
-  assert.equal(component.$("input").attr("placeholder"), "This is a placeholder");
+  assert.dom('input').hasAttribute('placeholder', "This is a placeholder");
 });
 
 test("it humanizes the property for use as label", function(assert) {
@@ -236,7 +236,7 @@ test("it humanizes the property for use as label", function(assert) {
   });
 
   assert.equal(component.get("label"), "Multi word attribute");
-  assert.equal(component.$("label").text().replace(/^\s/, "").replace(/\s$/, ""), "Multi word attribute", "The humanized label test is rendered");
+  assert.dom('label').hasText('Multi word attribute', "The humanized label test is rendered");
 });
 
 test("it uses the provided label if it's provided", function(assert) {
@@ -252,7 +252,7 @@ test("it uses the provided label if it's provided", function(assert) {
   });
 
   assert.equal(component.get("label"), "Custom title");
-  assert.equal(component.$("label").text().replace(/^\s/, "").replace(/\s$/, ""), "Custom title", "The custom label test is rendered");
+  assert.dom('label').hasText('Custom title', "The custom label test is rendered");
 });
 
 test("it renders assigns the input's id as the label's for", function(assert) {
@@ -266,7 +266,7 @@ test("it renders assigns the input's id as the label's for", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("label").attr("for"), component.$("input").attr("id"));
+  assert.dom('label').hasAttribute('for', component.element.querySelector('input').id);
 });
 
 test("it renders the label differently when it's inline", function(assert) {
@@ -280,14 +280,14 @@ test("it renders the label differently when it's inline", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$(".simple-input-label+.field").length, 1, "The label is rendered before the field");
+  assert.dom('.simple-input-label+.field').exists({ count: 1 }, "The label is rendered before the field");
 
   run(function() {
     component.set("inlineLabel", true);
   });
 
-  assert.equal(component.$("label>input").length, 1, "The label contains the input");
-  assert.ok(component.$().is('.inline-label'), 'The component gets inline-label class');
+  assert.dom('label>input').exists({ count: 1 }, "The label contains the input");
+  assert.dom(component.element).hasClass('inline-label', 'The component gets inline-label class');
 });
 
 test("it renders no label when it's set to false", function(assert) {
@@ -302,13 +302,13 @@ test("it renders no label when it's set to false", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("label").length, 0, "There is no label in regular layout");
+  assert.dom('label').doesNotExist("There is no label in regular layout");
 
   run(function() {
     component.set("inlineLabel", true);
   });
 
-  assert.equal(component.$("label").length, 0, "There is no label in inline layout");
+  assert.dom('label').doesNotExist("There is no label in inline layout");
 });
 
 test("it renders the required mark", function(assert) {
@@ -324,8 +324,8 @@ test("it renders the required mark", function(assert) {
   });
 
   assert.ok(component.get("isRequired"), "Is required");
-  assert.equal(component.$("label abbr").text(), "*");
-  assert.equal(component.$("label abbr").attr("title"), "Required");
+  assert.dom('label abbr').hasText('*');
+  assert.dom('label abbr').hasAttribute('title', "Required");
 });
 
 test("it renders unit when it's provided", function(assert) {
@@ -340,16 +340,16 @@ test("it renders unit when it's provided", function(assert) {
   });
 
   assert.ok(!component.get("hasUnit"), "Has no unit");
-  assert.ok(!component.$().is(".has-unit"), "Has no has-unit class");
-  assert.equal(component.$(".input-unit").length, 0, "Unit was not rendered");
+  assert.dom(component.element).doesNotHaveClass('has-unit', "Has no has-unit class");
+  assert.dom('.input-unit').doesNotExist("Unit was not rendered");
 
   run(function() {
     component.set("unit", "PLN");
   });
 
   assert.ok(component.get("hasUnit"), "Has unit");
-  assert.ok(component.$().is(".has-unit"), "Has has-unit class");
-  assert.equal(component.$(".input-unit").text(), "PLN");
+  assert.dom(component.element).hasClass('has-unit', "Has has-unit class");
+  assert.dom('.input-unit').hasText("PLN");
 });
 
 defaultTypes.forEach(function(type) {
@@ -364,11 +364,7 @@ defaultTypes.forEach(function(type) {
       component.appendTo("#ember-testing");
     });
 
-    assert.equal(
-      component.$("#" + component.get("inputElementId")).length,
-      1,
-      "Rendered correctly for type \"" + type + "\""
-    );
+    assert.dom(`#${component.get("inputElementId")}`).exists({ count: 1 }, "Rendered correctly for type \"" + type + "\"");
   });
 });
 

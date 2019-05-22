@@ -17,12 +17,14 @@ test("it renders collection of strings as options", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("option:nth-child(1)").text().replace(/\s/, ""), "Cooking");
-  assert.equal(component.$("option:nth-child(2)").text().replace(/\s/, ""), "Sports");
-  assert.equal(component.$("option:nth-child(3)").text().replace(/\s/, ""), "Politics");
-  assert.equal(component.$("option:nth-child(1)").attr("value"), "Cooking");
-  assert.equal(component.$("option:nth-child(2)").attr("value"), "Sports");
-  assert.equal(component.$("option:nth-child(3)").attr("value"), "Politics");
+  let options = component.element.querySelectorAll('option');
+
+  assert.dom(options[0]).hasText('Cooking');
+  assert.dom(options[1]).hasText('Sports');
+  assert.dom(options[2]).hasText('Politics');
+  assert.dom(options[0]).hasAttribute('value', 'Cooking');
+  assert.dom(options[1]).hasAttribute('value', 'Sports');
+  assert.dom(options[2]).hasAttribute('value', 'Politics');
 });
 
 test("it renders collection objects as options", function(assert) {
@@ -43,24 +45,28 @@ test("it renders collection objects as options", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("option:nth-child(1)").text().replace(/\s$/, ""), "Cooking");
-  assert.equal(component.$("option:nth-child(2)").text().replace(/\s$/, ""), "Sports");
-  assert.equal(component.$("option:nth-child(3)").text().replace(/\s$/, ""), "Politics");
-  assert.equal(component.$("option:nth-child(1)").attr("value"), "1");
-  assert.equal(component.$("option:nth-child(2)").attr("value"), "2");
-  assert.equal(component.$("option:nth-child(3)").attr("value"), "3");
+  let options = component.element.querySelectorAll('option');
+
+  assert.dom(options[0]).hasText('Cooking');
+  assert.dom(options[1]).hasText('Sports');
+  assert.dom(options[2]).hasText('Politics');
+  assert.dom(options[0]).hasAttribute('value', '1');
+  assert.dom(options[1]).hasAttribute('value', '2');
+  assert.dom(options[2]).hasAttribute('value', '3');
 
   run(function() {
     component.set("optionLabelPath", "content.headline");
     component.set("optionValuePath", "content.slug");
   });
 
-  assert.equal(component.$("option:nth-child(1)").text().replace(/\s$/, ""), "For kitchen geeks!");
-  assert.equal(component.$("option:nth-child(2)").text().replace(/\s$/, ""), "For couch potatos");
-  assert.equal(component.$("option:nth-child(3)").text().replace(/\s$/, ""), "For nerds");
-  assert.equal(component.$("option:nth-child(1)").attr("value"), "cooking");
-  assert.equal(component.$("option:nth-child(2)").attr("value"), "sports");
-  assert.equal(component.$("option:nth-child(3)").attr("value"), "politics");
+  options = component.element.querySelectorAll('option');
+
+  assert.dom(options[0]).hasText('For kitchen geeks!');
+  assert.dom(options[1]).hasText('For couch potatos');
+  assert.dom(options[2]).hasText('For nerds');
+  assert.dom(options[0]).hasAttribute('value', 'cooking');
+  assert.dom(options[1]).hasAttribute('value', 'sports');
+  assert.dom(options[2]).hasAttribute('value', 'politics');
 });
 
 test("it selects given values", function(assert) {
@@ -82,17 +88,17 @@ test("it selects given values", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  assert.equal(component.$("option:selected").length, 1);
-  assert.ok(component.$("option[value=Cooking]").is(":selected"), "1");
+  assert.dom('option:checked').exists({ count: 1 });
+  assert.dom('option[value=Cooking]').matchesSelector(':checked');
 
   run(function() {
     component.set("isMultiple", true);
     component.set("modelValue", [collection[1], collection[2]]);
   });
 
-  assert.equal(component.$("option:selected").length, 2);
-  assert.ok(component.$("option[value=Sports]").is(":selected"), "2");
-  assert.ok(component.$("option[value=Politics]").is(":selected"), "3");
+  assert.dom('option:checked').exists({ count: 2 });
+  assert.dom('option[value=Sports]').matchesSelector(':checked');
+  assert.dom('option[value=Politics]').matchesSelector(':checked');
 
   run(function() {
     component.set("optionValuePath", "content.id");
@@ -100,16 +106,16 @@ test("it selects given values", function(assert) {
     component.set("modelValue", A([2]));
   });
 
-  assert.equal(component.$("option:selected").length, 1, 123);
-  assert.equal(component.$("option:selected").attr("value"), "2");
+  assert.dom('option:checked').exists({ count: 1 });
+  assert.dom('option[value="2"]').matchesSelector(':checked');
 
   run(function() {
     component.get("modelValue").pushObject(1);
   });
 
-  assert.equal(component.$("option:selected").length, 2, 123);
-  assert.ok(component.$("option[value=1]").is(":selected"), "1");
-  assert.ok(component.$("option[value=2]").is(":selected"), "2");
+  assert.dom('option:checked').exists({ count: 2 });
+  assert.dom('option[value="1"]').matchesSelector(':checked');
+  assert.dom('option[value="2"]').matchesSelector(':checked');
 });
 
 test("it updates value after changing", function(assert) {
@@ -131,9 +137,10 @@ test("it updates value after changing", function(assert) {
     component.appendTo("#ember-testing");
   });
 
-  component.$("option").prop("selected", false);
-  component.$("option:nth-child(3)").prop("selected", "selected");
-  component.$().trigger("change");
+  component.element.querySelector('option[value="1"]').selected = false;
+  component.element.querySelector('option[value="2"]').selected = false;
+  component.element.querySelector('option[value="3"]').selected = true;
+  component.element.dispatchEvent(new Event('change', { bubbles: true }));
 
   assert.equal(component.get("value.length"), 1);
   assert.equal(component.get("value.firstObject.id"), 3);
@@ -144,12 +151,12 @@ test("it updates value after changing", function(assert) {
     component.set('optionStringValuePath', 'value');
   });
 
-  component.$("option").prop("selected", false);
-  component.$("option[value=3]").prop("selected", "selected");
-  component.$().trigger("change");
+  component.element.querySelector('option[value="3"]').selected = false;
+  component.element.querySelector('option[value="2"]').selected = true;
+  component.element.dispatchEvent(new Event('change', { bubbles: true }));
 
   assert.equal(component.get("value.length"), 1);
-  assert.equal(component.get("value.firstObject"), 3);
+  assert.equal(component.get("value.firstObject"), 2);
 });
 
 test("it sets the value after being displayed", function(assert) {
