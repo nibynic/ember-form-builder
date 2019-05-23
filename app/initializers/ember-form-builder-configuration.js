@@ -1,4 +1,4 @@
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import configuration from "ember-form-builder/configuration";
 import ENV from "../config/environment";
 import { classify } from '@ember/string';
@@ -19,7 +19,7 @@ const DataMixins = {
 };
 
 export var initialize = function(/* app */) {
-  ENV.formBuilder = merge(configuration, ENV.formBuilder || {});
+  ENV.formBuilder = assign(configuration, ENV.formBuilder || {});
 
   let validationsMixin = ValidationsMixins[classify(ENV.formBuilder.validationsAddon)];
   if (validationsMixin) {
