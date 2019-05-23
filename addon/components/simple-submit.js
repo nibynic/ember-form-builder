@@ -3,6 +3,7 @@ import { computed } from '@ember/object';
 import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
+import byDefault from 'ember-form-builder/utilities/by-default';
 
 const SimpleSubmit = Component.extend({
   translationService: service("formBuilderTranslations"),
@@ -21,7 +22,7 @@ const SimpleSubmit = Component.extend({
     }
   }),
 
-  text: computed("builder.translationKey", "translation", function() {
+  text: byDefault("builder.translationKey", "translation", function() {
     var key;
     var defaultKey = "formBuilder.actions.submit";
 

@@ -1,5 +1,6 @@
 import { computed } from '@ember/object';
 import CollectionInput from "ember-form-builder/components/inputs/collection-input";
+import byDefault from 'ember-form-builder/utilities/by-default';
 
 export default CollectionInput.extend({
   tagName: "div",
@@ -19,7 +20,7 @@ export default CollectionInput.extend({
     return this.get("isMultiple") ? "checkbox" : "radio";
   }),
 
-  inputName: computed("elementId", function() {
+  inputName: byDefault("elementId", function() {
     return this.get("elementId") + "-radio";
   })
 });

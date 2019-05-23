@@ -11,6 +11,7 @@ import EmberObject, {
 import { inject as service } from '@ember/service';
 import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
+import byDefault from 'ember-form-builder/utilities/by-default';
 import { dasherize } from '@ember/string';
 import { once } from '@ember/runloop';
 
@@ -30,7 +31,7 @@ const extension = {
   classNameBindings: ["wrapperClassName", "wrapperTypeClassName", 'attributeClassName',
     'modelClassName', 'inlineLabel'],
   hasFocusedOut: false,
-  as: computed("_model", "attr", function() {
+  as: byDefault("_model", "attr", function() {
     return guessType(this.get("_model"), this.get("attr"), this);
   }),
   attr: null,
@@ -79,7 +80,7 @@ const extension = {
 
   isRequired: reads("validations.required"),
 
-  canValidate: computed("hasFocusedOut", "builder.isValid", function() {
+  canValidate: byDefault("hasFocusedOut", "builder.isValid", function() {
     return this.get("hasFocusedOut") || !this.get("builder.isValid");
   }),
 
@@ -176,7 +177,7 @@ const extension = {
     return name;
   }),
 
-  label: computed("builder.translationKey", "attr", "labelTranslation", function() {
+  label: byDefault("builder.translationKey", "attr", "labelTranslation", function() {
     var key;
 
     if (isPresent(this.get("labelTranslation"))) {

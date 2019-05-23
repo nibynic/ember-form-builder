@@ -4,6 +4,7 @@ import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
+import byDefault from 'ember-form-builder/utilities/by-default';
 
 export default EmberObject.extend({
   status: null,
@@ -55,7 +56,7 @@ export default EmberObject.extend({
     }
   }),
 
-  translationKey: computed('modelName', function() {
+  translationKey: byDefault('modelName', function() {
     return camelize(this.get('modelName') || '');
   }),
 
