@@ -2,139 +2,139 @@ import { run } from '@ember/runloop';
 import { Promise as EmberPromise } from 'rsvp';
 import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
-import { test, module } from "ember-qunit";
+import { module, test } from 'qunit';
 import FormBuilder from "ember-form-builder/models/form-builder";
 
-module('Unit | Models | FormBuilder | main');
+module('Unit | Models | FormBuilder | main', function() {
+  test("it updates status to success when created or updated", function(assert) {
+    var modelClass = EmberObject.extend(Evented);
+    modelClass.reopenClass({modelName: "fake-model"});
+    var model = modelClass.create();
+    var builder = FormBuilder.create({
+      model: model
+    });
 
-test("it updates status to success when created or updated", function(assert) {
-  var modelClass = EmberObject.extend(Evented);
-  modelClass.reopenClass({modelName: "fake-model"});
-  var model = modelClass.create();
-  var builder = FormBuilder.create({
-    model: model
+    assert.equal(builder.get("status"), null);
+
+    model.trigger("didCreate");
+    assert.equal(builder.get("status"), "success");
+
+    model.set("status", null);
+    model.trigger("didUpdate");
+    assert.equal(builder.get("status"), "success");
   });
 
-  assert.equal(builder.get("status"), null);
+  test("it updates status to failure when became invalid", function(assert) {
+    var modelClass = EmberObject.extend(Evented);
+    modelClass.reopenClass({modelName: "fake-model"});
+    var model = modelClass.create();
+    var builder = FormBuilder.create({
+      model: model
+    });
 
-  model.trigger("didCreate");
-  assert.equal(builder.get("status"), "success");
+    assert.equal(builder.get("status"), null);
+    assert.ok(builder.get("isValid"));
 
-  model.set("status", null);
-  model.trigger("didUpdate");
-  assert.equal(builder.get("status"), "success");
-});
-
-test("it updates status to failure when became invalid", function(assert) {
-  var modelClass = EmberObject.extend(Evented);
-  modelClass.reopenClass({modelName: "fake-model"});
-  var model = modelClass.create();
-  var builder = FormBuilder.create({
-    model: model
+    model.trigger("becameInvalid");
+    assert.equal(builder.get("status"), "failure");
+    assert.ok(!builder.get("isValid"));
   });
 
-  assert.equal(builder.get("status"), null);
-  assert.ok(builder.get("isValid"));
+  test("it is loading when the model is saving", function(assert) {
+    var model = EmberObject.extend(Evented).create({ isSaving: false });
+    var builder = FormBuilder.create({
+      model: model
+    });
 
-  model.trigger("becameInvalid");
-  assert.equal(builder.get("status"), "failure");
-  assert.ok(!builder.get("isValid"));
-});
+    assert.equal(builder.get("isLoading"), false);
 
-test("it is loading when the model is saving", function(assert) {
-  var model = EmberObject.extend(Evented).create({ isSaving: false });
-  var builder = FormBuilder.create({
-    model: model
+    model.set("isSaving", true);
+    assert.equal(builder.get("isLoading"), true);
   });
 
-  assert.equal(builder.get("isLoading"), false);
+  test("isLoading can be overriden by object property", function(assert) {
+    var model = EmberObject.extend(Evented).create({ isSaving: true });
+    var object = EmberObject.extend(Evented).create({ isLoading: false });
+    var builder = FormBuilder.create({
+      model: model,
+      object: object
+    });
 
-  model.set("isSaving", true);
-  assert.equal(builder.get("isLoading"), true);
-});
+    assert.equal(builder.get("isLoading"), false);
 
-test("isLoading can be overriden by object property", function(assert) {
-  var model = EmberObject.extend(Evented).create({ isSaving: true });
-  var object = EmberObject.extend(Evented).create({ isLoading: false });
-  var builder = FormBuilder.create({
-    model: model,
-    object: object
+    object.set("isLoading", true);
+    assert.equal(builder.get("isLoading"), true);
   });
 
-  assert.equal(builder.get("isLoading"), false);
+  test("validate() performs validation on the object and on the nested fields", function(assert) {
+    var isValid = false;
+    var nestedIsValid = false;
+    var validationPerformed = false;
+    var nestedValidationWasPerformed = false;
+    var model = EmberObject.create({
+      validate() {
+        validationPerformed = true;
+        return new EmberPromise(function(resolve, reject) {
+          if (isValid) {
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      }
+    });
+    var nestedModel = EmberObject.create({
+      validate() {
+        nestedValidationWasPerformed = true;
+        return new EmberPromise(function(resolve, reject) {
+          if (nestedIsValid) {
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      }
+    });
+    var builder = FormBuilder.create({
+      object: model
+    });
+    builder.addChild(FormBuilder.create({
+      object: nestedModel
+    }));
 
-  object.set("isLoading", true);
-  assert.equal(builder.get("isLoading"), true);
-});
+    run(function() {
+      builder.validate();
+    });
 
-test("validate() performs validation on the object and on the nested fields", function(assert) {
-  var isValid = false;
-  var nestedIsValid = false;
-  var validationPerformed = false;
-  var nestedValidationWasPerformed = false;
-  var model = EmberObject.create({
-    validate() {
-      validationPerformed = true;
-      return new EmberPromise(function(resolve, reject) {
-        if (isValid) {
-          resolve();
-        } else {
-          reject();
-        }
-      });
-    }
+
+    assert.ok(validationPerformed, "Validation was performed");
+    assert.ok(nestedValidationWasPerformed, "Nested validation was performed");
+    assert.ok(!builder.get("isValid"), "Form was invalid");
+
+    nestedIsValid = true;
+
+    run(function() {
+      builder.validate();
+    });
+
+    assert.ok(!builder.get("isValid"), "Form was invalid");
+
+    isValid = true;
+    nestedIsValid = false;
+
+    run(function() {
+      builder.validate();
+    });
+
+    assert.ok(!builder.get("isValid"), "Form was invalid");
+
+    isValid = true;
+    nestedIsValid = true;
+
+    run(function() {
+      builder.validate();
+    });
+
+    assert.ok(builder.get("isValid"), "Form was valid");
   });
-  var nestedModel = EmberObject.create({
-    validate() {
-      nestedValidationWasPerformed = true;
-      return new EmberPromise(function(resolve, reject) {
-        if (nestedIsValid) {
-          resolve();
-        } else {
-          reject();
-        }
-      });
-    }
-  });
-  var builder = FormBuilder.create({
-    object: model
-  });
-  builder.addChild(FormBuilder.create({
-    object: nestedModel
-  }));
-
-  run(function() {
-    builder.validate();
-  });
-
-
-  assert.ok(validationPerformed, "Validation was performed");
-  assert.ok(nestedValidationWasPerformed, "Nested validation was performed");
-  assert.ok(!builder.get("isValid"), "Form was invalid");
-
-  nestedIsValid = true;
-
-  run(function() {
-    builder.validate();
-  });
-
-  assert.ok(!builder.get("isValid"), "Form was invalid");
-
-  isValid = true;
-  nestedIsValid = false;
-
-  run(function() {
-    builder.validate();
-  });
-
-  assert.ok(!builder.get("isValid"), "Form was invalid");
-
-  isValid = true;
-  nestedIsValid = true;
-
-  run(function() {
-    builder.validate();
-  });
-
-  assert.ok(builder.get("isValid"), "Form was valid");
 });

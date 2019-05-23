@@ -1,6 +1,6 @@
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
-import { test } from "ember-qunit";
+import { test } from 'qunit';
 import guessType from "ember-form-builder/utilities/guess-type";
 
 var object = EmberObject.create();
