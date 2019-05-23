@@ -3,6 +3,9 @@ import { isEmpty } from '@ember/utils';
 import { A, isArray } from '@ember/array';
 import Component from '@ember/component';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
+import { reads } from '@ember/object/computed';
+import ObjectProxy from '@ember/object/proxy';
+import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 
 export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
@@ -14,21 +17,20 @@ export default Component.extend(InputDefaultsMixin, {
   modelValue: null,
   optionComponentName: "inputs/select-option",
 
-  resolvedCollection: computed("collection.content", {
-    get() {
-      if (this.get("collection") && this.get("collection").then) {
-        this.get("collection").then((result) => {
-          this.set("resolvedCollection", result);
-        });
-        return [];
-      } else {
-        return this.get("collection");
-      }
-    },
-    set(key, value) {
-      return value;
+  collectionPromise: computed('collection', function() {
+    let collection = this.get('collection');
+    if (collection && collection.then) {
+      return ObjectProxy.extend(PromiseProxyMixin).create({
+        promise: collection
+      });
+    } else {
+      return {
+        content: collection
+      };
     }
   }),
+
+  resolvedCollection: reads('collectionPromise.content'),
 
   didInsertElement: function() {
     if (isEmpty(this.get("value"))) {
