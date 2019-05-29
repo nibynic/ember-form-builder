@@ -37,7 +37,6 @@ module('Integration | Component | fields-builder', function(hooks) {
 
     await render(hbs`
       {{#fields-builder on=parent as="sample-child" as |f|}}
-        {{log f.builder}}
         {{f.builder.name}}
       {{/fields-builder}}
     `);
