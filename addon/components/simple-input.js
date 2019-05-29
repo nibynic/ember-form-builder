@@ -3,11 +3,7 @@ import { isArray } from '@ember/array';
 import { isEmpty, isPresent } from '@ember/utils';
 import { on } from '@ember/object/evented';
 import { alias, reads } from '@ember/object/computed';
-import EmberObject, {
-  computed,
-  observer,
-  defineProperty
-} from '@ember/object';
+import EmberObject, { computed, defineProperty } from '@ember/object';
 import { inject as service } from '@ember/service';
 import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
@@ -51,12 +47,6 @@ const extension = {
     }
   }),
 
-  init: function() {
-    this._super();
-
-    this.objectOrAttrChanged();
-  },
-
   focusOut: function() {
     once(this, this.handleFocusOut);
   },
@@ -96,7 +86,9 @@ const extension = {
     return this.get("errors").join(", ");
   }),
 
-  objectOrAttrChanged: observer("object", "attr", function() {
+  didReceiveAttrs() {
+    this._super(...arguments);
+
     var errorsAttribute = this.get('builder').errorsPathFor(this.get('attr'));
     defineProperty(this, "errors", reads(errorsAttribute));
 
@@ -118,7 +110,7 @@ const extension = {
         return value;
       }
     }));
-  }),
+  },
 
   additionalAttributeNames: computed("attrs", function() {
     let additionalAttributeNames = [];
