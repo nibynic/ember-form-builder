@@ -3,6 +3,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import { run } from '@ember/runloop';
 
 module('Integration | Component | inputs/collection-input', function(hooks) {
   setupRenderingTest(hooks);
@@ -99,7 +100,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
     assert.dom('option:checked').exists({ count: 1 });
     assert.dom('option[value="2"]').matchesSelector(':checked');
 
-    this.get('modelValue').pushObject(1);
+    run(() => this.get('modelValue').pushObject(1));
     await settled();
 
     assert.dom('option:checked').exists({ count: 2 });

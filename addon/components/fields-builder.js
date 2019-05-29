@@ -17,11 +17,13 @@ export default FormBuilder.extend({
     }
   }),
 
-  didInsertElement() {
+  init() {
+    this._super(...arguments);
     this.get("parentFormBuilder").addChild(this.get("formBuilder"));
   },
 
-  willDestroy() {
+  destroy() {
+    this._super(...arguments);
     this.get("parentFormBuilder").removeChild(this.get("formBuilder"));
   }
 });

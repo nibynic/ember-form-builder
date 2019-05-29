@@ -2,10 +2,11 @@ import { A } from '@ember/array';
 import EmberObject from '@ember/object';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, settled, triggerEvent } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import Component from '@ember/component';
 import SimpleInput from 'ember-form-builder/components/simple-input';
+import { run } from '@ember/runloop';
 
 module('Integration | Component | simple-input', function(hooks) {
   setupRenderingTest(hooks);
@@ -55,7 +56,7 @@ module('Integration | Component | simple-input', function(hooks) {
 
     assert.dom('[data-test-additional-attributes]').hasText('a b c', 'Initial options are correctly displayed');
 
-    this.customProperty.pushObject('d');
+    run(() => this.customProperty.pushObject('d'));
     await settled();
 
     assert.dom('[data-test-additional-attributes]').hasText('a b c d', 'Updated options are correctly displayed');
@@ -129,7 +130,9 @@ module('Integration | Component | simple-input', function(hooks) {
 
     assert.dom('.errors').doesNotExist('Just to be sure it stopped displaying errors.');
 
-    await triggerEvent('input', 'focusout');
+    this.element.querySelector('input').focus();
+    this.element.querySelector('input').blur();
+    await settled();
 
     assert.dom('[data-test-input]').hasClass('input-with-errors', 'Wrapper element has an error class assigned.');
     assert.dom('.errors').hasText('can\'t be blank, is too short', 'The errors are displayed');

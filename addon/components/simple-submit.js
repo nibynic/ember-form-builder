@@ -13,11 +13,14 @@ const SimpleSubmit = Component.extend({
 
   isDisabled: oneWay("builder.isLoading"),
   builder: computed({
+    get() {
+      return this._builder;
+    },
     set(key, value) {
       if (value && value.builder) {
-        return value.builder;
+        return this._builder = value.builder;
       } else {
-        return value;
+        return this._builder = value;
       }
     }
   }),

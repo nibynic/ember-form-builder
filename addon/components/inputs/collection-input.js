@@ -6,6 +6,7 @@ import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 import { reads } from '@ember/object/computed';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
+import { scheduleOnce } from '@ember/runloop';
 
 export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
@@ -33,8 +34,8 @@ export default Component.extend(InputDefaultsMixin, {
   resolvedCollection: reads('collectionPromise.content'),
 
   didInsertElement: function() {
-    if (isEmpty(this.get("value"))) {
-      this.change();
+    if (isEmpty(this.get('value'))) {
+      scheduleOnce('afterRender', this, this.change);
     }
   },
 
