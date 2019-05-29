@@ -3,21 +3,7 @@
 [![Build Status](https://travis-ci.org/nibynic/ember-form-builder.svg)](https://travis-ci.org/nibynic/ember-form-builder)
 [![Ember Observer Score](https://emberobserver.com/badges/ember-form-builder.svg)](https://emberobserver.com/addons/ember-form-builder)
 
-<<<<<<< HEAD
 ## About
-=======
-
-Compatibility
-------------------------------------------------------------------------------
-
-* Ember.js v2.18 or above
-* Ember CLI v2.13 or above
-* Node.js v8 or above
-
-
-Installation
-------------------------------------------------------------------------------
->>>>>>> 8c689f6... message
 
 Ember Form Builder is an Ember Addon that enables you to assemble forms with
 labels, validations, hints without repeating yourself. It's strongly inspired by a Rails gem [SimpleForm](https://github.com/plataformatec/simple_form).
@@ -117,7 +103,6 @@ You can set your choice in the [configuration](#configuration). None of those li
 
 ### Data layer
 
-<<<<<<< HEAD
 Ember Form Builder will automatically detect model name and then use it in input name generation and translation lookup.
 
 Ember Form Builder supports these data addons:
@@ -173,10 +158,6 @@ You'll probably want to customize the markup Ember Form Builder generates. For t
 Start by copying all or some of the [default templates](https://github.com/nibynic/ember-form-builder/tree/master/app/templates/components) to your app. Then modify whatever you want.
 
 ## Legal ##
-=======
-See the [Contributing](CONTRIBUTING.md) guide for details.
-
->>>>>>> 8c689f6... message
 
 [nibynic](http://nibynic.com) &copy; 2015
 
