@@ -12,13 +12,12 @@ module("Unit | Service | formBuilderTranslation", function(hooks) {
   });
 
   test("Defaults to ember-i18n when both i18n and ember-intl are present", function(assert) {
-    let service = this.owner.lookup("service:form-builder-translations");
     let intl = "ember-intl";
     let i18n = "i18n";
-    service.setProperties({
+    let service = this.owner.factoryFor("service:form-builder-translations").class.reopen({
       i18n: i18n,
       intl: intl
-    });
+    }).create();
     assert.equal(service.get("translationService"), i18n);
   });
 

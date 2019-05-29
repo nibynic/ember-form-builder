@@ -122,7 +122,7 @@ module('Integration | Component | inputs/checkboxes-input', async function(hooks
     });
 
     await render(hbs`
-      {{inputs/checkboxes-input collection=collection modelValue=modelValue isMultiple=isMultiple}}
+      {{inputs/checkboxes-input collection=collection modelValue=modelValue}}
     `);
 
     await click('input[value="1"]');
@@ -131,7 +131,6 @@ module('Integration | Component | inputs/checkboxes-input', async function(hooks
     assert.equal(this.modelValue.id, 3);
 
     this.set('modelValue', []);
-    this.set('isMultiple', true);
 
     await click('input[value="1"]');
     await click('input[value="3"]');

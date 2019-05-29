@@ -18,7 +18,7 @@
 
   {{#each currentProgrammers as |programmer|}}{{programmer.firstName}}<br>{{/each}}
   {{f.input "currentProgrammers" as="checkboxes" collection=programmers
-    optionValuePath="content" optionLabelPath="content.firstName" isMultiple=true}}
+    optionValuePath="content" optionLabelPath="content.firstName"}}
 
   <br>
   {{currentDeferredProgrammerId}}

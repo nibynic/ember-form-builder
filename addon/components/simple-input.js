@@ -192,7 +192,7 @@ const extension = {
     return !this.get("inlineLabel") && this.get("label") !== false;
   }),
 
-  inlineLabel: computed("type", function() {
+  inlineLabel: byDefault("type", function() {
     return this.get("type") === "boolean";
   }),
 
@@ -204,7 +204,7 @@ const extension = {
     return isPresent(this.get("hint"));
   }),
 
-  hint: computed("builder.translationKey", "attr", "hintTranslation", function() {
+  hint: byDefault("builder.translationKey", "attr", "hintTranslation", function() {
     var key;
 
     if (isPresent(this.get("hintTranslation"))) {
@@ -218,7 +218,7 @@ const extension = {
     }
   }),
 
-  placeholder: computed("builder.translationKey", "attr", "placeholderTranslation", function() {
+  placeholder: byDefault("builder.translationKey", "attr", "placeholderTranslation", function() {
     var key;
 
     if (isPresent(this.get("placeholderTranslation"))) {

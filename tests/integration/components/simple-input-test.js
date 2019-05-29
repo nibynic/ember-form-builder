@@ -5,6 +5,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, settled, triggerEvent } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import Component from '@ember/component';
+import SimpleInput from 'ember-form-builder/components/simple-input';
 
 module('Integration | Component | simple-input', function(hooks) {
   setupRenderingTest(hooks);
@@ -98,13 +99,15 @@ module('Integration | Component | simple-input', function(hooks) {
       object: {}
     }));
 
-    this.set('configuration', {
-      wrapperWithErrorsClass: 'input-with-errors',
-      errorsClass: 'errors'
-    });
+    this.owner.register('component:simple-input', SimpleInput.extend({
+      configuration: Object.freeze({
+        wrapperWithErrorsClass: 'input-with-errors',
+        errorsClass: 'errors'
+      })
+    }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder configuration=configuration data-test-input=true}}
+      {{simple-input attr="title" as="string" builder=builder data-test-input=true}}
     `);
 
     assert.dom('[data-test-input]').doesNotHaveClass('input-with-errors', 'Wrapper element has no error class assigned.');
@@ -134,12 +137,14 @@ module('Integration | Component | simple-input', function(hooks) {
 
   test('it renders a hint when provided', async function(assert) {
     this.set('builder', FormBuilderMock.create());
-    this.set('configuration', {
-      hintClass: 'hint'
-    });
+    this.owner.register('component:simple-input', SimpleInput.extend({
+      configuration: Object.freeze({
+        hintClass: 'hint'
+      })
+    }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder hint=hint configuration=configuration}}
+      {{simple-input attr="title" as="string" builder=builder hint=hint}}
     `);
 
     assert.dom('.hint').doesNotExist();
@@ -241,13 +246,15 @@ module('Integration | Component | simple-input', function(hooks) {
 
   test('it renders unit when it\'s provided', async function(assert) {
     this.set('builder', FormBuilderMock.create());
-    this.set('configuration', {
-      unitClass: 'unit',
-      wrapperWithUnitClass: 'has-unit'
-    });
+    this.owner.register('component:simple-input', SimpleInput.extend({
+      configuration: Object.freeze({
+        unitClass: 'unit',
+        wrapperWithUnitClass: 'has-unit'
+      })
+    }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder unit=unit configuration=configuration data-test-input=true}}
+      {{simple-input attr="title" as="string" builder=builder unit=unit data-test-input=true}}
     `);
 
     assert.dom('[data-test-input]').doesNotHaveClass('has-unit', 'Has no has-unit class');
@@ -263,12 +270,14 @@ module('Integration | Component | simple-input', function(hooks) {
     test(`it renders correctly for type ${type}`, async function(assert) {
       this.set('builder', FormBuilderMock.create());
       this.set('type', type);
-      this.set('configuration', {
-        inputClass: 'input-control'
-      });
+      this.owner.register('component:simple-input', SimpleInput.extend({
+        configuration: Object.freeze({
+          inputClass: 'input-control'
+        })
+      }));
 
       await render(hbs`
-        {{simple-input attr="title" as=type builder=builder unit=unit configuration=configuration}}
+        {{simple-input attr="title" as=type builder=builder unit=unit}}
       `);
 
       assert.dom('.input-control').exists({ count: 1 }, `Rendered correctly for type ${type}`);

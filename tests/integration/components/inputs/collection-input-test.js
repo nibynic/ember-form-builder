@@ -78,13 +78,12 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
     this.set('modelValue', this.collection[0]);
 
     await render(hbs`
-      {{inputs/collection-input collection=collection modelValue=modelValue isMultiple=isMultiple}}
+      {{inputs/collection-input collection=collection modelValue=modelValue}}
     `);
 
     assert.dom('option:checked').exists({ count: 1 });
     assert.dom('option[value=Cooking]').matchesSelector(':checked');
 
-    this.set('isMultiple', true);
     this.set('modelValue', [this.collection[1], this.collection[2]]);
 
     assert.dom('option:checked').exists({ count: 2 });
@@ -93,7 +92,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
 
     this.set('modelValue', A([2]));
     await render(hbs`
-      {{inputs/collection-input collection=collection modelValue=modelValue isMultiple=isMultiple
+      {{inputs/collection-input collection=collection modelValue=modelValue
         optionValuePath="content.id" optionStringValuePath="value"}}
     `);
 
@@ -120,7 +119,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
     this.set('modelValue', [this.collection[0], this.collection[1]]);
 
     await render(hbs`
-      {{inputs/collection-input collection=collection modelValue=modelValue isMultiple=true
+      {{inputs/collection-input collection=collection modelValue=modelValue
         optionValuePath="content"}}
     `);
     this.element.querySelector('option[value="1"]').selected = false;
@@ -132,7 +131,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
     assert.equal(this.modelValue[0].id, 3);
 
     await render(hbs`
-      {{inputs/collection-input collection=collection modelValue=modelValue isMultiple=true
+      {{inputs/collection-input collection=collection modelValue=modelValue
         optionValuePath="content.id" optionStringValuePath="value"}}
     `);
     this.element.querySelector('option[value="3"]').selected = false;

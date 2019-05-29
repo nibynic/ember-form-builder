@@ -48,7 +48,7 @@ export default EmberObject.extend({
     });
   },
 
-  model: computed('object.model', function() {
+  model: byDefault('object.model', function() {
     if (this.isModel(this.get('object.model'))) {
       return this.get('object.model');
     } else {
