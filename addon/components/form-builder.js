@@ -7,15 +7,16 @@ import FormBuilder from "ember-form-builder/models/form-builder";
 export default Component.extend({
   tagName: "form",
 
+  action() {},
+  submitFailed() {},
+
   submit: function(event) {
     event.preventDefault();
-    var self = this;
 
-    this.get("formBuilder").validate().then(function() {
-      self.sendAction();
-    }, function() {
-      self.sendAction("submitFailed");
-    });
+    this.get("formBuilder").validate().then(
+      () => this.action(),
+      () => this.submitFailed()
+    );
   },
 
   formBuilder: computed("for", "as", "translationKey", 'index', function() {
