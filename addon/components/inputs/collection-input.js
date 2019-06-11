@@ -10,7 +10,7 @@ import { scheduleOnce } from '@ember/runloop';
 
 export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
-  attributeBindings: ["isMultiple:multiple"],
+  attributeBindings: ["isMultiple:multiple", "name"],
   collection: null,
   optionValuePath: "content",
   optionStringValuePath: "value.id",
