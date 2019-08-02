@@ -1,5 +1,4 @@
 import { get, computed } from '@ember/object';
-import { isEmpty } from '@ember/utils';
 import { A, isArray } from '@ember/array';
 import Component from '@ember/component';
 import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
@@ -29,11 +28,10 @@ export default Component.extend(InputDefaultsMixin, {
 
   didInsertElement: function() {
     this._super(...arguments);
-    if (isEmpty(this.get('value'))) {
-      this.get('collectionPromise').then(
-        () => this.nextRun = next(this, this.change)
-      );
-    }
+    // set default value in model
+    this.get('collectionPromise').then(
+      () => this.nextRun = next(this, this.change)
+    );
   },
 
   willDestroyElement() {
