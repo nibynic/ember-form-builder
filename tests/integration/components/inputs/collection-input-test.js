@@ -4,6 +4,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { run } from '@ember/runloop';
+import { resolve } from 'rsvp';
 
 module('Integration | Component | inputs/collection-input', function(hooks) {
   setupRenderingTest(hooks);
@@ -145,6 +146,17 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
 
   test('it sets the value after being displayed', async function(assert) {
     this.set('collection',['Cooking', 'Sports', 'Politics']);
+    this.set('modelValue', null);
+
+    await render(hbs`
+      {{inputs/collection-input collection=collection modelValue=modelValue}}
+    `);
+
+    assert.equal(this.modelValue, 'Cooking');
+  });
+
+  test('it sets the value after being displayed for async collection', async function(assert) {
+    this.set('collection', resolve(['Cooking', 'Sports', 'Politics']));
     this.set('modelValue', null);
 
     await render(hbs`

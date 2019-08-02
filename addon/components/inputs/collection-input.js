@@ -6,7 +6,8 @@ import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
 import { reads } from '@ember/object/computed';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
-import { scheduleOnce } from '@ember/runloop';
+import { next, cancel } from '@ember/runloop';
+import { resolve } from 'rsvp';
 
 export default Component.extend(InputDefaultsMixin, {
   tagName: "select",
@@ -19,24 +20,25 @@ export default Component.extend(InputDefaultsMixin, {
   optionComponentName: "inputs/select-option",
 
   collectionPromise: computed('collection', function() {
-    let collection = this.get('collection');
-    if (collection && collection.then) {
-      return ObjectProxy.extend(PromiseProxyMixin).create({
-        promise: collection
-      });
-    } else {
-      return {
-        content: collection
-      };
-    }
+    return ObjectProxy.extend(PromiseProxyMixin).create({
+      promise: resolve(this.get('collection'))
+    });
   }),
 
   resolvedCollection: reads('collectionPromise.content'),
 
   didInsertElement: function() {
+    this._super(...arguments);
     if (isEmpty(this.get('value'))) {
-      scheduleOnce('afterRender', this, this.change);
+      this.get('collectionPromise').then(
+        () => this.nextRun = next(this, this.change)
+      );
     }
+  },
+
+  willDestroyElement() {
+    this._super(...arguments);
+    cancel(this.nextRun);
   },
 
   change: function() {
