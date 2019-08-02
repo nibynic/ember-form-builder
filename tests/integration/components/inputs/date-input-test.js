@@ -23,7 +23,7 @@ module('Integration | Component | inputs/date-input', function(hooks) {
     await render(hbs`{{inputs/date-input modelValue=modelValue}}`);
     await fillIn('input', '2015-12-12');
 
-    assert.equal(this.modelValue.getTime(), new Date(2015, 11, 12).getTime());
+    assert.equal(this.modelValue.getTime(), Date.UTC(2015, 11, 12));
 
     await fillIn('input', '');
 
