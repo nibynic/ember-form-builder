@@ -156,7 +156,7 @@ const extension = {
     return "inputs/" + this.get("type") + "-input";
   }),
 
-  inputElementId: computed("elementId", function() {
+  inputElementId: byDefault("elementId", function() {
     return this.get("elementId") + "Input";
   }),
 
