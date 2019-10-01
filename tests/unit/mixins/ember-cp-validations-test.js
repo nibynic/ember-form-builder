@@ -28,13 +28,20 @@ module('Unit | Mixin | EmberCpValidationsMixin', function() {
     var builder = FormBuilder.create({
       model: model
     });
-    assert.deepEqual(builder.normalizeValidations({
+
+    assert.equal(builder.normalizeValidations({
       presence: { presence: true },
+    }).required, true);
+    assert.equal(builder.normalizeValidations({
+      presence: { presence: true, disabled: true },
+    }).required, false);
+
+    assert.deepEqual(builder.normalizeValidations({
       number: { gt: 1, gte: 2, lt: 3, lte: 4, integer: true }
-    }), {
-      required: true,
-      number: { gt: 1, gte: 2, lt: 3, lte: 4, integer: true }
-    });
+    }).number, { gt: 1, gte: 2, lt: 3, lte: 4, integer: true });
+    assert.equal(builder.normalizeValidations({
+      number: { gt: 1, gte: 2, lt: 3, lte: 4, integer: true, disabled: true }
+    }).number, undefined);
   });
 
   test("provides normalized validate()", async function(assert) {

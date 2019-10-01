@@ -1,6 +1,6 @@
 import Mixin from '@ember/object/mixin';
 import { resolve, reject } from 'rsvp';
-import { get } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 
 export default Mixin.create({
   errorsPathFor(attribute) {
@@ -12,16 +12,7 @@ export default Mixin.create({
   },
 
   normalizeValidations(validations = {}) {
-    return {
-      required: !!get(validations, 'presence.presence'),
-      number: {
-        integer:  !!get(validations, 'number.integer'),
-        gt:       get(validations, 'number.gt'),
-        gte:      get(validations, 'number.gte'),
-        lt:       get(validations, 'number.lt'),
-        lte:      get(validations, 'number.lte')
-      }
-    };
+    return ValidationsMapper.create({ validations });
   },
 
   validateObject() {
@@ -37,4 +28,22 @@ export default Mixin.create({
       return resolve();
     }
   }
+});
+
+const ValidationsMapper = EmberObject.extend({
+  required: computed('validations.presence.presence', function() {
+    return this.get('validations.presence.presence') && !this.get('validations.presence.disabled');
+  }),
+
+  number: computed('validations.number{integer,gt,gte,lt,lte,disabled}', function() {
+    if (this.get('validations.number.integer') && !this.get('validations.number.disabled')) {
+      return {
+        integer:  !!this.get('validations.number.integer'),
+        gt:       this.get('validations.number.gt'),
+        gte:      this.get('validations.number.gte'),
+        lt:       this.get('validations.number.lt'),
+        lte:      this.get('validations.number.lte')
+      }
+    }
+  })
 });
