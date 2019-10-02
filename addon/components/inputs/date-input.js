@@ -33,7 +33,7 @@ export default TextField.extend(InputDefaultsMixin, {
       if (value.length === 0) {
         this.set('modelValue', undefined);
       } else {
-        var timestamp = Date.parse(value + 'T00:00');
+        var timestamp = Date.parse(value + 'T00:00Z');
         if (isNaN(timestamp)) {
           return value;
         } else {
