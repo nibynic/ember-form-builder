@@ -29,9 +29,7 @@ export default Component.extend(InputDefaultsMixin, {
   didInsertElement: function() {
     this._super(...arguments);
     // set default value in model
-    this.get('collectionPromise').then(
-      () => this.nextRun = next(this, this.change)
-    );
+    this.nextRun = next(this, this.change);
   },
 
   willDestroyElement() {
@@ -45,21 +43,25 @@ export default Component.extend(InputDefaultsMixin, {
   },
 
   _setSelection: function(indicies) {
-    var selection = A(this.get("resolvedCollection")).objectsAt(indicies);
-    var valuePath = this.get("optionValuePath");
-    var newValues = A(selection.map(function(item) {
-      if (typeof item === "string" || valuePath === "content") {
-        return item;
-      } else {
-        return get(item, valuePath.replace(/^content\./, ""));
-      }
-    }));
+    this.get('collectionPromise').then((collection) => {
+      var selection = A(collection).objectsAt(indicies);
+      var valuePath = this.get("optionValuePath");
+      var newValues = A(selection.map(function(item) {
+        if (typeof item === "string" || valuePath === "content") {
+          return item;
+        } else if (item) {
+          return get(item, valuePath.replace(/^content\./, ""));
+        } else {
+          return item;
+        }
+      }));
 
-    if (isArray(this.get("value"))) {
-      A(this.get("value")).replace(0, this.get("value.length"), newValues);
-    } else {
-      this.set("value", newValues.get("firstObject"));
-    }
+      if (isArray(this.get("value"))) {
+        A(this.get("value")).replace(0, this.get("value.length"), newValues);
+      } else {
+        this.set("value", newValues.get("firstObject"));
+      }
+    });
   },
 
   isMultiple: computed('modelValue', function() {
