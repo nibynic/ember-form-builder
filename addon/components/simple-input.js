@@ -86,7 +86,7 @@ const extension = {
     return this.get("errors").join(", ");
   }),
 
-  didReceiveAttrs() {
+  init() {
     this._super(...arguments);
 
     var errorsAttribute = this.get('builder').errorsPathFor(this.get('attr'));

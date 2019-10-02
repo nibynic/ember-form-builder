@@ -34,7 +34,7 @@
     "ember-qunit": "^4.4.1",
     "ember-resolver": "^5.0.1",
     "ember-sinon": "^4.0.0",
-    "ember-source": "~3.12.0",
+    "ember-source": "https://s3.amazonaws.com/builds.emberjs.com/canary/shas/bc435eb0a11868f7e0f8381f9a4bb2ba7728d9e8.tgz",
     "ember-source-channel-url": "^1.1.0",
     "ember-test-selectors": "^2.1.0",
     "ember-try": "^1.2.1",
