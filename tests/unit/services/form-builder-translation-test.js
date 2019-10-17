@@ -1,6 +1,7 @@
 import { defineProperty, computed } from '@ember/object';
 import { module, test } from 'qunit';
 import { setupTest } from "ember-qunit";
+import sinon from 'sinon';
 
 module("Unit | Service | formBuilderTranslation", function(hooks) {
   setupTest(hooks);
@@ -22,23 +23,26 @@ module("Unit | Service | formBuilderTranslation", function(hooks) {
   });
 
   test("Forwards the t and exists methods", function(assert) {
-    assert.expect(2, "Both functions are forwarded");
+    let t = sinon.stub();
+    let exists = sinon.stub();
 
     let service = this.owner.lookup("service:form-builder-translations");
-    let key = "testTranslationKey";
-
     defineProperty(service, "translationService", computed(function() {
-      return {
-        t(k) {
-          assert.equal(k, key, `The t method is called with the given key`);
-        },
-        exists(k) {
-          assert.equal(k, key, `The exists method is called with the given key`);
-        }
-      };
+      return { t, exists, locale: 'en' };
     }));
 
-    service.exists(key);
-    service.t(key);
+    exists.returns('some result');
+    let result = service.exists('some.key');
+
+    assert.equal(exists.getCall(0).args[0], 'some.key');
+    assert.equal(result, 'some result');
+
+    t.returns('another result');
+    result = service.t('another.key');
+
+    assert.equal(t.getCall(0).args[0], 'another.key');
+    assert.equal(result, 'another result');
+
+    assert.equal(service.locale, 'en');
   });
 });

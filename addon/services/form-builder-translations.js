@@ -39,5 +39,7 @@ export default Service.extend({
     } else {
       return false;
     }
-  }
+  },
+
+  locale: reads('translationService.locale')
 });

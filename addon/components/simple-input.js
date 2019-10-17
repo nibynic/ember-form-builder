@@ -169,7 +169,7 @@ const extension = {
     return name;
   }),
 
-  label: byDefault("builder.translationKey", "attr", "labelTranslation", function() {
+  label: byDefault("builder.translationKey", "attr", "labelTranslation", 'translationService.locale', function() {
     var key;
 
     if (isPresent(this.get("labelTranslation"))) {

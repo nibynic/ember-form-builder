@@ -1,7 +1,7 @@
 import EmberObject from '@ember/object';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | simple-submit', function(hooks) {
@@ -46,6 +46,12 @@ module('Integration | Component | simple-submit', function(hooks) {
     this.set('translation', 'some.weird.submit.translation.key');
 
     assert.dom('[data-test-submit]').hasText('Zapisz dziw');
+
+    translations['some.weird.submit.translation.key'] = 'Weird save';
+    this.owner.lookup('service:form-builder-translations').set('locale', 'en');
+    await settled();
+
+    assert.dom('[data-test-submit]').hasText('Weird save');
   });
 
   test('it is disabled when the form builder is loading', async function(assert) {

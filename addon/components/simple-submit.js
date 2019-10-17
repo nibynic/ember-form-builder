@@ -25,7 +25,7 @@ const SimpleSubmit = Component.extend({
     }
   }),
 
-  text: byDefault("builder.translationKey", "translation", function() {
+  text: byDefault("builder.translationKey", "translation", 'translationService.locale', function() {
     var key;
     var defaultKey = "formBuilder.actions.submit";
 

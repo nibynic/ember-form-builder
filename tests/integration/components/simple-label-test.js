@@ -1,7 +1,7 @@
 import EmberObject from '@ember/object';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | simple-label', function(hooks) {
@@ -21,5 +21,11 @@ module('Integration | Component | simple-label', function(hooks) {
     `);
 
     assert.dom('abbr').hasAttribute('title', 'Wymagane');
+
+    translations['formBuilder.isRequired'] = 'Required';
+    this.owner.lookup('service:form-builder-translations').set('locale', 'en');
+    await settled();
+
+    assert.dom('abbr').hasAttribute('title', 'Required');
   });
 });

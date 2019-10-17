@@ -8,7 +8,7 @@ export default Component.extend({
   tagName: "label",
   attributeBindings: ["for"],
 
-  requiredText: computed(function() {
+  requiredText: computed('translationService.locale', function() {
     var result;
     var key = "formBuilder.isRequired";
     if (this.get("translationService").exists(key)) {

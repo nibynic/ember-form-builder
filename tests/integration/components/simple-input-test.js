@@ -324,6 +324,12 @@ module('Integration | Component | simple-input', function(hooks) {
     assert.dom('.hint').hasText('Maksymalnie 255 znaków');
     assert.dom('input').hasAttribute('placeholder', 'Wpisz tytuł');
 
+    translations['article.attributes.title'] = 'Article title';
+    this.owner.lookup('service:form-builder-translations').set('locale', 'en');
+    await settled();
+
+    assert.dom('label').hasText('Article title', 'should update after locale change');
+
     await render(hbs`
       {{simple-input attr="title" as="string" builder=builder
         labelTranslation="some.weird.label.translation.key"
