@@ -42,6 +42,7 @@ export default TextField.extend(InputDefaultsMixin, {
           return formatDate(date);
         }
       }
+      return undefined;
     }
   })
 });

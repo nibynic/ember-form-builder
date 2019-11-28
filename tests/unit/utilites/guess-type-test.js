@@ -32,7 +32,7 @@ test("it detects collection when a collection param is available", function(asse
 test("it recognizes Ember Data attribute types", function(assert) {
   A(["string", "number", "date", "boolean"]).forEach(function(type) {
     object = EmberObject.extend({
-      someProperty: computed(function() { }).meta({ type: type })
+      someProperty: computed(function() { return undefined; }).meta({ type: type })
     }).create();
 
     assert.equal(guessType(object, "someProperty", input), type);

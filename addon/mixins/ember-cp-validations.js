@@ -44,6 +44,8 @@ const ValidationsMapper = EmberObject.extend({
         lt:       this.get('validations.number.lt'),
         lte:      this.get('validations.number.lte')
       }
+    } else {
+      return undefined;
     }
   })
 });
