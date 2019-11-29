@@ -2,7 +2,7 @@ import { oneWay } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
-import FormBuilder from "ember-form-builder/models/form-builder";
+import { getOwner } from '@ember/application';
 
 export default Component.extend({
   tagName: "form",
@@ -37,7 +37,7 @@ export default Component.extend({
     if (this.get('as') === '') {
       params.modelName = this.get('as');
     }
-    return FormBuilder.create(params);
+    return getOwner(this).factoryFor('model:form-builder').create(params);
   }),
 
   isValid: oneWay("formBuilder.isValid")

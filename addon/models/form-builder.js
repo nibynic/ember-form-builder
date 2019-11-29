@@ -1,10 +1,11 @@
 import { camelize } from '@ember/string';
-import { Promise as EmberPromise } from 'rsvp';
+import { all } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import byDefault from 'ember-form-builder/utilities/by-default';
+import { getOwner } from '@ember/application';
 
 export default EmberObject.extend({
   status: null,
@@ -34,19 +35,26 @@ export default EmberObject.extend({
   validate() {
     var validations = [];
 
-    validations.push(this.validateObject());
+    validations.push(this.validationAdapter.validate());
 
     this.get("children").forEach((child) => {
       validations.push(child.validate());
     });
 
-    return new EmberPromise((resolve, reject) => {
-      EmberPromise.all(validations).then(
-        () => { this.set("isValid", true); resolve(); },
-        () => { this.set("isValid", false); reject(); }
-      );
-    });
+    return all(validations).then(
+      () => this.set('isValid', true),
+      (e) => {
+        this.set('isValid', false);
+        throw e;
+      }
+    );
   },
+
+  validationAdapter: computed(function() {
+    let owner = getOwner(this);
+    let name = owner.factoryFor('config:environment').class.formBuilder.validationsAddon;
+    return owner.factoryFor(`validation-adapter:${name}`).create({ object: this.object });
+  }),
 
   model: byDefault('object.model', function() {
     if (this.isModel(this.get('object.model'))) {

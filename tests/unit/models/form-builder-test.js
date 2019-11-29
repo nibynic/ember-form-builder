@@ -1,11 +1,14 @@
-import { run } from '@ember/runloop';
-import { Promise as EmberPromise } from 'rsvp';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
+import { resolve, reject } from 'rsvp';
 import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
-import { module, test } from 'qunit';
 import FormBuilder from "ember-form-builder/models/form-builder";
+import sinon from 'sinon';
 
-module('Unit | Models | FormBuilder | main', function() {
+module('Unit | Models | FormBuilder', function(hooks) {
+  setupTest(hooks);
+
   test("it updates status to success when created or updated", function(assert) {
     var modelClass = EmberObject.extend(Evented);
     modelClass.reopenClass({modelName: "fake-model"});
@@ -66,75 +69,57 @@ module('Unit | Models | FormBuilder | main', function() {
     assert.equal(builder.get("isLoading"), true);
   });
 
-  test("validate() performs validation on the object and on the nested fields", function(assert) {
-    var isValid = false;
-    var nestedIsValid = false;
-    var validationPerformed = false;
-    var nestedValidationWasPerformed = false;
-    var model = EmberObject.create({
-      validate() {
-        validationPerformed = true;
-        return new EmberPromise(function(resolve, reject) {
-          if (isValid) {
-            resolve();
-          } else {
-            reject();
-          }
-        });
-      }
-    });
-    var nestedModel = EmberObject.create({
-      validate() {
-        nestedValidationWasPerformed = true;
-        return new EmberPromise(function(resolve, reject) {
-          if (nestedIsValid) {
-            resolve();
-          } else {
-            reject();
-          }
-        });
-      }
-    });
-    var builder = FormBuilder.create({
-      object: model
-    });
-    builder.addChild(FormBuilder.create({
-      object: nestedModel
-    }));
-
-    run(function() {
-      builder.validate();
+  module('validation', function(hooks) {
+    hooks.beforeEach(function() {
+      this.object = {};
+      this.builder = this.owner.factoryFor('model:form-builder').create({
+        object: this.object
+      });
     });
 
+    test('it uses validation adapter specified in the config', function(assert) {
+      this.owner.factoryFor('config:environment').class.formBuilder = {
+        validationsAddon: 'ember-cp-validations'
+      };
+      const EmberCpValidationsAdapter = this.owner.factoryFor('validation-adapter:ember-cp-validations').class;
 
-    assert.ok(validationPerformed, "Validation was performed");
-    assert.ok(nestedValidationWasPerformed, "Nested validation was performed");
-    assert.ok(!builder.get("isValid"), "Form was invalid");
-
-    nestedIsValid = true;
-
-    run(function() {
-      builder.validate();
+      assert.ok(this.builder.validationAdapter instanceof EmberCpValidationsAdapter);
+      assert.equal(this.builder.validationAdapter.object, this.object);
     });
 
-    assert.ok(!builder.get("isValid"), "Form was invalid");
+    test('it performs validation on the adapter', async function(assert) {
+      let validateStub = sinon.stub(this.builder.validationAdapter, 'validate').returns(resolve());
 
-    isValid = true;
-    nestedIsValid = false;
+      await this.builder.validate();
 
-    run(function() {
-      builder.validate();
+      assert.ok(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
+
+      validateStub.reset();
+      validateStub.returns(reject());
+      await assert.rejects(this.builder.validate());
+
+      assert.notOk(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
     });
 
-    assert.ok(!builder.get("isValid"), "Form was invalid");
+    test('it performs validation on the nested fields', async function(assert) {
+      let child = this.owner.factoryFor('model:form-builder').create();
+      let validateStub = sinon.stub(child.validationAdapter, 'validate').returns(resolve());
+      this.builder.addChild(child);
+      sinon.stub(this.builder.validationAdapter, 'validate').returns(resolve());
 
-    isValid = true;
-    nestedIsValid = true;
+      await this.builder.validate();
 
-    run(function() {
-      builder.validate();
+      assert.ok(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
+
+      validateStub.reset();
+      validateStub.returns(reject());
+      await assert.rejects(this.builder.validate());
+
+      assert.notOk(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
     });
-
-    assert.ok(builder.get("isValid"), "Form was valid");
   });
 });
