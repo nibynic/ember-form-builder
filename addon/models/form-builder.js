@@ -2,6 +2,7 @@ import { camelize } from '@ember/string';
 import { all } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
+import { reads } from '@ember/object/computed';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import byDefault from 'ember-form-builder/utilities/by-default';
@@ -56,13 +57,14 @@ export default EmberObject.extend({
     return owner.factoryFor(`validation-adapter:${name}`).create({ object: this.object });
   }),
 
-  model: byDefault('object.model', function() {
-    if (this.isModel(this.get('object.model'))) {
-      return this.get('object.model');
-    } else {
-      return this.get('object');
-    }
+  dataAdapter: computed(function() {
+    let owner = getOwner(this);
+    let name = owner.factoryFor('config:environment').class.formBuilder.dataAddon;
+    return owner.factoryFor(`data-adapter:${name}`).create({ object: this.object });
   }),
+
+  model: reads('dataAdapter.model'),
+  modelName: reads('dataAdapter.modelName'),
 
   translationKey: byDefault('modelName', function() {
     return camelize(this.get('modelName') || '');
@@ -79,24 +81,5 @@ export default EmberObject.extend({
       .reject(isBlank).map(
         (n, i) => i > 0 ? `[${n}]` : n
       ).join('');
-  }),
-
-  _setSuccessStatus: function() {
-    this.set("status", "success");
-  },
-
-  _setFailureStatus: function() {
-    this.set("isValid", false);
-    this.set("status", "failure");
-  },
-
-  // defined in validations mixin
-  errorsPathFor() {},
-  validationsPathFor() {},
-  normalizeValidations() {},
-  validateObject() {},
-
-  // defined in data mixin
-  modelName: '',
-  isModel(/* modelCandidate */) {}
+  })
 });

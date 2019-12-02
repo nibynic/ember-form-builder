@@ -4,12 +4,12 @@ import ENV from "../config/environment";
 import { classify } from '@ember/string';
 
 import FormBuilder from 'ember-form-builder/models/form-builder';
-import EmberData from 'ember-form-builder/mixins/ember-data';
-import EmberOrbit from 'ember-form-builder/mixins/ember-orbit';
+// import EmberData from 'ember-form-builder/mixins/ember-data';
+// import EmberOrbit from 'ember-form-builder/mixins/ember-orbit';
 
 const DataMixins = {
-  EmberData: EmberData,
-  EmberOrbit: EmberOrbit
+  // EmberData: EmberData,
+  // EmberOrbit: EmberOrbit
 };
 
 export var initialize = function(/* app */) {

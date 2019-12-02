@@ -1,7 +1,7 @@
-import Mixin from '@ember/object/mixin';
+import Base from './base';
 import { reads } from '@ember/object/computed';
 
-export default Mixin.create({
+export default Base.extend({
   modelName: reads('model.type'),
 
   isModel(object) {

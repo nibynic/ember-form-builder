@@ -9,40 +9,6 @@ import sinon from 'sinon';
 module('Unit | Models | FormBuilder', function(hooks) {
   setupTest(hooks);
 
-  test("it updates status to success when created or updated", function(assert) {
-    var modelClass = EmberObject.extend(Evented);
-    modelClass.reopenClass({modelName: "fake-model"});
-    var model = modelClass.create();
-    var builder = FormBuilder.create({
-      model: model
-    });
-
-    assert.equal(builder.get("status"), null);
-
-    model.trigger("didCreate");
-    assert.equal(builder.get("status"), "success");
-
-    model.set("status", null);
-    model.trigger("didUpdate");
-    assert.equal(builder.get("status"), "success");
-  });
-
-  test("it updates status to failure when became invalid", function(assert) {
-    var modelClass = EmberObject.extend(Evented);
-    modelClass.reopenClass({modelName: "fake-model"});
-    var model = modelClass.create();
-    var builder = FormBuilder.create({
-      model: model
-    });
-
-    assert.equal(builder.get("status"), null);
-    assert.ok(builder.get("isValid"));
-
-    model.trigger("becameInvalid");
-    assert.equal(builder.get("status"), "failure");
-    assert.ok(!builder.get("isValid"));
-  });
-
   test("it is loading when the model is saving", function(assert) {
     var model = EmberObject.extend(Evented).create({ isSaving: false });
     var builder = FormBuilder.create({
@@ -67,6 +33,30 @@ module('Unit | Models | FormBuilder', function(hooks) {
 
     object.set("isLoading", true);
     assert.equal(builder.get("isLoading"), true);
+  });
+
+  module('model detection', function(hooks) {
+    hooks.beforeEach(function() {
+      this.model = EmberObject.extend({ type: 'my-model' }).create();
+      this.builder = this.owner.factoryFor('model:form-builder').create({
+        object: this.model
+      });
+    });
+
+    test('it uses data adapter specified in the config', function(assert) {
+      this.owner.factoryFor('config:environment').class.formBuilder = {
+        dataAddon: 'ember-orbit'
+      };
+      const EmberOrbitAdapter = this.owner.factoryFor('data-adapter:ember-orbit').class;
+
+      assert.ok(this.builder.dataAdapter instanceof EmberOrbitAdapter);
+      assert.equal(this.builder.dataAdapter.object, this.model);
+    });
+
+    test('it proxies model and model name from the adapter', function(assert) {
+      assert.equal(this.builder.model, this.model);
+      assert.equal(this.builder.modelName, 'my-model');
+    });
   });
 
   module('validation', function(hooks) {
