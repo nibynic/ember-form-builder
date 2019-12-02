@@ -1,39 +1,11 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { resolve, reject } from 'rsvp';
-import Evented from '@ember/object/evented';
 import EmberObject from '@ember/object';
-import FormBuilder from "ember-form-builder/models/form-builder";
 import sinon from 'sinon';
 
 module('Unit | Models | FormBuilder', function(hooks) {
   setupTest(hooks);
-
-  test("it is loading when the model is saving", function(assert) {
-    var model = EmberObject.extend(Evented).create({ isSaving: false });
-    var builder = FormBuilder.create({
-      model: model
-    });
-
-    assert.equal(builder.get("isLoading"), false);
-
-    model.set("isSaving", true);
-    assert.equal(builder.get("isLoading"), true);
-  });
-
-  test("isLoading can be overriden by object property", function(assert) {
-    var model = EmberObject.extend(Evented).create({ isSaving: true });
-    var object = EmberObject.extend(Evented).create({ isLoading: false });
-    var builder = FormBuilder.create({
-      model: model,
-      object: object
-    });
-
-    assert.equal(builder.get("isLoading"), false);
-
-    object.set("isLoading", true);
-    assert.equal(builder.get("isLoading"), true);
-  });
 
   module('model detection', function(hooks) {
     hooks.beforeEach(function() {

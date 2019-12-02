@@ -1,7 +1,7 @@
-import { oneWay } from '@ember/object/computed';
+import Component from '@ember/component';
 import { isPresent } from '@ember/utils';
 import { computed } from '@ember/object';
-import Component from '@ember/component';
+import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 
 export default Component.extend({
@@ -12,10 +12,33 @@ export default Component.extend({
 
   submit: function(event) {
     event.preventDefault();
-
-    this.get("formBuilder").validate().then(
-      () => this.action(),
-      () => this.submitFailed()
+    if (!this._isLoadingOverridden) {
+      this.set('formBuilder.isLoading', true);
+    }
+    if (!this._statusOverridden) {
+      this.set('formBuilder.status', undefined);
+    }
+    this.get('formBuilder').validate().then(
+      () => this.action()
+    ).then(
+      () => {
+        if (!this._statusOverridden) {
+          this.set('formBuilder.status', 'success');
+        }
+      },
+      (e) => {
+        if (!this._statusOverridden) {
+          this.set('formBuilder.status', 'failure');
+        }
+        this.submitFailed(e);
+        throw e;
+      }
+    ).finally(
+      () => {
+        if (!this._isLoadingOverridden) {
+          this.set('formBuilder.isLoading', false);
+        }
+      }
     );
   },
 
@@ -40,5 +63,27 @@ export default Component.extend({
     return getOwner(this).factoryFor('model:form-builder').create(params);
   }),
 
-  isValid: oneWay("formBuilder.isValid")
+  isValid: reads('formBuilder.isValid'),
+
+  isLoading: computed('formBuilder.isLoading', {
+    get() {
+      return this.get('formBuilder.isLoading');
+    },
+    set(k, v) {
+      this._isLoadingOverridden = true;
+      this.set('formBuilder.isLoading', v);
+      return v;
+    }
+  }),
+
+  status: computed('formBuilder.status', {
+    get() {
+      return this.get('formBuilder.status');
+    },
+    set(k, v) {
+      this._statusOverridden = true;
+      this.set('formBuilder.status', v);
+      return v;
+    }
+  })
 });

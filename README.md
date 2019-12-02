@@ -21,7 +21,7 @@ npm install --save-dev ember-form-builder
 ## Usage
 
 ```handlebars
-{{#form-builder for=this action="submit" as |f|}}
+{{#form-builder for=this action=(action "submit") as |f|}}
 
   {{f.input "title"}}
   {{f.input "category" collection=categories
@@ -158,6 +158,10 @@ Those are the default classes:
 You'll probably want to customize the markup Ember Form Builder generates. For that, you can override the default templates.
 
 Start by copying all or some of the [default templates](https://github.com/nibynic/ember-form-builder/tree/master/app/templates/components) to your app. Then modify whatever you want.
+
+## Upgrading ##
+
+Please check out the [upgrading documentation](UPGRADING.md).
 
 ## Legal ##
 

@@ -13,12 +13,6 @@ export default EmberObject.extend({
 
   isValid: true,
 
-  isLoading: computed("model.isSaving", "object.isLoading", function() {
-    var objectIsLoading = this.get("object.isLoading");
-    return objectIsLoading === true || objectIsLoading === false ?
-      objectIsLoading : this.get("model.isSaving");
-  }),
-
   children: computed(function() {
     return A([]);
   }),

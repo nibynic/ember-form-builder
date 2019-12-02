@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click } from '@ember/test-helpers';
+import { render, click, settled, waitFor } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import { resolve, reject } from 'rsvp';
+import { Promise, resolve, reject } from 'rsvp';
 import sinon from 'sinon';
 
 module('Integration | Component | form-builder', function(hooks) {
@@ -58,31 +58,136 @@ module('Integration | Component | form-builder', function(hooks) {
     assert.dom('[data-test-name]').hasText('sampleModels[0]');
   });
 
-  test('it handles submit', async function(assert) {
-    this.set('object', {
-      validate: sinon.stub().returns(reject())
+  module('submitting', function(hooks) {
+    hooks.beforeEach(async function() {
+      this.validate = sinon.stub();
+      this.submit = sinon.stub();
+      this.didFail = sinon.stub();
+
+      await render(hbs`
+        {{#form-builder for=this action=(action submit) submitFailed=(action didFail) as |f|}}
+          <div data-test-is-valid>{{f.builder.isValid}}</div>
+          <div data-test-status>{{f.builder.status}}</div>
+          <input type="submit">
+        {{/form-builder}}
+      `);
     });
-    this.set('didSubmit', sinon.stub());
-    this.set('didFail', sinon.stub());
 
-    await render(hbs`
-      {{#form-builder for=object action=(action didSubmit) submitFailed=(action didFail) as |f|}}
-        <div data-test-is-valid>{{f.builder.isValid}}</div>
-        <input type="submit">
-      {{/form-builder}}
-    `);
-    await click('input[type=submit]');
+    test('it doesn’t submit if validation failed', async function(assert) {
+      this.validate.returns(reject());
 
-    assert.ok(this.object.validate.calledOnce, 'Validation was performed');
-    assert.ok(this.didFail.calledOnce, 'Submit failed action was sent');
-    assert.dom('[data-test-is-valid]').hasText('false', 'Form was invalid');
+      await click('input[type=submit]');
 
-    this.set('object', {
-      validate: sinon.stub().returns(resolve())
+      assert.ok(this.validate.calledOnce);
+      assert.ok(this.submit.notCalled);
+      assert.ok(this.didFail.calledOnce);
+      assert.dom('[data-test-is-valid]').hasText('false');
+      assert.dom('[data-test-status]').hasText('failure');
     });
-    await click('input[type=submit]');
 
-    assert.ok(this.didSubmit.calledOnce, 'Submit action was sent');
-    assert.dom('[data-test-is-valid]').hasText('true', 'Form was valid');
+    test('it handles successful submit', async function(assert) {
+      this.validate.returns(resolve());
+      this.submit.returns(resolve());
+
+      await click('input[type=submit]');
+
+      assert.ok(this.validate.calledOnce);
+      assert.ok(this.submit.calledOnce);
+      assert.ok(this.didFail.notCalled);
+      assert.dom('[data-test-is-valid]').hasText('true');
+      assert.dom('[data-test-status]').hasText('success');
+    });
+
+    test('it handles failed submit', async function(assert) {
+      this.validate.returns(resolve());
+      this.submit.returns(reject());
+
+      await click('input[type=submit]');
+
+      assert.ok(this.validate.calledOnce);
+      assert.ok(this.submit.calledOnce);
+      assert.ok(this.didFail.calledOnce);
+      assert.dom('[data-test-is-valid]').hasText('true');
+      assert.dom('[data-test-status]').hasText('failure');
+    });
+
+    test('it doesn’t override provided status property', async function(assert) {
+      this.validate.returns(resolve());
+      this.submit.returns(resolve());
+      this.set('status', 'failure');
+      await render(hbs`
+        {{#form-builder for=this action=(action submit) status=status as |f|}}
+          <div data-test-status>{{f.builder.status}}</div>
+          <input type="submit">
+        {{/form-builder}}
+      `);
+
+      assert.dom('[data-test-status]').hasText('failure');
+
+      await click('input[type=submit]');
+
+      assert.dom('[data-test-status]').hasText('failure');
+
+      this.set('status', 'success');
+
+      assert.dom('[data-test-status]').hasText('success');
+    });
+  });
+
+  module('loading state', function(hooks) {
+    hooks.beforeEach(async function() {
+      this.validate = sinon.stub().returns(resolve());
+      this.submit = sinon.stub().returns(new Promise((r) => this.resolvePromise = r));
+    });
+
+    test('it detects loading state', async function(assert) {
+      await render(hbs`
+        {{#form-builder for=this action=(action submit) as |f|}}
+          {{#if f.builder.isLoading}}
+            <div data-test-is-loading></div>
+          {{/if}}
+          <input type="submit">
+        {{/form-builder}}
+      `);
+
+      click('input[type=submit]');
+      await waitFor('[data-test-is-loading]');
+
+      assert.dom('[data-test-is-loading]').exists();
+
+      this.resolvePromise();
+      await settled();
+
+      assert.dom('[data-test-is-loading]').doesNotExist();
+    });
+
+    test('it doesn’t override provided isLoading property', async function(assert) {
+      this.set('isLoading', true);
+
+      await render(hbs`
+        {{#form-builder for=this action=(action submit) isLoading=isLoading as |f|}}
+          {{#if f.builder.isLoading}}
+            <div data-test-is-loading></div>
+          {{/if}}
+          <input type="submit">
+        {{/form-builder}}
+      `);
+
+      assert.dom('[data-test-is-loading]').exists();
+
+      click('input[type=submit]');
+      await waitFor('[data-test-is-loading]');
+
+      assert.dom('[data-test-is-loading]').exists();
+
+      this.resolvePromise();
+      await settled();
+
+      assert.dom('[data-test-is-loading]').exists();
+
+      this.set('isLoading', false);
+
+      assert.dom('[data-test-is-loading]').doesNotExist();
+    });
   });
 });
