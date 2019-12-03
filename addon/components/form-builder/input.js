@@ -89,15 +89,8 @@ const extension = {
   init() {
     this._super(...arguments);
 
-    var errorsAttribute = this.get('builder').errorsPathFor(this.get('attr'));
-    defineProperty(this, "errors", reads(errorsAttribute));
-
-    var validationsAttribute = this.get('builder').validationsPathFor(this.get('attr'));
-    defineProperty(this, "validations", computed(validationsAttribute, function() {
-      return this.get('builder').normalizeValidations(
-        this.get(validationsAttribute)
-      );
-    }));
+    defineProperty(this, 'errors', reads(`builder.validations.${this.get('attr')}.errors`));
+    defineProperty(this, 'validations', reads(`builder.validations.${this.get('attr')}`));
 
     var valueAttribute = "object." + this.get("attr");
     defineProperty(this, "value", computed(valueAttribute, {

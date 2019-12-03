@@ -13,11 +13,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
 
   const DEFAULT_TYPES = ['string', 'text', 'boolean', 'number', 'date', 'password', 'email', 'tel'];
 
-  const FormBuilderMock = EmberObject.extend({
-    errorsPathFor(attr)       { return `builder.errorsMock.${attr}` },
-    validationsPathFor(attr)  { return `builder.validationsMock.${attr}` },
-    normalizeValidations(v)   { return v; }
-  });
+  const FormBuilderMock = EmberObject.extend();
 
 
   test('it reflects value updates', async function(assert) {
@@ -103,14 +99,11 @@ module('Integration | Component | form-builder/input', function(hooks) {
   test('it reflects error updates', async function(assert) {
     this.set('builder', FormBuilderMock.create({
       isValid: true,
-      object: {}
-    }));
-
-    this.owner.register('component:form-builder/input', SimpleInput.extend({
-      configuration: Object.freeze({
+      object: {},
+      configuration: {
         wrapperWithErrorsClass: 'input-with-errors',
         errorsClass: 'errors'
-      })
+      }
     }));
 
     await render(hbs`
@@ -120,8 +113,10 @@ module('Integration | Component | form-builder/input', function(hooks) {
     assert.dom('[data-test-input]').doesNotHaveClass('input-with-errors', 'Wrapper element has no error class assigned.');
     assert.dom('.errors').doesNotExist();
 
-    this.set('builder.errorsMock', {
-      title: ['can\'t be blank', 'is too short']
+    this.set('builder.validations', {
+      title: {
+        errors: ['can\'t be blank', 'is too short']
+      }
     });
 
     assert.dom('[data-test-input]').doesNotHaveClass('input-with-errors', 'Wrapper element has no error class assigned if wasn\'t focused out.');
@@ -135,7 +130,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder.isValid', true);
 
     assert.dom('.errors').doesNotExist('Just to be sure it stopped displaying errors.');
-
+    
     this.element.querySelector('input').focus();
     this.element.querySelector('input').blur();
     await settled();
@@ -242,7 +237,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
 
   test('it renders the required mark', async function(assert) {
     this.set('builder', FormBuilderMock.create({
-      validationsMock: {
+      validations: {
         title: {
           required: true
         }
