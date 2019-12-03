@@ -1,0 +1,6 @@
+{{yield (hash
+  input=(component "form-builder/input" builder=formBuilder)
+  fields=(component "form-builder/fields" parentFormBuilder=formBuilder)
+  submit=(component "form-builder/submit" builder=formBuilder)
+  builder=formBuilder
+)}}

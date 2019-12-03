@@ -137,6 +137,22 @@ export default TextField.extend({
 {{/form-builder}}
 ```
 
+## Renamed components
+
+Some components were named in a convention originating from the 'SimpleForm'
+name that was used by this addon originally. Also two of them were used to provide
+merged configuration in consuming apps - this approach is not needed anymore.
+If you were referencing these components, please rename your references as follows:
+
+Before | After
+--- | ---
+`input-on` | `form-builder/input`
+`submit-on` | `form-builder/submit`
+`fields-builder` | `form-builder/fields`
+`simple-input` | `form-builder/input`
+`simple-label` | `form-builder/label`
+`simple-submit` | `form-builder/submit`
+
 
 ## Loading, success and failure states
 

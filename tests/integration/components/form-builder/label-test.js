@@ -4,7 +4,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | simple-label', function(hooks) {
+module('Integration | Component | form-builder/label', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it translates some attributes', async function(assert) {
@@ -17,7 +17,7 @@ module('Integration | Component | simple-label', function(hooks) {
     }));
 
     await render(hbs`
-      {{simple-label attr="title" isRequired=true}}
+      {{form-builder/label attr="title" isRequired=true}}
     `);
 
     assert.dom('abbr').hasAttribute('title', 'Wymagane');

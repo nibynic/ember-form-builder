@@ -124,7 +124,7 @@ Ember Form Builder automatically detects internationalization addon and tries to
 use case | label | hint | placeholder | submit | required
 --- | --- | --- | --- | ---
 Explicit | `label="My attribute"` | `hint="My hint"` | `placeholder="My placeholder"` | `text="My submit"` | `not possible`
-Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
+Custom form translation key: `{{#form-builder translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
 Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | Looks up `article.placeholders.attribute` | `not possible`
 Default | humanizes attribute name | empty | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
 Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | empty | "Save" | "Required"

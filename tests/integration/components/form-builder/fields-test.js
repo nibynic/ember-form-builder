@@ -4,7 +4,7 @@ import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
-module('Integration | Component | fields-builder', function(hooks) {
+module('Integration | Component | form-builder/fields', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it registers and unregisters itself with the parent form builder', async function(assert) {
@@ -15,7 +15,7 @@ module('Integration | Component | fields-builder', function(hooks) {
 
     await render(hbs`
       {{#if isVisible}}
-        {{fields-builder on=parent}}
+        {{form-builder/fields on=parent}}
       {{/if}}
     `);
 
@@ -36,9 +36,9 @@ module('Integration | Component | fields-builder', function(hooks) {
     });
 
     await render(hbs`
-      {{#fields-builder on=parent as="sample-child" as |f|}}
+      {{#form-builder/fields on=parent as="sample-child" as |f|}}
         {{f.builder.name}}
-      {{/fields-builder}}
+      {{/form-builder/fields}}
     `);
 
     assert.dom(this.element).hasText('sampleModel[sampleChild]');

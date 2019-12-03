@@ -7,6 +7,16 @@ import sinon from 'sinon';
 module('Unit | Models | FormBuilder', function(hooks) {
   setupTest(hooks);
 
+  test('it provides form builder configuration', function(assert) {
+    this.owner.factoryFor('config:environment').class.formBuilder = {
+      dataAddon: 'ember-orbit'
+    };
+    let builder = this.owner.factoryFor('model:form-builder').create();
+
+    assert.equal(builder.configuration.dataAddon, 'ember-orbit'); // overriden value
+    assert.equal(builder.configuration.validationsAddon, 'ember-validations'); // default value
+  });
+
   module('model detection', function(hooks) {
     hooks.beforeEach(function() {
       this.model = EmberObject.extend({ type: 'my-model' }).create();

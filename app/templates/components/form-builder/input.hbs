@@ -1,14 +1,14 @@
 {{#if hasLabel}}
   <div class="simple-input-label">
-    {{#simple-label for=inputElementId isRequired=isRequired}}{{label}}{{/simple-label}}
+    {{#form-builder/label for=inputElementId isRequired=isRequired}}{{label}}{{/form-builder/label}}
   </div>
 {{/if}}
 <div class={{fieldClassName}}>
   {{#if hasInlineLabel}}
-    {{#simple-label for=inputElementId isRequired=isRequired}}
+    {{#form-builder/label for=inputElementId isRequired=isRequired}}
       {{component inputComponentName config=inputConfig class=inputClassName}}
       <span class="simple-input-inline-label">{{label}}</span>
-    {{/simple-label}}
+    {{/form-builder/label}}
   {{else}}
     {{component inputComponentName config=inputConfig class=inputClassName}}
   {{/if}}

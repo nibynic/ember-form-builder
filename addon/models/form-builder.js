@@ -7,6 +7,8 @@ import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import byDefault from 'ember-form-builder/utilities/by-default';
 import { getOwner } from '@ember/application';
+import defaultConfiguration from 'ember-form-builder/configuration';
+import { assign } from '@ember/polyfills';
 
 export default EmberObject.extend({
   status: null,
@@ -27,6 +29,13 @@ export default EmberObject.extend({
     childFormBuilder.set('parent', null);
   },
 
+  configuration: computed(function() {
+    return assign(
+      {}, defaultConfiguration,
+      getOwner(this).factoryFor('config:environment').class.formBuilder || {}
+    );
+  }),
+
   validate() {
     var validations = [];
 
@@ -45,16 +54,14 @@ export default EmberObject.extend({
     );
   },
 
-  validationAdapter: computed(function() {
-    let owner = getOwner(this);
-    let name = owner.factoryFor('config:environment').class.formBuilder.validationsAddon;
-    return owner.factoryFor(`validation-adapter:${name}`).create({ object: this.object });
+  validationAdapter: computed('configuration.validationsAddon', function() {
+    let name = this.get('configuration.validationsAddon');
+    return getOwner(this).factoryFor(`validation-adapter:${name}`).create({ object: this.object });
   }),
 
-  dataAdapter: computed(function() {
-    let owner = getOwner(this);
-    let name = owner.factoryFor('config:environment').class.formBuilder.dataAddon;
-    return owner.factoryFor(`data-adapter:${name}`).create({ object: this.object });
+  dataAdapter: computed('configuration.validationsAddon', function() {
+    let name = this.get('configuration.dataAddon');
+    return getOwner(this).factoryFor(`data-adapter:${name}`).create({ object: this.object });
   }),
 
   model: reads('dataAdapter.model'),

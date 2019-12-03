@@ -5,10 +5,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import Component from '@ember/component';
-import SimpleInput from 'ember-form-builder/components/simple-input';
+import SimpleInput from 'ember-form-builder/components/form-builder/input';
 import { run } from '@ember/runloop';
 
-module('Integration | Component | simple-input', function(hooks) {
+module('Integration | Component | form-builder/input', function(hooks) {
   setupRenderingTest(hooks);
 
   const DEFAULT_TYPES = ['string', 'text', 'boolean', 'number', 'date', 'password', 'email', 'tel'];
@@ -28,7 +28,7 @@ module('Integration | Component | simple-input', function(hooks) {
     }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder}}
+      {{form-builder/input attr="title" as="string" builder=builder}}
     `);
 
     assert.dom('input').hasValue('Testing testing 123');
@@ -51,7 +51,7 @@ module('Integration | Component | simple-input', function(hooks) {
     this.set('customProperty', A(['a', 'b', 'c']));
 
     await render(hbs`
-      {{simple-input attr="title" as="fake" builder=builder customProperty=customProperty}}
+      {{form-builder/input attr="title" as="fake" builder=builder customProperty=customProperty}}
     `);
 
     assert.dom('[data-test-additional-attributes]').hasText('a b c', 'Initial options are correctly displayed');
@@ -72,7 +72,7 @@ module('Integration | Component | simple-input', function(hooks) {
     }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder data-test-input=true}}
+      {{form-builder/input attr="title" as="string" builder=builder data-test-input=true}}
     `);
 
     assert.dom('input').hasAttribute('name', 'article[title]');
@@ -81,10 +81,16 @@ module('Integration | Component | simple-input', function(hooks) {
   });
 
   test('it uses the classes from configuration', async function(assert) {
-    this.set('builder', FormBuilderMock.create());
+    this.set('builder', FormBuilderMock.create({
+      configuration: {
+        wrapperClass: 'input',
+        fieldClass: 'field',
+        inputClass: 'input-control'
+      }
+    }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder fieldClass="additional-class" data-test-input=true}}
+      {{form-builder/input attr="title" as="string" builder=builder fieldClass="additional-class" data-test-input=true}}
     `);
 
     assert.dom('[data-test-input]').hasClass('input', 'Wrapper element has the configured wrapper class.');
@@ -100,7 +106,7 @@ module('Integration | Component | simple-input', function(hooks) {
       object: {}
     }));
 
-    this.owner.register('component:simple-input', SimpleInput.extend({
+    this.owner.register('component:form-builder/input', SimpleInput.extend({
       configuration: Object.freeze({
         wrapperWithErrorsClass: 'input-with-errors',
         errorsClass: 'errors'
@@ -108,7 +114,7 @@ module('Integration | Component | simple-input', function(hooks) {
     }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder data-test-input=true}}
+      {{form-builder/input attr="title" as="string" builder=builder data-test-input=true}}
     `);
 
     assert.dom('[data-test-input]').doesNotHaveClass('input-with-errors', 'Wrapper element has no error class assigned.');
@@ -140,14 +146,14 @@ module('Integration | Component | simple-input', function(hooks) {
 
   test('it renders a hint when provided', async function(assert) {
     this.set('builder', FormBuilderMock.create());
-    this.owner.register('component:simple-input', SimpleInput.extend({
+    this.owner.register('component:form-builder/input', SimpleInput.extend({
       configuration: Object.freeze({
         hintClass: 'hint'
       })
     }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder hint=hint}}
+      {{form-builder/input attr="title" as="string" builder=builder hint=hint}}
     `);
 
     assert.dom('.hint').doesNotExist();
@@ -161,7 +167,7 @@ module('Integration | Component | simple-input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder placeholder=placeholder}}
+      {{form-builder/input attr="title" as="string" builder=builder placeholder=placeholder}}
     `);
 
     assert.dom('input').doesNotHaveAttribute('placeholder');
@@ -175,7 +181,7 @@ module('Integration | Component | simple-input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{simple-input attr="multiWordAttribute" as="string" builder=builder}}
+      {{form-builder/input attr="multiWordAttribute" as="string" builder=builder}}
     `);
 
     assert.dom('label').hasText('Multi word attribute', 'The humanized label test is rendered');
@@ -185,7 +191,7 @@ module('Integration | Component | simple-input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder label="Custom title"}}
+      {{form-builder/input attr="title" as="string" builder=builder label="Custom title"}}
     `);
 
     assert.dom('label').hasText('Custom title', 'The custom label test is rendered');
@@ -195,17 +201,21 @@ module('Integration | Component | simple-input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder}}
+      {{form-builder/input attr="title" as="string" builder=builder}}
     `);
 
     assert.dom('label').hasAttribute('for', this.element.querySelector('input').id);
   });
 
   test('it renders the label differently when it\'s inline', async function(assert) {
-    this.set('builder', FormBuilderMock.create());
+    this.set('builder', FormBuilderMock.create({
+      configuration: {
+        fieldClass: 'field'
+      }
+    }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder inlineLabel=inlineLabel data-test-input=true}}
+      {{form-builder/input attr="title" as="string" builder=builder inlineLabel=inlineLabel data-test-input=true}}
     `);
 
     assert.dom('.simple-input-label+.field').exists({ count: 1 }, 'The label is rendered before the field');
@@ -220,7 +230,7 @@ module('Integration | Component | simple-input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder label=false inlineLabel=inlineLabel}}
+      {{form-builder/input attr="title" as="string" builder=builder label=false inlineLabel=inlineLabel}}
     `);
 
     assert.dom('label').doesNotExist('There is no label in regular layout');
@@ -240,7 +250,7 @@ module('Integration | Component | simple-input', function(hooks) {
     }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder}}
+      {{form-builder/input attr="title" as="string" builder=builder}}
     `);
 
     assert.dom('label abbr').hasText('*');
@@ -249,7 +259,7 @@ module('Integration | Component | simple-input', function(hooks) {
 
   test('it renders unit when it\'s provided', async function(assert) {
     this.set('builder', FormBuilderMock.create());
-    this.owner.register('component:simple-input', SimpleInput.extend({
+    this.owner.register('component:form-builder/input', SimpleInput.extend({
       configuration: Object.freeze({
         unitClass: 'unit',
         wrapperWithUnitClass: 'has-unit'
@@ -257,7 +267,7 @@ module('Integration | Component | simple-input', function(hooks) {
     }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder unit=unit data-test-input=true}}
+      {{form-builder/input attr="title" as="string" builder=builder unit=unit data-test-input=true}}
     `);
 
     assert.dom('[data-test-input]').doesNotHaveClass('has-unit', 'Has no has-unit class');
@@ -273,14 +283,14 @@ module('Integration | Component | simple-input', function(hooks) {
     test(`it renders correctly for type ${type}`, async function(assert) {
       this.set('builder', FormBuilderMock.create());
       this.set('type', type);
-      this.owner.register('component:simple-input', SimpleInput.extend({
+      this.owner.register('component:form-builder/input', SimpleInput.extend({
         configuration: Object.freeze({
           inputClass: 'input-control'
         })
       }));
 
       await render(hbs`
-        {{simple-input attr="title" as=type builder=builder unit=unit}}
+        {{form-builder/input attr="title" as=type builder=builder unit=unit}}
       `);
 
       assert.dom('.input-control').exists({ count: 1 }, `Rendered correctly for type ${type}`);
@@ -300,10 +310,14 @@ module('Integration | Component | simple-input', function(hooks) {
       exists(key) { return !!translations[key]; }
     }));
 
-    this.set('builder', FormBuilderMock.create());
+    this.set('builder', FormBuilderMock.create({
+      configuration: {
+        hintClass: 'hint'
+      }
+    }));
 
     await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder}}
+      {{form-builder/input attr="title" as="string" builder=builder}}
     `);
 
     assert.dom('label').hasText('Title', 'Label was humanized without translation key');

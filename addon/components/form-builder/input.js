@@ -30,12 +30,13 @@ const extension = {
     return guessType(this.get("_model"), this.get("attr"), this);
   }),
   attr: null,
-  configuration: {},
 
-  type:       reads("as"),
-  object:     reads("builder.object"),
-  _model:     reads("builder.model"),
-  modelName:  reads("builder.modelName"),
+
+  type:           reads('as'),
+  object:         reads('builder.object'),
+  _model:         reads('builder.model'),
+  modelName:      reads('builder.modelName'),
+  configuration:  reads('builder.configuration'),
   builder: computed({
     set(key, value) {
       if (value && value.builder) {
