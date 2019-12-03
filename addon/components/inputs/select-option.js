@@ -41,6 +41,7 @@ function linkPath(context, attrName, options = {}) {
   defineProperty(context, attrName, computed(path, function() {
     return getPath(this.get(options.to), path);
   }));
+  context.notifyPropertyChange(attrName);
 }
 
 function getPath(content, path) {

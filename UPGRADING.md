@@ -1,5 +1,105 @@
 # Upgrading 1.x to 2.x
 
+## InputDefaultsMixin deprecation
+
+To comply with [Ember's mixin deprecation](https://github.com/emberjs/rfcs/issues/534)
+we have removed completely `InputDefaultsMixin`. This may require a bit more
+coding from you, but things should be more clear and straightforward after this change.
+
+### Before
+
+Let’s consider this email input with auto-filled domain:
+
+```javascript
+import TextField from '@ember/component/text-field';
+import InputDefaultsMixin from 'ember-form-builder/mixins/input-defaults';
+import { computed } from '@ember/object';
+
+export default TextField.extend(InputDefaultsMixin, {
+  type: 'email',
+
+  value: computed('modelValue', 'domain', {
+    get() {
+      return this.modelValue;
+    },
+    set(k, email) {
+      if (!email.match('@')) {
+        email += '@' + this.domain;
+      }
+      this.set('modelValue', email);
+      return email;
+    }
+  })
+});
+```
+
+```handlebars
+{{#form-builder for=this action="submit" as |f|}}
+
+  {{f.input "email" domain="gmail.com" placeholder="Your Gmail username"}}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+In this case a lot of magic is happening in the `InputDefaultsMixin`. It maps
+attributes passed by Ember Form Builder as follows:
+
+Attribute | Default behavior
+--- | ---
+`inputElementId` | aliased as `inputId`
+`inputName` | aliased as `name`
+`modelValue` | aliased as `value` (but in our example it's overriden by the component)
+`additionalAttributes` | each key in this hash is aliased under its name in the component (e.g. `placelholder`)
+
+
+### After
+
+Now all Ember Form Builder specific attributes are passed in a single `config` object.
+That way it doesn't interfere with your component's code. It also means you'll have
+to explicitly list properties that Ember Form Builder can pass to your component:
+
+```javascript
+import TextField from '@ember/component/text-field';
+import { computed } from '@ember/object';
+import { reads } from '@ember/object/computed';
+
+export default TextField.extend({
+  type: 'email',
+
+  name:         reads('config.name'),
+  placeholder:  reads('config.placeholder'),
+
+  init() {
+    this._super(...arguments);
+    this.elementId = this.config.inputElementId;
+  },
+
+  value: computed('config.{value,domain}', {
+    get() {
+      return this.config.value;
+    },
+    set(k, email) {
+      if (!email.match('@')) {
+        email += '@' + this.config.domain;
+      }
+      this.set('config.value', email);
+      return email;
+    }
+  })
+});
+```
+
+```handlebars
+{{#form-builder for=this action="submit" as |f|}}
+
+  {{f.input "email" domain="gmail.com" placeholder="Your Gmail username"}}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+
 ## Loading, success and failure states
 
 Previously Ember Form Builder included an undocumented feature that detected loading

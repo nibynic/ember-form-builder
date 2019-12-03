@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { isArray } from '@ember/array';
 import { isEmpty, isPresent } from '@ember/utils';
 import { on } from '@ember/object/evented';
 import { alias, reads } from '@ember/object/computed';
@@ -124,14 +123,15 @@ const extension = {
     return additionalAttributeNames;
   }),
 
-  additionalAttributes: computed("additionalAttributeNames.[]", function() {
-    let proxy = EmberObject.create({ content: this });
-    if (isArray(this.get("additionalAttributeNames"))) {
-      this.get("additionalAttributeNames").forEach((attributeName) => {
-        defineProperty(proxy, attributeName, alias(`content.${attributeName}`));
-      });
-    }
-    return proxy;
+  inputConfig: computed('additionalAttributeNames.[]', function() {
+    let attrs = (this.additionalAttributeNames || []).concat([
+      'value', 'value', 'inputElementId', 'placeholder', 'name', 'validations'
+    ]);
+    return EmberObject.extend(
+      ...attrs.map((key) => ({
+        [key]: alias(`content.${key}`)
+      }))
+    ).create({ content: this });
   }),
 
   wrapperClassName: mergedClass('wrapper'),
@@ -160,7 +160,7 @@ const extension = {
     return this.get("elementId") + "Input";
   }),
 
-  inputName: computed('builder.name', 'attr', function() {
+  name: computed('builder.name', 'attr', function() {
     var prefix = this.get('builder.name');
     var name = this.get('attr');
     if (isPresent(prefix)) {

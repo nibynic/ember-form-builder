@@ -1,6 +1,7 @@
 {{#each resolvedCollection as |option|}}
   {{component optionComponentName content=option selectedValue=value
-    valuePath=optionValuePath stringValuePath=optionStringValuePath labelPath=optionLabelPath
+    valuePath=optionValuePath stringValuePath=optionStringValuePath
+    labelPath=optionLabelPath class=optionClass
     inputName=inputName inputType=inputType action="selectValue"
-    class=optionClass}}
+  }}
 {{/each}}

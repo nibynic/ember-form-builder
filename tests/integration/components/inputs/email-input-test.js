@@ -6,16 +6,50 @@ import hbs from 'htmlbars-inline-precompile';
 module('Integration | Component | inputs/email-input', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it aliases modelValue as value', async function(assert) {
-    this.set('modelValue', 'jan.testowy@example.com');
+  hooks.beforeEach(async function() {
+    this.config = {
+      value: 'john@example.com',
+      name: 'myInput',
+      disabled: false,
+      autocomplete: 'email',
+      placeholder: 'Your email'
+    };
 
-    await render(hbs`{{inputs/email-input modelValue=modelValue}}`);
+    await render(hbs`{{inputs/email-input config=config}}`);
+  });
 
+  test('it renders', async function(assert) {
     assert.dom('input').hasAttribute('type', 'email');
-    assert.dom('input').hasValue('jan.testowy@example.com');
+    assert.dom('input').hasAttribute('name', 'myInput');
+    assert.dom('input').hasAttribute('autocomplete', 'email');
+    assert.dom('input').hasAttribute('placeholder', 'Your email');
+  });
 
-    await fillIn('input', 'janina.kaszanina@example.com');
+  test('it updates value', async function(assert) {
+    assert.dom('input').hasValue('john@example.com');
 
-    assert.equal(this.modelValue,  'janina.kaszanina@example.com');
+    this.set('config.value', 'margaret@example.com');
+
+    assert.dom('input').hasValue('margaret@example.com');
+
+    await fillIn('input', 'nick@example.com');
+
+    assert.equal(this.config.value, 'nick@example.com');
+  });
+
+  test('it can be disabled', async function(assert) {
+    assert.dom('input').isNotDisabled();
+
+    this.set('config.disabled', true);
+
+    assert.dom('input').isDisabled();
+  });
+
+  test('it supports presence validations', async function(assert) {
+    assert.dom('input').doesNotHaveAttribute('required');
+
+    this.set('config.validations', { required: true });
+
+    assert.dom('input').hasAttribute('required');
   });
 });

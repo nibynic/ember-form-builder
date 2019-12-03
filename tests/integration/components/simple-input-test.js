@@ -42,7 +42,7 @@ module('Integration | Component | simple-input', function(hooks) {
     this.owner.register('component:inputs/fake-input', Component.extend({
       layout: hbs`
         <div data-test-additional-attributes>
-          {{#each additionalAttributes.customProperty as |l|}} {{l}} {{/each}}
+          {{#each config.customProperty as |l|}} {{l}} {{/each}}
         </div>
       `
     }));

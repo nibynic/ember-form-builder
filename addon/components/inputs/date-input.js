@@ -1,6 +1,31 @@
+import StringInput from './string-input';
 import { computed } from '@ember/object';
-import TextField from '@ember/component/text-field';
-import InputDefaultsMixin from 'ember-form-builder/mixins/input-defaults';
+
+export default StringInput.extend({
+  type: 'date',
+
+  value: computed('config.value', {
+    get() {
+      var date = this.get('config.value');
+      return formatDate(date);
+    },
+    set(key, value) {
+      if (value.length === 0) {
+        this.set('config.value', undefined);
+      } else {
+        var timestamp = Date.parse(value + 'T00:00Z');
+        if (isNaN(timestamp)) {
+          return value;
+        } else {
+          var date = new Date(timestamp);
+          this.set('config.value', date);
+          return formatDate(date);
+        }
+      }
+      return undefined;
+    }
+  })
+});
 
 function pad(number, length = 2) {
   let result = number.toString();
@@ -20,29 +45,3 @@ function formatDate(date) {
     return null;
   }
 }
-
-export default TextField.extend(InputDefaultsMixin, {
-  type: 'date',
-
-  value: computed('modelValue', {
-    get() {
-      var date = this.get('modelValue');
-      return formatDate(date);
-    },
-    set(key, value) {
-      if (value.length === 0) {
-        this.set('modelValue', undefined);
-      } else {
-        var timestamp = Date.parse(value + 'T00:00Z');
-        if (isNaN(timestamp)) {
-          return value;
-        } else {
-          var date = new Date(timestamp);
-          this.set('modelValue', date);
-          return formatDate(date);
-        }
-      }
-      return undefined;
-    }
-  })
-});

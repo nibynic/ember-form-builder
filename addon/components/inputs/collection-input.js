@@ -1,22 +1,30 @@
 import { get, computed } from '@ember/object';
 import { A, isArray } from '@ember/array';
 import Component from '@ember/component';
-import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
-import { reads } from '@ember/object/computed';
+import { reads, alias, or } from '@ember/object/computed';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { next, cancel } from '@ember/runloop';
 import { resolve } from 'rsvp';
 
-export default Component.extend(InputDefaultsMixin, {
-  tagName: "select",
-  attributeBindings: ["isMultiple:multiple", "name"],
-  collection: null,
-  optionValuePath: "content",
-  optionStringValuePath: "value.id",
-  optionLabelPath: "content.name",
-  modelValue: null,
+export default Component.extend({
+  tagName: 'select',
+  attributeBindings: ['autocomplete', 'autofocus', 'dir', 'disabled', 'inputmode',
+    'multiple', 'name', 'pattern', 'placeholder', 'required', 'size', 'tabindex'],
+
+  defaults: Object.freeze({
+    optionValuePath:        'content',
+    optionStringValuePath:  'value.id',
+    optionLabelPath:        'content.name'
+  }),
+
+  optionValuePath:        or('config.optionValuePath', 'defaults.optionValuePath'),
+  optionStringValuePath:  or('config.optionStringValuePath', 'defaults.optionStringValuePath'),
+  optionLabelPath:        or('config.optionLabelPath', 'defaults.optionLabelPath'),
+
   optionComponentName: "inputs/select-option",
+
+  value: alias('config.value'),
 
   collectionPromise: computed('collection', function() {
     return ObjectProxy.extend(PromiseProxyMixin).create({
@@ -26,7 +34,12 @@ export default Component.extend(InputDefaultsMixin, {
 
   resolvedCollection: reads('collectionPromise.content'),
 
-  didInsertElement: function() {
+  init() {
+    this._super(...arguments);
+    this.elementId = this.get('inputElementId');
+  },
+
+  didInsertElement() {
     this._super(...arguments);
     // set default value in model
     this.nextRun = next(this, this.change);
@@ -64,7 +77,12 @@ export default Component.extend(InputDefaultsMixin, {
     });
   },
 
-  isMultiple: computed('modelValue', function() {
-    return isArray(this.get('modelValue'));
-  })
-});
+  multiple: computed('value', function() {
+    return isArray(this.get('value'));
+  }),
+
+  required: reads('config.validations.required')
+}, ...['autocomplete', 'autofocus', 'collection', 'dir', 'disabled',
+  'inputmode', 'inputElementId', 'name', 'pattern', 'placeholder', 'size', 'tabindex'].map(
+  (attr) => ({ [attr]: reads(`config.${attr}`) })
+));

@@ -1,7 +1,18 @@
-import { alias } from '@ember/object/computed';
 import Checkbox from '@ember/component/checkbox';
-import InputDefaultsMixin from 'ember-form-builder/mixins/input-defaults';
+import { alias, reads } from '@ember/object/computed';
 
-export default Checkbox.extend(InputDefaultsMixin.without('value'), {
-  checked: alias('modelValue')
-});
+export default Checkbox.extend({
+  attributeBindings: ['autocomplete'],
+
+  checked: alias('config.value'),
+
+  init() {
+    this._super(...arguments);
+    this.elementId = this.get('config.elementId');
+  },
+
+  required: reads('config.validations.required')
+}, ...['autocomplete', 'autofocus', 'disabled', 'form', 'indeterminate', 'name',
+  'tabindex'].map(
+  (attr) => ({ [attr]: reads(`config.${attr}`) })
+));

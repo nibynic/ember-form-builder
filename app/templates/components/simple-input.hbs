@@ -6,17 +6,11 @@
 <div class={{fieldClassName}}>
   {{#if hasInlineLabel}}
     {{#simple-label for=inputElementId isRequired=isRequired}}
-      {{component inputComponentName
-        additionalAttributes=additionalAttributes modelValue=value
-        inputElementId=inputElementId class=inputClassName placeholder=placeholder
-        name=inputName validations=validations}}
+      {{component inputComponentName config=inputConfig class=inputClassName}}
       <span class="simple-input-inline-label">{{label}}</span>
     {{/simple-label}}
   {{else}}
-    {{component inputComponentName
-      additionalAttributes=additionalAttributes modelValue=value
-      inputElementId=inputElementId class=inputClassName placeholder=placeholder
-      name=inputName validations=validations}}
+    {{component inputComponentName config=inputConfig class=inputClassName}}
   {{/if}}
   {{#if hasUnit}}
     <div class={{unitClassName}}>{{unit}}</div>
