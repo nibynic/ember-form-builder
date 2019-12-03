@@ -20,7 +20,6 @@ module('Integration | Component | simple-submit', function(hooks) {
   test('it translates some attributes', async function(assert) {
     const translations = {
       'post.actions.submit': 'Zapisz post',
-      'some.weird.submit.translation.key': 'Zapisz dziw',
       'formBuilder.actions.submit': 'Zapisz'
     };
     this.owner.register('service:form-builder-translations', EmberObject.extend({
@@ -30,7 +29,7 @@ module('Integration | Component | simple-submit', function(hooks) {
     this.set('builder', EmberObject.create());
 
     await render(hbs`
-      {{simple-submit data-test-submit=true builder=builder translation=translation}}
+      {{simple-submit data-test-submit=true builder=builder}}
     `);
 
     assert.dom('[data-test-submit]').hasText('Zapisz');
@@ -43,15 +42,11 @@ module('Integration | Component | simple-submit', function(hooks) {
 
     assert.dom('[data-test-submit]').hasText('Zapisz');
 
-    this.set('translation', 'some.weird.submit.translation.key');
-
-    assert.dom('[data-test-submit]').hasText('Zapisz dziw');
-
-    translations['some.weird.submit.translation.key'] = 'Weird save';
+    translations['formBuilder.actions.submit'] = 'Save';
     this.owner.lookup('service:form-builder-translations').set('locale', 'en');
     await settled();
 
-    assert.dom('[data-test-submit]').hasText('Weird save');
+    assert.dom('[data-test-submit]').hasText('Save');
   });
 
   test('it is disabled when the form builder is loading', async function(assert) {

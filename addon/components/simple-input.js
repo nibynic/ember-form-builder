@@ -169,14 +169,8 @@ const extension = {
     return name;
   }),
 
-  label: byDefault("builder.translationKey", "attr", "labelTranslation", 'translationService.locale', function() {
-    var key;
-
-    if (isPresent(this.get("labelTranslation"))) {
-      key = this.get("labelTranslation");
-    } else {
-      key = this.get("builder.translationKey") + ".attributes." + this.get("attr");
-    }
+  label: byDefault("builder.translationKey", "attr", 'translationService.locale', function() {
+    var key = this.get("builder.translationKey") + ".attributes." + this.get("attr");
 
     var result;
     if (this.get("translationService").exists(key)) {
@@ -204,28 +198,16 @@ const extension = {
     return isPresent(this.get("hint"));
   }),
 
-  hint: byDefault("builder.translationKey", "attr", "hintTranslation", function() {
-    var key;
-
-    if (isPresent(this.get("hintTranslation"))) {
-      key = this.get("hintTranslation");
-    } else {
-      key = this.get("builder.translationKey") + ".hints." + this.get("attr");
-    }
+  hint: byDefault("builder.translationKey", "attr", 'translationService.locale', function() {
+    var key = this.get("builder.translationKey") + ".hints." + this.get("attr");
 
     if (this.get("translationService").exists(key)) {
       return this.get("translationService").t(key);
     }
   }),
 
-  placeholder: byDefault("builder.translationKey", "attr", "placeholderTranslation", function() {
-    var key;
-
-    if (isPresent(this.get("placeholderTranslation"))) {
-      key = this.get("placeholderTranslation");
-    } else {
-      key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
-    }
+  placeholder: byDefault("builder.translationKey", "attr", 'translationService.locale', function() {
+    var key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
 
     if (this.get("translationService").exists(key)) {
       return this.get("translationService").t(key);

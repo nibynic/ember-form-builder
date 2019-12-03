@@ -293,10 +293,7 @@ module('Integration | Component | simple-input', function(hooks) {
       'article.hints.title':                    'Maksymalnie 255 znaków',
       'article.placeholders.title':             'Wpisz tytuł',
       'blogPost.attributes.title':              'Tytuł posta',
-      'blogPost.hints.title':                   'Maksymalnie 45 znaków',
-      'some.weird.label.translation.key':       'Dziwny tytuł',
-      'some.weird.hint.translation.key':        'Dziwny hint',
-      'some.weird.placeholder.translation.key': 'Dziwny placeholder'
+      'blogPost.hints.title':                   'Maksymalnie 45 znaków'
     };
     this.owner.register('service:form-builder-translations', EmberObject.extend({
       t(key)      { return translations[key]; },
@@ -329,17 +326,5 @@ module('Integration | Component | simple-input', function(hooks) {
     await settled();
 
     assert.dom('label').hasText('Article title', 'should update after locale change');
-
-    await render(hbs`
-      {{simple-input attr="title" as="string" builder=builder
-        labelTranslation="some.weird.label.translation.key"
-        hintTranslation="some.weird.hint.translation.key"
-        placeholderTranslation="some.weird.placeholder.translation.key"
-      }}
-    `);
-
-    assert.dom('label').hasText('Dziwny tytuł');
-    assert.dom('.hint').hasText('Dziwny hint');
-    assert.dom('input').hasAttribute('placeholder', 'Dziwny placeholder');
   });
 });

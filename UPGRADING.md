@@ -1,5 +1,43 @@
 # Upgrading 1.x to 2.x
 
+## Removed translation attributes
+
+Since Ember translation addons provide translation helpers we do not accept
+translation keys as attributes anymore. You should pass a translated text instead.
+
+### Before
+
+```handlebars
+{{#form-builder for=this action="submit" as |f|}}
+
+  {{f.input
+    "email"
+    labelTranslation="custom.label.key"
+    hintTranslation="custom.hint.key"
+    placeholderTranslation="custom.placeholder.key"\
+  }}
+  {{f.submit translation="custom.submit.key"}}
+
+{{/form-builder}}
+```
+
+### After
+
+```handlebars
+{{#form-builder for=this action="submit" as |f|}}
+
+  {{f.input
+    "email"
+    label=(t "custom.label.key")
+    hint=(t "custom.hint.key")
+    placeholder=(t "custom.placeholder.key")
+  }}
+  {{f.submit text=(t "custom.submit.key")}}
+
+{{/form-builder}}
+```
+
+
 ## InputDefaultsMixin deprecation
 
 To comply with [Ember's mixin deprecation](https://github.com/emberjs/rfcs/issues/534)

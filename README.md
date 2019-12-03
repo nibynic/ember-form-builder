@@ -121,14 +121,13 @@ Ember Form Builder supports `ember-intl` and `ember-i18n` at the moment, however
 
 Ember Form Builder automatically detects internationalization addon and tries to guess the translation keys.
 
-use case | label | hint | submit | required
+use case | label | hint | placeholder | submit | required
 --- | --- | --- | --- | ---
-Explicit | `label="My attribute"` | `hint="My hint"` | `text="My submit"` | `not possible`
-Custom translation key | `labelTranslation="custom.label.key"` | `hintTranslation="custom.hint.key"` | `translation="custom.submit.key"` | `not possible`
-Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.actions.submit` | `not possible`
-Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | `not possible`
-Default | humanizes attribute name | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
-Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | "Save" | "Required"
+Explicit | `label="My attribute"` | `hint="My hint"` | `placeholder="My placeholder"` | `text="My submit"` | `not possible`
+Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
+Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | Looks up `article.placeholders.attribute` | `not possible`
+Default | humanizes attribute name | empty | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
+Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | empty | "Save" | "Required"
 
 ## Configuration
 
