@@ -1,2 +1,6 @@
 {{#if isRequired}}<abbr title={{requiredText}}>*</abbr>{{/if}}
-{{yield}}
+{{#if hasBlock}}
+  {{yield}}
+{{else}}
+  {{text}}
+{{/if}}

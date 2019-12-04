@@ -1,24 +1,6 @@
-{{#if hasLabel}}
-  <div class="simple-input-label">
-    {{#form-builder/label for=inputElementId isRequired=isRequired}}{{label}}{{/form-builder/label}}
-  </div>
-{{/if}}
-<div class={{fieldClassName}}>
-  {{#if hasInlineLabel}}
-    {{#form-builder/label for=inputElementId isRequired=isRequired}}
-      {{component inputComponentName config=inputConfig class=inputClassName}}
-      <span class="simple-input-inline-label">{{label}}</span>
-    {{/form-builder/label}}
-  {{else}}
-    {{component inputComponentName config=inputConfig class=inputClassName}}
-  {{/if}}
-  {{#if hasUnit}}
-    <div class={{unitClassName}}>{{unit}}</div>
-  {{/if}}
-  {{#if hasHint}}
-    <div class={{hintClassName}}>{{hint}}</div>
-  {{/if}}
-  {{#if hasErrors}}
-    <div class={{errorsClassName}}>{{errorMessages}}</div>
-  {{/if}}
-</div>
+{{component
+  (concat "input-wrappers/" wrapper)
+  config=config
+  inputComponent=(component (concat "inputs/" type "-input") config=config)
+  labelComponent=(component "form-builder/label" for=inputElementId isRequired=validations.required text=label)
+}}

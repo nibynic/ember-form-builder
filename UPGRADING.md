@@ -1,5 +1,99 @@
 # Upgrading 1.x to 2.x
 
+## Removed CSS classes configuration and `inlineLabel` option
+
+We've observed that previously used configuration with CSS classes wasn't enough
+for most apps - they still redefined the `input-on` component template. Also
+this approach was incompatible with [BEM](http://getbem.com/) or
+[ember-component-css addon](https://github.com/ebryn/ember-component-css).
+That's why we decided to replace this template with a more flexible wrapper system.
+
+### Before
+
+```handlebars
+{{#form-builder for=this action="submit" as |f|}}
+
+  {{f.input "email"}}
+  {{f.input "tosAccepted" inlineLabel=true}}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+```javascript
+// config/environment.js
+module.exports = function(environment) {
+  let ENV = {
+    // code partially omitted for brevity
+    formBuilder: {
+      wrapperClass:           'my-input',
+      wrapperWithErrorsClass: 'my-input-with-errors',
+      wrapperWithUnitClass:   'my-input-with-unit',
+      unitClass:              'my-input-unit',
+      errorsClass:            'my-errors',
+      fieldClass:             'my-field',
+      inputClass:             'my-input-control',
+      hintClass:              'my-hint'
+    }
+  };
+
+  return ENV;
+};
+```
+
+### After
+
+```handlebars
+{{#form-builder for=this action="submit" as |f|}}
+
+  {{f.input "email"}}
+  {{f.input "tosAccepted" wrapper="inline"}}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+```handlebars
+{{!-- app/components/input-wrappers/default --}}
+<div class="my-input {{if config.unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
+  {{#if config.label}}
+    {{component labelComponent}}
+  {{/if}}
+  <div class="my-field">
+    {{component inputComponent class="my-input-control"}}
+  </div>
+  {{#if config.unit}}
+    <div class="my-unit">{{config.unit}}</div>
+  {{/if}}
+  {{#if config.hint}}
+    <div class="my-hint">{{config.hint}}</div>
+  {{/if}}
+  {{#if config.validations.errors}}
+    <div class="my-errors">{{config.validations.errors}}</div>
+  {{/if}}
+</div>
+```
+
+```handlebars
+{{!-- app/components/input-wrappers/inline --}}
+<div class="my-input {{if config.unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
+  {{#component labelComponent}}
+    {{component inputComponent class="my-input-control"}}
+    <span class="simple-input-inline-label">{{config.label}}</span>
+  {{/component}}
+  {{#if config.unit}}
+    <div class="my-unit">{{config.unit}}</div>
+  {{/if}}
+  {{#if config.hint}}
+    <div class="my-hint">{{config.hint}}</div>
+  {{/if}}
+  {{#if config.validations.errors}}
+    <div class="my-errors">{{config.validations.errors}}</div>
+  {{/if}}
+</div>
+```
+
+
 ## Removed translation attributes
 
 Since Ember translation addons provide translation helpers we do not accept
@@ -14,7 +108,7 @@ translation keys as attributes anymore. You should pass a translated text instea
     "email"
     labelTranslation="custom.label.key"
     hintTranslation="custom.hint.key"
-    placeholderTranslation="custom.placeholder.key"\
+    placeholderTranslation="custom.placeholder.key"
   }}
   {{f.submit translation="custom.submit.key"}}
 

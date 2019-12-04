@@ -129,34 +129,59 @@ Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribut
 Default | humanizes attribute name | empty | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
 Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | empty | "Save" | "Required"
 
-## Configuration
+## Customization
 
-### Changing default classes
+### Changing input templates and CSS classes
 
-Ember Form Builder exposes all the class names it uses via environment configuration. To override them, specify your values in `config/environment.js` under `formBuilder` key (e.g. `ENV.formBuilder.wrapperClass = "form-input"`).
+Ember Form Builder uses input wrappers to allow you control the generated HTML and CSS.
+Input wrapper is a component that receives `inputComponent`, `labelComponent` and `config` arguments.
 
-Those are the default classes:
+`inputComponent` and `labelComponent` are preconfigured component instances, so you can
+easily render them in any place you need.
+
+`config` is a hash containing some predefined keys (`inputElementId`, `name`, `value`, `label`, `placeholder`, `hint`, `unit`,
+`validations`, `canValidate`), as well as all attributes that you pass to
+the `{{f.input}}` call.
+
+```handlebars
+{{!-- app/components/input-wrappers/my-wrapper --}}
+<div class="my-input">
+  {{component labelComponent}}
+  <div class="my-field">
+    {{component inputComponent class="my-input-control"}}
+  </div>
+  {{#if config.validations.errors}}
+    <div class="my-errors">{{config.validations.errors}}</div>
+  {{/if}}
+</div>
+```
+
+Ember Form Builder ships with `default` and `inline` wrappers. You can overwrite them or
+define your own wrappers. Then to select a wrapper for a specific input, just pass
+its name in the `wrapper` attribute:
+
+```handlebars
+{{#form-builder for=this action=(action "submit") as |f|}}
+
+  {{f.input "title" wrapper="my-wrapper"}}
+  {{f.input "isPublished" wrapper="inline"}}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+### Configuration
+
+Ember Form Builder can be configured via environment configuration. To override them, specify your values in `config/environment.js` under `formBuilder` key (e.g. `ENV.formBuilder.validationsAddon = 'ember-cp-validations'`).
+
+Those are the default values:
 
 ```js
 {
-  wrapperClass: "input", // input's root element
-  wrapperWithErrorsClass: "input-with-errors", // input's root element, when there are errors on this attribute
-  wrapperWithUnitClass: "has-unit", // input's root element, when a unit has been specified
-  unitClass: "input-unit", // unit element
-  errorsClass: "errors", // errors container
-  fieldClass: "field", // wrapper around input, errors, hint and unit
-  inputClass: "input-control", // the actual input
-  hintClass: "hint", // hint element
-  validationsAddon: "ember-validations", // name of the validations addon. Supported values: "ember-validations" and "ember-cp-validations"
-  dataAddon: "ember-data" // name of the data addon. Supported values: "ember-data" and "ember-orbit"
+  validationsAddon: 'ember-validations', // name of the validations addon. Supported values: "ember-validations" and "ember-cp-validations"
+  dataAddon: 'ember-data' // name of the data addon. Supported values: "ember-data" and "ember-orbit"
 }
 ```
-
-### Overriding templates
-
-You'll probably want to customize the markup Ember Form Builder generates. For that, you can override the default templates.
-
-Start by copying all or some of the [default templates](https://github.com/nibynic/ember-form-builder/tree/master/app/templates/components) to your app. Then modify whatever you want.
 
 ## Upgrading ##
 

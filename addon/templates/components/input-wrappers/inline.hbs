@@ -1,0 +1,19 @@
+<div class="input {{if unit "has-unit"}} {{if errors "input-with-errors"}}">
+  {{#component labelComponent}}
+    {{component inputComponent class="input-control"}}
+    <span class="simple-input-inline-label">{{config.label}}</span>
+  {{/component}}
+  {{#if config.unit}}
+    <div class="unit">{{config.unit}}</div>
+  {{/if}}
+  {{#if config.hint}}
+    <div class="hint">{{config.hint}}</div>
+  {{/if}}
+  {{#if (and config.canValidate config.validations.errors)}}
+    <div class="errors">
+      {{#each config.validations.errors as |error i|~}}
+        {{if i ", "}}{{error}}
+      {{~/each}}
+    </div>
+  {{/if}}
+</div>
