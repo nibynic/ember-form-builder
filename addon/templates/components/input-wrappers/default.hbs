@@ -1,18 +1,23 @@
-<div class="input {{if errors "input-with-errors"}}">
-  {{#if config.label}}
-    {{component labelComponent}}
-  {{/if}}
-  <div class="field">
-    {{component inputComponent class="input-control"}}
-  </div>
-  {{#if config.hint}}
-    <div class="hint">{{config.hint}}</div>
-  {{/if}}
-  {{#if (and config.canValidate config.validations.errors)}}
-    <div class="errors">
-      {{#each config.validations.errors as |error i|~}}
-        {{if i ", "}}{{error}}
-      {{~/each}}
+{{#let (and config.canValidate config.validations.errors) as |isInvalid|}}
+  <div class="form-group">
+    {{#if config.label}}
+      {{component labelComponent}}
+    {{/if}}
+    <div class="field">
+      {{component
+        inputComponent
+        class=(concat "form-control" (if isInvalid " is-invalid"))
+      }}
     </div>
-  {{/if}}
-</div>
+    {{#if config.hint}}
+      <small class="form-text text-muted">{{config.hint}}</small>
+    {{/if}}
+    {{#if isInvalid}}
+      <div class="invalid-feedback">
+        {{#each config.validations.errors as |error i|~}}
+          {{if i ", "}}{{error}}
+        {{~/each}}
+      </div>
+    {{/if}}
+  </div>
+{{/let}}

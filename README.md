@@ -156,7 +156,8 @@ the `{{f.input}}` call.
 </div>
 ```
 
-Ember Form Builder ships with `default` and `inline` wrappers. You can overwrite them or
+Ember Form Builder ships with `default` and `inline` wrappers that are compatible
+with [Bootstrap](https://getbootstrap.com/) form markup. You can overwrite them or
 define your own wrappers. Then to select a wrapper for a specific input, just pass
 its name in the `wrapper` attribute:
 

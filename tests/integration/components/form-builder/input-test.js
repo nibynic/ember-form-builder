@@ -109,7 +109,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
       {{form-builder/input attr="title" as="string" builder=builder}}
     `);
 
-    assert.dom('.errors').doesNotExist();
+    assert.dom('.invalid-feedback').doesNotExist();
 
     this.set('builder.validations', {
       title: {
@@ -117,19 +117,19 @@ module('Integration | Component | form-builder/input', function(hooks) {
       }
     });
 
-    assert.dom('.errors').doesNotExist('No errors are displayed if wasn\'t focused out');
+    assert.dom('.invalid-feedback').doesNotExist('No errors are displayed if wasn\'t focused out');
 
     this.set('builder.isValid', false);
 
-    assert.dom('.errors').hasText('can\'t be blank, is too short', 'The errors are displayed when builder is invalid');
+    assert.dom('.invalid-feedback').hasText('can\'t be blank, is too short', 'The errors are displayed when builder is invalid');
 
     this.set('builder.isValid', true);
 
-    assert.dom('.errors').doesNotExist('Just to be sure it stopped displaying errors.');
+    assert.dom('.invalid-feedback').doesNotExist('Just to be sure it stopped displaying errors.');
 
     await triggerEvent('input', 'focusout');
 
-    assert.dom('.errors').hasText('can\'t be blank, is too short', 'The errors are displayed');
+    assert.dom('.invalid-feedback').hasText('can\'t be blank, is too short', 'The errors are displayed');
   });
 
   test('it renders a hint when provided', async function(assert) {
@@ -139,11 +139,11 @@ module('Integration | Component | form-builder/input', function(hooks) {
       {{form-builder/input attr="title" as="string" builder=builder hint=hint}}
     `);
 
-    assert.dom('.hint').doesNotExist();
+    assert.dom('small').doesNotExist();
 
     this.set('hint', 'This is a hint');
 
-    assert.dom('.hint').hasText('This is a hint');
+    assert.dom('small').hasText('This is a hint');
   });
 
   test('it renders a placeholder when provided', async function(assert) {
@@ -249,18 +249,18 @@ module('Integration | Component | form-builder/input', function(hooks) {
     `);
 
     assert.dom('label').hasText('Title', 'Label was humanized without translation key');
-    assert.dom('.hint').doesNotExist('Hint was omitted without translation key');
+    assert.dom('small').doesNotExist('Hint was omitted without translation key');
     assert.dom('input').doesNotHaveAttribute('placeholder', 'Placeholder was omitted without translation key');
 
     this.set('builder.translationKey', 'blogPost');
 
     assert.dom('label').hasText('Tytuł posta');
-    assert.dom('.hint').hasText('Maksymalnie 45 znaków');
+    assert.dom('small').hasText('Maksymalnie 45 znaków');
 
     this.set('builder.translationKey', 'article');
 
     assert.dom('label').hasText('Tytuł artykułu');
-    assert.dom('.hint').hasText('Maksymalnie 255 znaków');
+    assert.dom('small').hasText('Maksymalnie 255 znaków');
     assert.dom('input').hasAttribute('placeholder', 'Wpisz tytuł');
 
     translations['article.attributes.title'] = 'Article title';
