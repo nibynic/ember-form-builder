@@ -1,6 +1,6 @@
 # Upgrading 1.x to 2.x
 
-## Removed CSS classes configuration and `inlineLabel` option
+## Removed CSS classes configuration, `inlineLabel` and `unit` options
 
 We've observed that previously used configuration with CSS classes wasn't enough
 for most apps - they still redefined the `input-on` component template. Also
@@ -14,6 +14,7 @@ That's why we decided to replace this template with a more flexible wrapper syst
 {{#form-builder for=this action="submit" as |f|}}
 
   {{f.input "email"}}
+  {{f.input "age" unit="years"}}
   {{f.input "tosAccepted" inlineLabel=true}}
   {{f.submit}}
 
@@ -47,6 +48,7 @@ module.exports = function(environment) {
 {{#form-builder for=this action="submit" as |f|}}
 
   {{f.input "email"}}
+  {{f.input "age" unit="years"}}
   {{f.input "tosAccepted" wrapper="inline"}}
   {{f.submit}}
 
@@ -55,15 +57,15 @@ module.exports = function(environment) {
 
 ```handlebars
 {{!-- app/components/input-wrappers/default --}}
-<div class="my-input {{if config.unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
+<div class="my-input {{if unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
   {{#if config.label}}
     {{component labelComponent}}
   {{/if}}
   <div class="my-field">
     {{component inputComponent class="my-input-control"}}
   </div>
-  {{#if config.unit}}
-    <div class="my-unit">{{config.unit}}</div>
+  {{#if unit}}
+    <div class="my-unit">{{unit}}</div>
   {{/if}}
   {{#if config.hint}}
     <div class="my-hint">{{config.hint}}</div>
@@ -76,13 +78,13 @@ module.exports = function(environment) {
 
 ```handlebars
 {{!-- app/components/input-wrappers/inline --}}
-<div class="my-input {{if config.unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
+<div class="my-input {{if unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
   {{#component labelComponent}}
     {{component inputComponent class="my-input-control"}}
     <span class="simple-input-inline-label">{{config.label}}</span>
   {{/component}}
-  {{#if config.unit}}
-    <div class="my-unit">{{config.unit}}</div>
+  {{#if unit}}
+    <div class="my-unit">{{unit}}</div>
   {{/if}}
   {{#if config.hint}}
     <div class="my-hint">{{config.hint}}</div>

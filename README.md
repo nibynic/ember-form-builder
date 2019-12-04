@@ -28,7 +28,7 @@ npm install --save-dev ember-form-builder
              optionValuePath="content.id" optionLabelPath="content.fullName"}}
   {{f.input "isPublished"}}
   {{f.input "publishedOn" as="date"}}
-  {{f.input "price" unit="PLN" hint="Leave empty if this is a free article"}}
+  {{f.input "price" hint="Leave empty if this is a free article"}}
 
   {{f.submit}}
 

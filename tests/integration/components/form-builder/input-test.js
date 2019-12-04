@@ -217,20 +217,6 @@ module('Integration | Component | form-builder/input', function(hooks) {
     assert.dom('label abbr').hasAttribute('title', 'Required');
   });
 
-  test('it renders unit when it\'s provided', async function(assert) {
-    this.set('builder', FormBuilderMock.create());
-
-    await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder unit=unit}}
-    `);
-
-    assert.dom('.unit').doesNotExist('Unit was not rendered');
-
-    this.set('unit', 'PLN');
-
-    assert.dom('.unit').hasText('PLN');
-  });
-
   DEFAULT_TYPES.forEach(function(type) {
     test(`it renders correctly for type ${type}`, async function(assert) {
       this.set('builder', FormBuilderMock.create());

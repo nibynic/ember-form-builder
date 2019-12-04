@@ -23,18 +23,15 @@ module('Integration | Component | input-wrappers/default', function(hooks) {
 
     assert.dom('[data-test-my-input]').exists();
     assert.dom('[data-test-my-label]').doesNotExist();
-    assert.dom('.unit').doesNotExist();
     assert.dom('.hint').doesNotExist();
     assert.dom('.errors').doesNotExist();
 
     this.set('config.label', 'Email');
-    this.set('config.unit', 'cm');
     this.set('config.hint', 'Please type in your full email address');
     this.set('config.canValidate', true);
 
     assert.dom('[data-test-my-input]').exists();
     assert.dom('[data-test-my-label]').exists();
-    assert.dom('.unit').hasText('cm');
     assert.dom('.hint').hasText('Please type in your full email address');
     assert.dom('.errors').hasText('cannot be blank, is too short');
   });

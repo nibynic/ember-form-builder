@@ -24,15 +24,12 @@ module('Integration | Component | input-wrappers/inline', function(hooks) {
 
     assert.dom('[data-test-my-label]').hasText('My field');
     assert.dom('[data-test-my-label] [data-test-my-input]').exists();
-    assert.dom('.unit').doesNotExist();
     assert.dom('.hint').doesNotExist();
     assert.dom('.errors').doesNotExist();
 
-    this.set('config.unit', 'cm');
     this.set('config.hint', 'Please type in your full email address');
     this.set('config.canValidate', true);
 
-    assert.dom('.unit').hasText('cm');
     assert.dom('.hint').hasText('Please type in your full email address');
     assert.dom('.errors').hasText('cannot be blank, is too short');
   });

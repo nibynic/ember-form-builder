@@ -1,13 +1,10 @@
-<div class="input {{if unit "has-unit"}} {{if errors "input-with-errors"}}">
+<div class="input {{if errors "input-with-errors"}}">
   {{#if config.label}}
     {{component labelComponent}}
   {{/if}}
   <div class="field">
     {{component inputComponent class="input-control"}}
   </div>
-  {{#if config.unit}}
-    <div class="unit">{{config.unit}}</div>
-  {{/if}}
   {{#if config.hint}}
     <div class="hint">{{config.hint}}</div>
   {{/if}}

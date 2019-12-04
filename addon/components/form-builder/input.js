@@ -75,7 +75,7 @@ const extension = {
 
   config: computed('additionalAttributeNames.[]', function() {
     let attrs = (this.additionalAttributeNames || []).concat([
-      'inputElementId', 'name', 'value', 'label', 'placeholder', 'hint', 'unit',
+      'inputElementId', 'name', 'value', 'label', 'placeholder', 'hint',
       'validations', 'canValidate'
     ]);
     return EmberObject.extend(
