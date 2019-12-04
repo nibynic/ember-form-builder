@@ -1,6 +1,7 @@
+import Component from '@ember/component';
+import layout from '../../templates/components/inputs/collection-input';
 import { get, computed } from '@ember/object';
 import { A, isArray } from '@ember/array';
-import Component from '@ember/component';
 import { reads, alias, or } from '@ember/object/computed';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
@@ -8,6 +9,8 @@ import { next, cancel } from '@ember/runloop';
 import { resolve } from 'rsvp';
 
 export default Component.extend({
+  layout,
+
   tagName: 'select',
   attributeBindings: ['autocomplete', 'autofocus', 'dir', 'disabled', 'inputmode',
     'multiple', 'name', 'pattern', 'placeholder', 'required', 'size', 'tabindex'],

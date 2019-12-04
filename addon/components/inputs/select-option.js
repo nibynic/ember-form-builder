@@ -1,9 +1,12 @@
+import Component from '@ember/component';
+import layout from '../../templates/components/inputs/select-option';
 import { isArray } from '@ember/array';
 import { defineProperty, computed, get } from '@ember/object';
 import { assert } from '@ember/debug';
-import Component from '@ember/component';
 
 export default Component.extend({
+  layout,
+
   tagName: 'option',
   attributeBindings: ['stringValue:value', 'isSelected:selected'],
 

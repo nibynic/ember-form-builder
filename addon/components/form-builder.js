@@ -1,10 +1,13 @@
 import Component from '@ember/component';
+import layout from '../templates/components/form-builder';
 import { isPresent } from '@ember/utils';
 import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 
 export default Component.extend({
+  layout,
+  
   tagName: "form",
 
   action() {},

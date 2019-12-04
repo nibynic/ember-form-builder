@@ -1,9 +1,12 @@
+import Component from '@ember/component';
+import layout from '../../templates/components/form-builder/label';
 import { isEmpty } from '@ember/utils';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
 
 export default Component.extend({
+  layout,
+
   translationService: service("formBuilderTranslations"),
   tagName: "label",
   attributeBindings: ["for"],

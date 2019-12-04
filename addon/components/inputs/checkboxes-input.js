@@ -1,8 +1,11 @@
-import { computed } from '@ember/object';
 import CollectionInput from 'ember-form-builder/components/inputs/collection-input';
+import layout from '../../templates/components/inputs/checkboxes-input';
+import { computed } from '@ember/object';
 import byDefault from 'ember-form-builder/utilities/by-default';
 
 export default CollectionInput.extend({
+  layout,
+
   tagName: 'div',
   optionComponentName: 'inputs/checkbox-option',
 

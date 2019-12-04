@@ -1,11 +1,14 @@
+import Component from '@ember/component';
+import layout from '../../templates/components/form-builder/submit';
 import { isPresent, isEmpty } from '@ember/utils';
 import { computed } from '@ember/object';
 import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import Component from '@ember/component';
 import byDefault from 'ember-form-builder/utilities/by-default';
 
 const SimpleSubmit = Component.extend({
+  layout,
+  
   translationService: service("formBuilderTranslations"),
   tagName: "button",
   type: "submit",

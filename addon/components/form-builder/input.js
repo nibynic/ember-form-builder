@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import layout from '../../templates/components/form-builder/input';
 import { isEmpty, isPresent } from '@ember/utils';
 import { on } from '@ember/object/evented';
 import { alias, reads } from '@ember/object/computed';
@@ -20,6 +21,8 @@ function mergedClass(name) {
 }
 
 const extension = {
+  layout,
+  
   translationService: service("formBuilderTranslations"),
   // TODO: assertions
   class: null,
