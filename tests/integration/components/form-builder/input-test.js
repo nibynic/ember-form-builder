@@ -128,6 +128,9 @@ module('Integration | Component | form-builder/input', function(hooks) {
     assert.dom('.invalid-feedback').doesNotExist('Just to be sure it stopped displaying errors.');
 
     await triggerEvent('input', 'focusout');
+    // for jQuery
+    this.element.querySelector('input').focus();
+    this.element.querySelector('input').blur();
 
     assert.dom('.invalid-feedback').hasText('can\'t be blank, is too short', 'The errors are displayed');
   });

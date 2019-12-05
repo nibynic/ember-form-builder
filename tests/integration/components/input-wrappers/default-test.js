@@ -14,11 +14,11 @@ module('Integration | Component | input-wrappers/default', function(hooks) {
       }
     };
     await render(hbs`
-      <InputWrappers::Default
-        @config={{config}}
-        @inputComponent={{component "inputs/string-input" data-test-my-input=true}}
-        @labelComponent={{component "form-builder/label" data-test-my-label=true}}
-      />
+      {{input-wrappers/default
+        config=config
+        inputComponent=(component "inputs/string-input" data-test-my-input=true)
+        labelComponent=(component "form-builder/label" data-test-my-label=true)
+      }}
     `);
 
     assert.dom('[data-test-my-input]').exists();

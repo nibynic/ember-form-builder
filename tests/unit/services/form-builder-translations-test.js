@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { setupTest } from "ember-qunit";
 import sinon from 'sinon';
+import EmberObject from '@ember/object';
 
 module("Unit | Service | FormBuilderTranslations", function(hooks) {
   setupTest(hooks);
@@ -13,18 +14,19 @@ module("Unit | Service | FormBuilderTranslations", function(hooks) {
   test("Defaults to ember-i18n when both i18n and ember-intl are present", function(assert) {
     let intl = "ember-intl";
     let i18n = "i18n";
-    let service = this.owner.factoryFor("service:form-builder-translations").class.reopen({
+    let service = this.owner.lookup("service:form-builder-translations");
+    service.reopen({
       i18n: i18n,
       intl: intl
-    }).create();
+    });
     assert.equal(service.get("translationService"), i18n);
   });
 
   test('it finds translations for given scope and type', function(assert) {
     let exists = sinon.stub();
     let t = sinon.stub().callsFake((k) => k);
+    this.owner.register('service:intl', EmberObject.extend({ t, exists }));
     let service = this.owner.lookup('service:form-builder-translations');
-    sinon.stub(service, 'translationService').value({ t, exists });
 
     exists.returns(true);
 
