@@ -1,6 +1,5 @@
-import TextField from '@ember/component/text-field';
-import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
+import StringInput from './string-input';
 
-export default TextField.extend(InputDefaultsMixin, {
-  type: "url"
+export default StringInput.extend({
+  type: 'url'
 });

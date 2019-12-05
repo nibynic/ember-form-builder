@@ -1,6 +1,7 @@
-import TextField from '@ember/component/text-field';
-import InputDefaultsMixin from "ember-form-builder/mixins/input-defaults";
+import StringInput from './string-input';
+import { reads } from '@ember/object/computed';
 
-export default TextField.extend(InputDefaultsMixin, {
-  type: "email"
+export default StringInput.extend({
+  type:     'email',
+  multiple: reads('config.multiple')
 });

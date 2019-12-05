@@ -21,14 +21,14 @@ npm install --save-dev ember-form-builder
 ## Usage
 
 ```handlebars
-{{#form-builder for=this action="submit" as |f|}}
+{{#form-builder for=this action=(action "submit") as |f|}}
 
   {{f.input "title"}}
   {{f.input "category" collection=categories
              optionValuePath="content.id" optionLabelPath="content.fullName"}}
   {{f.input "isPublished"}}
   {{f.input "publishedOn" as="date"}}
-  {{f.input "price" unit="PLN" hint="Leave empty if this is a free article"}}
+  {{f.input "price" hint="Leave empty if this is a free article"}}
 
   {{f.submit}}
 
@@ -121,43 +121,72 @@ Ember Form Builder supports `ember-intl` and `ember-i18n` at the moment, however
 
 Ember Form Builder automatically detects internationalization addon and tries to guess the translation keys.
 
-use case | label | hint | submit | required
+use case | label | hint | placeholder | submit | required
 --- | --- | --- | --- | ---
-Explicit | `label="My attribute"` | `hint="My hint"` | `text="My submit"` | `not possible`
-Custom translation key | `labelTranslation="custom.label.key"` | `hintTranslation="custom.hint.key"` | `translation="custom.submit.key"` | `not possible`
-Custom form translation key: `{{#form-for translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.actions.submit` | `not possible`
-Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | `not possible`
-Default | humanizes attribute name | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
-Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | "Save" | "Required"
+Explicit | `label="My attribute"` | `hint="My hint"` | `placeholder="My placeholder"` | `text="My submit"` | `not possible`
+Custom form translation key: `{{#form-builder translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
+Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | Looks up `article.placeholders.attribute` | `not possible`
+Default | humanizes attribute name | empty | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
+Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | empty | "Save" | "Required"
 
-## Configuration
+## Customization
 
-### Changing default classes
+### Changing input templates and CSS classes
 
-Ember Form Builder exposes all the class names it uses via environment configuration. To override them, specify your values in `config/environment.js` under `formBuilder` key (e.g. `ENV.formBuilder.wrapperClass = "form-input"`).
+Ember Form Builder uses input wrappers to allow you control the generated HTML and CSS.
+Input wrapper is a component that receives `inputComponent`, `labelComponent` and `config` arguments.
 
-Those are the default classes:
+`inputComponent` and `labelComponent` are preconfigured component instances, so you can
+easily render them in any place you need.
+
+`config` is a hash containing some predefined keys (`inputElementId`, `name`, `value`, `texts`,
+`validations`, `canValidate`), as well as all attributes that you pass to
+the `{{f.input}}` call.
+
+```handlebars
+{{!-- app/components/input-wrappers/my-wrapper --}}
+<div class="my-input">
+  {{component labelComponent}}
+  <div class="my-field">
+    {{component inputComponent class="my-input-control"}}
+  </div>
+  {{#if config.validations.errors}}
+    <div class="my-errors">{{config.validations.errors}}</div>
+  {{/if}}
+</div>
+```
+
+Ember Form Builder ships with `default` and `inline` wrappers that are compatible
+with [Bootstrap](https://getbootstrap.com/) form markup. You can overwrite them or
+define your own wrappers. Then to select a wrapper for a specific input, just pass
+its name in the `wrapper` attribute:
+
+```handlebars
+{{#form-builder for=this action=(action "submit") as |f|}}
+
+  {{f.input "title" wrapper="my-wrapper"}}
+  {{f.input "isPublished" wrapper="inline"}}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+### Configuration
+
+Ember Form Builder can be configured via environment configuration. To override them, specify your values in `config/environment.js` under `formBuilder` key (e.g. `ENV.formBuilder.validationsAddon = 'ember-cp-validations'`).
+
+Those are the default values:
 
 ```js
 {
-  wrapperClass: "input", // input's root element
-  wrapperWithErrorsClass: "input-with-errors", // input's root element, when there are errors on this attribute
-  wrapperWithUnitClass: "has-unit", // input's root element, when a unit has been specified
-  unitClass: "input-unit", // unit element
-  errorsClass: "errors", // errors container
-  fieldClass: "field", // wrapper around input, errors, hint and unit
-  inputClass: "input-control", // the actual input
-  hintClass: "hint", // hint element
-  validationsAddon: "ember-validations", // name of the validations addon. Supported values: "ember-validations" and "ember-cp-validations"
-  dataAddon: "ember-data" // name of the data addon. Supported values: "ember-data" and "ember-orbit"
+  validationsAddon: 'ember-validations', // name of the validations addon. Supported values: "ember-validations" and "ember-cp-validations"
+  dataAddon: 'ember-data' // name of the data addon. Supported values: "ember-data" and "ember-orbit"
 }
 ```
 
-### Overriding templates
+## Upgrading ##
 
-You'll probably want to customize the markup Ember Form Builder generates. For that, you can override the default templates.
-
-Start by copying all or some of the [default templates](https://github.com/nibynic/ember-form-builder/tree/master/app/templates/components) to your app. Then modify whatever you want.
+Please check out the [upgrading documentation](UPGRADING.md).
 
 ## Legal ##
 

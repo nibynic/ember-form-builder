@@ -1,9 +1,12 @@
+import Component from '@ember/component';
+import layout from '../../templates/components/inputs/select-option';
 import { isArray } from '@ember/array';
 import { defineProperty, computed, get } from '@ember/object';
 import { assert } from '@ember/debug';
-import Component from '@ember/component';
 
 export default Component.extend({
+  layout,
+
   tagName: 'option',
   attributeBindings: ['stringValue:value', 'isSelected:selected'],
 
@@ -41,6 +44,7 @@ function linkPath(context, attrName, options = {}) {
   defineProperty(context, attrName, computed(path, function() {
     return getPath(this.get(options.to), path);
   }));
+  context.notifyPropertyChange(attrName);
 }
 
 function getPath(content, path) {

@@ -1,43 +1,36 @@
+import Service from '@ember/service';
 import { A } from '@ember/array';
-import { collect, reads, notEmpty } from '@ember/object/computed';
+import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import { computed } from '@ember/object';
-import Service from '@ember/service';
+import { pluralize } from 'ember-inflector';
+
 
 export default Service.extend({
   i18n: computed(function() {
-    let owner = getOwner(this);
-    return owner.lookup("service:i18n");
+    return getOwner(this).lookup("service:i18n");
   }),
 
   intl: computed(function() {
-    let owner = getOwner(this);
-    return owner.lookup("service:intl");
+    return getOwner(this).lookup("service:intl");
   }),
 
-  translationServices: collect("i18n", "intl"),
-
-  activeTranslationServices: computed("translationServices.@each", function() {
-    return A(this.get("translationServices").compact());
+  translationService: computed('i18n', 'intl', function() {
+    return A([this.get('i18n'), this.get('intl')]).compact()[0];
   }),
 
-  translationService: reads("activeTranslationServices.firstObject"),
-
-  hasTranslationService: notEmpty("translationService"),
-
-  exists() {
-    if (this.get("hasTranslationService")) {
-      return this.get("translationService").exists(...arguments);
+  t(scope, kind, name) {
+    let service = this.get('translationService');
+    if (service) {
+      let key = [
+        A([scope, pluralize(kind), name]).compact().join('.'),
+        A(['formBuilder', pluralize(kind), name]).compact().join('.')
+      ].find(
+        (key) => service.exists(key)
+      );
+      return service.t(key);
     } else {
-      return false;
-    }
-  },
-
-  t() {
-    if (this.get("hasTranslationService")) {
-      return this.get("translationService").t(...arguments);
-    } else {
-      return false;
+      return null;
     }
   },
 

@@ -1,21 +1,19 @@
 import { camelize } from '@ember/string';
-import { Promise as EmberPromise } from 'rsvp';
+import { all } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
+import { reads } from '@ember/object/computed';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import byDefault from 'ember-form-builder/utilities/by-default';
+import { getOwner } from '@ember/application';
+import defaultConfiguration from 'ember-form-builder/configuration';
+import { assign } from '@ember/polyfills';
 
 export default EmberObject.extend({
   status: null,
 
   isValid: true,
-
-  isLoading: computed("model.isSaving", "object.isLoading", function() {
-    var objectIsLoading = this.get("object.isLoading");
-    return objectIsLoading === true || objectIsLoading === false ?
-      objectIsLoading : this.get("model.isSaving");
-  }),
 
   children: computed(function() {
     return A([]);
@@ -31,30 +29,43 @@ export default EmberObject.extend({
     childFormBuilder.set('parent', null);
   },
 
+  configuration: computed(function() {
+    return assign(
+      {}, defaultConfiguration,
+      getOwner(this).factoryFor('config:environment').class.formBuilder || {}
+    );
+  }),
+
   validate() {
     var validations = [];
 
-    validations.push(this.validateObject());
+    validations.push(this.validationAdapter.validate());
 
     this.get("children").forEach((child) => {
       validations.push(child.validate());
     });
 
-    return new EmberPromise((resolve, reject) => {
-      EmberPromise.all(validations).then(
-        () => { this.set("isValid", true); resolve(); },
-        () => { this.set("isValid", false); reject(); }
-      );
-    });
+    return all(validations).then(
+      () => this.set('isValid', true),
+      (e) => {
+        this.set('isValid', false);
+        throw e;
+      }
+    );
   },
 
-  model: byDefault('object.model', function() {
-    if (this.isModel(this.get('object.model'))) {
-      return this.get('object.model');
-    } else {
-      return this.get('object');
-    }
+  validationAdapter: computed('configuration.validationsAddon', function() {
+    let name = this.get('configuration.validationsAddon');
+    return getOwner(this).factoryFor(`validation-adapter:${name}`).create({ object: this.object });
   }),
+
+  dataAdapter: computed('configuration.validationsAddon', function() {
+    let name = this.get('configuration.dataAddon');
+    return getOwner(this).factoryFor(`data-adapter:${name}`).create({ object: this.object });
+  }),
+
+  model: reads('dataAdapter.model'),
+  modelName: reads('dataAdapter.modelName'),
 
   translationKey: byDefault('modelName', function() {
     return camelize(this.get('modelName') || '');
@@ -71,24 +82,5 @@ export default EmberObject.extend({
       .reject(isBlank).map(
         (n, i) => i > 0 ? `[${n}]` : n
       ).join('');
-  }),
-
-  _setSuccessStatus: function() {
-    this.set("status", "success");
-  },
-
-  _setFailureStatus: function() {
-    this.set("isValid", false);
-    this.set("status", "failure");
-  },
-
-  // defined in validations mixin
-  errorsPathFor() {},
-  validationsPathFor() {},
-  normalizeValidations() {},
-  validateObject() {},
-
-  // defined in data mixin
-  modelName: '',
-  isModel(/* modelCandidate */) {}
+  })
 });

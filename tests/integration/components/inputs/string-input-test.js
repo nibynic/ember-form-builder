@@ -6,16 +6,52 @@ import hbs from 'htmlbars-inline-precompile';
 module('Integration | Component | inputs/string-input', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it aliases modelValue as value', async function(assert) {
-    this.set('modelValue', 'abc');
+  hooks.beforeEach(async function() {
+    this.config = {
+      value: '123 hello',
+      name: 'myInput',
+      disabled: false,
+      autocomplete: 'name',
+      texts: {
+        placeholder: 'Your name'
+      }
+    };
 
-    await render(hbs`{{inputs/string-input modelValue=modelValue}}`);
+    await render(hbs`{{inputs/string-input config=config}}`);
+  });
 
+  test('it renders', async function(assert) {
     assert.dom('input').hasAttribute('type', 'text');
-    assert.dom('input').hasValue('abc');
+    assert.dom('input').hasAttribute('name', 'myInput');
+    assert.dom('input').hasAttribute('autocomplete', 'name');
+    assert.dom('input').hasAttribute('placeholder', 'Your name');
+  });
 
-    await fillIn('input', 'xyz');
+  test('it updates value', async function(assert) {
+    assert.dom('input').hasValue('123 hello');
 
-    assert.equal(this.get('modelValue'),  'xyz');
+    this.set('config.value', 'hello?');
+
+    assert.dom('input').hasValue('hello?');
+
+    await fillIn('input', 'bye!');
+
+    assert.equal(this.config.value, 'bye!');
+  });
+
+  test('it can be disabled', async function(assert) {
+    assert.dom('input').isNotDisabled();
+
+    this.set('config.disabled', true);
+
+    assert.dom('input').isDisabled();
+  });
+
+  test('it supports presence validations', async function(assert) {
+    assert.dom('input').doesNotHaveAttribute('required');
+
+    this.set('config.validations', { required: true });
+
+    assert.dom('input').hasAttribute('required');
   });
 });

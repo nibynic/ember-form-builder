@@ -1,8 +1,11 @@
+import SelectOption from 'ember-form-builder/components/inputs/select-option';
+import layout from '../../templates/components/inputs/checkbox-option';
 import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
-import SelectOption from "ember-form-builder/components/inputs/select-option";
 
 export default SelectOption.extend({
+  layout,
+  
   tagName: "div",
   attributeBindings: [],
 

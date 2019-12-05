@@ -1,140 +1,97 @@
-import { run } from '@ember/runloop';
-import { Promise as EmberPromise } from 'rsvp';
-import Evented from '@ember/object/evented';
-import EmberObject from '@ember/object';
 import { module, test } from 'qunit';
-import FormBuilder from "ember-form-builder/models/form-builder";
+import { setupTest } from 'ember-qunit';
+import { resolve, reject } from 'rsvp';
+import EmberObject from '@ember/object';
+import sinon from 'sinon';
 
-module('Unit | Models | FormBuilder | main', function() {
-  test("it updates status to success when created or updated", function(assert) {
-    var modelClass = EmberObject.extend(Evented);
-    modelClass.reopenClass({modelName: "fake-model"});
-    var model = modelClass.create();
-    var builder = FormBuilder.create({
-      model: model
-    });
+module('Unit | Models | FormBuilder', function(hooks) {
+  setupTest(hooks);
 
-    assert.equal(builder.get("status"), null);
+  test('it provides form builder configuration', function(assert) {
+    this.owner.factoryFor('config:environment').class.formBuilder = {
+      dataAddon: 'ember-orbit'
+    };
+    let builder = this.owner.factoryFor('model:form-builder').create();
 
-    model.trigger("didCreate");
-    assert.equal(builder.get("status"), "success");
-
-    model.set("status", null);
-    model.trigger("didUpdate");
-    assert.equal(builder.get("status"), "success");
+    assert.equal(builder.configuration.dataAddon, 'ember-orbit'); // overriden value
+    assert.equal(builder.configuration.validationsAddon, 'ember-validations'); // default value
   });
 
-  test("it updates status to failure when became invalid", function(assert) {
-    var modelClass = EmberObject.extend(Evented);
-    modelClass.reopenClass({modelName: "fake-model"});
-    var model = modelClass.create();
-    var builder = FormBuilder.create({
-      model: model
+  module('model detection', function(hooks) {
+    hooks.beforeEach(function() {
+      this.model = EmberObject.extend({ type: 'my-model' }).create();
+      this.builder = this.owner.factoryFor('model:form-builder').create({
+        object: this.model
+      });
     });
 
-    assert.equal(builder.get("status"), null);
-    assert.ok(builder.get("isValid"));
+    test('it uses data adapter specified in the config', function(assert) {
+      this.owner.factoryFor('config:environment').class.formBuilder = {
+        dataAddon: 'ember-orbit'
+      };
+      const EmberOrbitAdapter = this.owner.factoryFor('data-adapter:ember-orbit').class;
 
-    model.trigger("becameInvalid");
-    assert.equal(builder.get("status"), "failure");
-    assert.ok(!builder.get("isValid"));
+      assert.ok(this.builder.dataAdapter instanceof EmberOrbitAdapter);
+      assert.equal(this.builder.dataAdapter.object, this.model);
+    });
+
+    test('it proxies model and model name from the adapter', function(assert) {
+      assert.equal(this.builder.model, this.model);
+      assert.equal(this.builder.modelName, 'my-model');
+    });
   });
 
-  test("it is loading when the model is saving", function(assert) {
-    var model = EmberObject.extend(Evented).create({ isSaving: false });
-    var builder = FormBuilder.create({
-      model: model
+  module('validation', function(hooks) {
+    hooks.beforeEach(function() {
+      this.object = {};
+      this.builder = this.owner.factoryFor('model:form-builder').create({
+        object: this.object
+      });
     });
 
-    assert.equal(builder.get("isLoading"), false);
+    test('it uses validation adapter specified in the config', function(assert) {
+      this.owner.factoryFor('config:environment').class.formBuilder = {
+        validationsAddon: 'ember-cp-validations'
+      };
+      const EmberCpValidationsAdapter = this.owner.factoryFor('validation-adapter:ember-cp-validations').class;
 
-    model.set("isSaving", true);
-    assert.equal(builder.get("isLoading"), true);
-  });
-
-  test("isLoading can be overriden by object property", function(assert) {
-    var model = EmberObject.extend(Evented).create({ isSaving: true });
-    var object = EmberObject.extend(Evented).create({ isLoading: false });
-    var builder = FormBuilder.create({
-      model: model,
-      object: object
+      assert.ok(this.builder.validationAdapter instanceof EmberCpValidationsAdapter);
+      assert.equal(this.builder.validationAdapter.object, this.object);
     });
 
-    assert.equal(builder.get("isLoading"), false);
+    test('it performs validation on the adapter', async function(assert) {
+      let validateStub = sinon.stub(this.builder.validationAdapter, 'validate').returns(resolve());
 
-    object.set("isLoading", true);
-    assert.equal(builder.get("isLoading"), true);
-  });
+      await this.builder.validate();
 
-  test("validate() performs validation on the object and on the nested fields", function(assert) {
-    var isValid = false;
-    var nestedIsValid = false;
-    var validationPerformed = false;
-    var nestedValidationWasPerformed = false;
-    var model = EmberObject.create({
-      validate() {
-        validationPerformed = true;
-        return new EmberPromise(function(resolve, reject) {
-          if (isValid) {
-            resolve();
-          } else {
-            reject();
-          }
-        });
-      }
-    });
-    var nestedModel = EmberObject.create({
-      validate() {
-        nestedValidationWasPerformed = true;
-        return new EmberPromise(function(resolve, reject) {
-          if (nestedIsValid) {
-            resolve();
-          } else {
-            reject();
-          }
-        });
-      }
-    });
-    var builder = FormBuilder.create({
-      object: model
-    });
-    builder.addChild(FormBuilder.create({
-      object: nestedModel
-    }));
+      assert.ok(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
 
-    run(function() {
-      builder.validate();
+      validateStub.reset();
+      validateStub.returns(reject());
+      await assert.rejects(this.builder.validate());
+
+      assert.notOk(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
     });
 
+    test('it performs validation on the nested fields', async function(assert) {
+      let child = this.owner.factoryFor('model:form-builder').create();
+      let validateStub = sinon.stub(child.validationAdapter, 'validate').returns(resolve());
+      this.builder.addChild(child);
+      sinon.stub(this.builder.validationAdapter, 'validate').returns(resolve());
 
-    assert.ok(validationPerformed, "Validation was performed");
-    assert.ok(nestedValidationWasPerformed, "Nested validation was performed");
-    assert.ok(!builder.get("isValid"), "Form was invalid");
+      await this.builder.validate();
 
-    nestedIsValid = true;
+      assert.ok(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
 
-    run(function() {
-      builder.validate();
+      validateStub.reset();
+      validateStub.returns(reject());
+      await assert.rejects(this.builder.validate());
+
+      assert.notOk(this.builder.isValid);
+      assert.ok(validateStub.calledOnce);
     });
-
-    assert.ok(!builder.get("isValid"), "Form was invalid");
-
-    isValid = true;
-    nestedIsValid = false;
-
-    run(function() {
-      builder.validate();
-    });
-
-    assert.ok(!builder.get("isValid"), "Form was invalid");
-
-    isValid = true;
-    nestedIsValid = true;
-
-    run(function() {
-      builder.validate();
-    });
-
-    assert.ok(builder.get("isValid"), "Form was valid");
   });
 });
