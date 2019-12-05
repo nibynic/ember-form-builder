@@ -12,7 +12,9 @@ module('Integration | Component | inputs/date-input', function(hooks) {
       name: 'myInput',
       disabled: false,
       autocomplete: 'bday',
-      placeholder: 'Birth date'
+      texts: {
+        placeholder: 'Birth date'
+      }
     };
     await render(hbs`{{inputs/date-input config=config}}`);
   });

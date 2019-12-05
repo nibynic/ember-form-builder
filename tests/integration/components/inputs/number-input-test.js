@@ -12,7 +12,9 @@ module('Integration | Component | inputs/number-input', function(hooks) {
       name: 'myInput',
       disabled: false,
       autocomplete: 'cc-csc',
-      placeholder: 'Verification number'
+      texts: {
+        placeholder: 'Verification number'
+      }
     };
 
     await render(hbs`{{inputs/number-input config=config}}`);

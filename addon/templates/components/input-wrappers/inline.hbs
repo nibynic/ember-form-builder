@@ -5,8 +5,8 @@
       class=(concat "form-check-input" (if isInvalid " is-invalid"))
     }}
     {{component labelComponent class="form-check-label"}}
-    {{#if config.hint}}
-      <small class="form-text text-muted">{{config.hint}}</small>
+    {{#if config.texts.hint}}
+      <small class="form-text text-muted">{{config.texts.hint}}</small>
     {{/if}}
     {{#if isInvalid}}
       <div class="invalid-feedback">

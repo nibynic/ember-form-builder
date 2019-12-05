@@ -12,7 +12,9 @@ module('Integration | Component | inputs/email-input', function(hooks) {
       name: 'myInput',
       disabled: false,
       autocomplete: 'email',
-      placeholder: 'Your email'
+      texts: {
+        placeholder: 'Your email'
+      }
     };
 
     await render(hbs`{{inputs/email-input config=config}}`);

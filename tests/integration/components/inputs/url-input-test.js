@@ -12,7 +12,9 @@ module('Integration | Component | inputs/url-input', function(hooks) {
       name: 'myInput',
       disabled: false,
       autocomplete: 'url',
-      placeholder: 'Your website'
+      texts: {
+        placeholder: 'Your website'
+      }
     };
 
     await render(hbs`{{inputs/url-input config=config}}`);

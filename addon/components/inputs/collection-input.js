@@ -86,6 +86,6 @@ export default Component.extend({
 
   required: reads('config.validations.required')
 }, ...['autocomplete', 'autofocus', 'collection', 'dir', 'disabled',
-  'inputmode', 'inputElementId', 'name', 'pattern', 'placeholder', 'size', 'tabindex'].map(
+  'inputmode', 'inputElementId', 'name', 'pattern', 'size', 'tabindex'].map(
   (attr) => ({ [attr]: reads(`config.${attr}`) })
 ));

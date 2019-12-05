@@ -9,8 +9,10 @@ export default TextArea.extend({
     this.elementId = this.get('inputElementId');
   },
 
-  required: reads('config.validations.required')
-}, ...['autocomplete', 'autofocus', 'dir', 'disabled', 'height', 'inputmode',
-  'inputElementId', 'list', 'name', 'pattern', 'placeholder', 'size', 'tabindex'].map(
+  required: reads('config.validations.required'),
+  placeholder: reads('config.texts.placeholder')
+},
+...['autocomplete', 'autofocus', 'dir', 'disabled', 'height', 'inputmode',
+  'inputElementId', 'list', 'name', 'pattern', 'size', 'tabindex'].map(
   (attr) => ({ [attr]: reads(`config.${attr}`) })
 ));

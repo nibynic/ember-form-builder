@@ -12,7 +12,9 @@ module('Integration | Component | inputs/password-input', function(hooks) {
       name: 'myInput',
       disabled: false,
       autocomplete: 'current-password',
-      placeholder: 'Your password'
+      texts: {
+        placeholder: 'Your password'
+      }
     };
 
     await render(hbs`{{inputs/password-input config=config}}`);

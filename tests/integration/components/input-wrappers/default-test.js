@@ -26,8 +26,10 @@ module('Integration | Component | input-wrappers/default', function(hooks) {
     assert.dom('.text-muted').doesNotExist();
     assert.dom('.invalid-feedback').doesNotExist();
 
-    this.set('config.label', 'Email');
-    this.set('config.hint', 'Please type in your full email address');
+    this.set('config.texts', {
+      label: 'Email',
+      hint: 'Please type in your full email address'
+    });
     this.set('config.canValidate', true);
 
     assert.dom('[data-test-my-input]').exists();

@@ -58,7 +58,7 @@ module.exports = function(environment) {
 ```handlebars
 {{!-- app/components/input-wrappers/default --}}
 <div class="my-input {{if unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
-  {{#if config.label}}
+  {{#if config.texts.label}}
     {{component labelComponent}}
   {{/if}}
   <div class="my-field">
@@ -67,8 +67,8 @@ module.exports = function(environment) {
   {{#if unit}}
     <div class="my-unit">{{unit}}</div>
   {{/if}}
-  {{#if config.hint}}
-    <div class="my-hint">{{config.hint}}</div>
+  {{#if config.texts.hint}}
+    <div class="my-hint">{{config.texts.hint}}</div>
   {{/if}}
   {{#if config.validations.errors}}
     <div class="my-errors">{{config.validations.errors}}</div>
@@ -81,13 +81,13 @@ module.exports = function(environment) {
 <div class="my-input {{if unit "my-input-with-unit"}} {{if config.validations.errors "my-input-with-errors"}}">
   {{#component labelComponent}}
     {{component inputComponent class="my-input-control"}}
-    <span class="simple-input-inline-label">{{config.label}}</span>
+    <span class="simple-input-inline-label">{{config.texts.label}}</span>
   {{/component}}
   {{#if unit}}
     <div class="my-unit">{{unit}}</div>
   {{/if}}
-  {{#if config.hint}}
-    <div class="my-hint">{{config.hint}}</div>
+  {{#if config.texts.hint}}
+    <div class="my-hint">{{config.texts.hint}}</div>
   {{/if}}
   {{#if config.validations.errors}}
     <div class="my-errors">{{config.validations.errors}}</div>
@@ -202,7 +202,7 @@ export default TextField.extend({
   type: 'email',
 
   name:         reads('config.name'),
-  placeholder:  reads('config.placeholder'),
+  placeholder:  reads('config.texts.placeholder'),
 
   init() {
     this._super(...arguments);

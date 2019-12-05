@@ -16,7 +16,6 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
         name: 'myInput',
         disabled: false,
         autocomplete: 'country',
-        placeholder: 'Your country',
         collection: ['France', 'Spain', 'Germany', 'United Kingdom']
       };
 
@@ -26,7 +25,6 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
     test('it renders', async function(assert) {
       assert.dom('select').hasAttribute('name', 'myInput');
       assert.dom('select').hasAttribute('autocomplete', 'country');
-      assert.dom('select').hasAttribute('placeholder', 'Your country');
       assert.dom('option[value=France]').hasText('France');
       assert.dom('option[value=Spain]').hasText('Spain');
       assert.dom('option[value=Germany]').hasText('Germany');

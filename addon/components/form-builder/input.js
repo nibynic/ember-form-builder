@@ -63,7 +63,6 @@ const extension = {
 
   additionalAttributeNames: computed("attrs", function() {
     let additionalAttributeNames = [];
-
     for(let key in this.get("attrs")) {
       if (simpleInputAttributeNames.indexOf(key) < 0) {
         additionalAttributeNames.push(key);
@@ -75,7 +74,7 @@ const extension = {
 
   config: computed('additionalAttributeNames.[]', function() {
     let attrs = (this.additionalAttributeNames || []).concat([
-      'inputElementId', 'name', 'value', 'label', 'placeholder', 'hint',
+      'inputElementId', 'name', 'value', 'texts',
       'validations', 'canValidate'
     ]);
     return EmberObject.extend(
@@ -83,6 +82,10 @@ const extension = {
         [key]: alias(`content.${key}`)
       }))
     ).create({ content: this });
+  }),
+
+  texts: computed(function() {
+    return TextProxy.create({ content: this });
   }),
 
   inputElementId: byDefault("elementId", function() {
@@ -96,20 +99,7 @@ const extension = {
       name = prefix + '[' + name + ']';
     }
     return name;
-  }),
-
-  label: byDefault('builder.translationKey', 'attr', 'translationService.locale', function() {
-    let attr = this.get('attr');
-    return this.get('translationService').t(this.get('builder.translationKey'), 'attribute', attr) || humanize(attr);
-  }),
-
-  hint: byDefault('builder.translationKey', 'attr', 'translationService.locale', function() {
-    return this.get('translationService').t(this.get('builder.translationKey'), 'hint', this.get('attr'));
-  }),
-
-  placeholder: byDefault('builder.translationKey', 'attr', 'translationService.locale', function() {
-    return this.get('translationService').t(this.get('builder.translationKey'), 'placeholder', this.get('attr'));
-  }),
+  })
 };
 
 let simpleInputAttributeNames = Object.keys(extension).concat(["builder", "attr"]);
@@ -117,6 +107,29 @@ const SimpleInput = Component.extend(extension);
 
 SimpleInput.reopenClass({
   positionalParams: ["attr"]
+});
+
+const TextProxy = EmberObject.extend({
+  humanizedAttributes: Object.freeze(['label']),
+  typeMapping: Object.freeze({ label: 'attribute' }),
+
+  unknownProperty(key) {
+    defineProperty(this, key, computed(`content.{${key},attr,translationService.locale,builder.translationKey}`, function() {
+      let originalValue = this.get(`content.${key}`);
+      let attr = this.get('content.attr');
+      let mappedKey = this.get('typeMapping')[key] || key;
+      if (originalValue !== false) {
+        return originalValue || this.get('content.translationService').t(
+          this.get('content.builder.translationKey'), mappedKey, attr
+        ) || (
+          this.get('humanizedAttributes').includes(key) ? humanize(attr) : undefined
+        );
+      } else {
+        return undefined;
+      }
+    }));
+    return this.get(key);
+  }
 });
 
 export default SimpleInput;

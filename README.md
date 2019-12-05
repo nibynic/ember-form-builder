@@ -139,7 +139,7 @@ Input wrapper is a component that receives `inputComponent`, `labelComponent` an
 `inputComponent` and `labelComponent` are preconfigured component instances, so you can
 easily render them in any place you need.
 
-`config` is a hash containing some predefined keys (`inputElementId`, `name`, `value`, `label`, `placeholder`, `hint`, `unit`,
+`config` is a hash containing some predefined keys (`inputElementId`, `name`, `value`, `texts`,
 `validations`, `canValidate`), as well as all attributes that you pass to
 the `{{f.input}}` call.
 

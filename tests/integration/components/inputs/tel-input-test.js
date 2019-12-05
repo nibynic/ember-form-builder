@@ -12,7 +12,9 @@ module('Integration | Component | inputs/tel-input', function(hooks) {
       name: 'myInput',
       disabled: false,
       autocomplete: 'tel',
-      placeholder: 'Your phone number'
+      texts: {
+        placeholder: 'Your phone number'
+      }
     };
 
     await render(hbs`{{inputs/tel-input config=config}}`);

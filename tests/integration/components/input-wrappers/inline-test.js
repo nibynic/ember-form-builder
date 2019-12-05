@@ -26,7 +26,7 @@ module('Integration | Component | input-wrappers/inline', function(hooks) {
     assert.dom('.text-muted').doesNotExist();
     assert.dom('.invalid-feedback').doesNotExist();
 
-    this.set('config.hint', 'Please type in your full email address');
+    this.set('config.texts', { hint: 'Please type in your full email address' });
     this.set('config.canValidate', true);
 
     assert.dom('.text-muted').hasText('Please type in your full email address');

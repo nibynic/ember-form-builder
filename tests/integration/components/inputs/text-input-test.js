@@ -12,7 +12,9 @@ module('Integration | Component | inputs/text-input', function(hooks) {
       name: 'myInput',
       disabled: false,
       autocomplete: 'name',
-      placeholder: 'Your name'
+      texts: {
+        placeholder: 'Your name'
+      }
     };
 
     await render(hbs`{{inputs/text-input config=config}}`);
