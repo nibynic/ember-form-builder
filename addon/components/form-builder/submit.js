@@ -11,9 +11,9 @@ const SimpleSubmit = Component.extend({
   translationService: service("formBuilderTranslations"),
   tagName: "button",
   type: "submit",
-  attributeBindings: ["type", "isDisabled:disabled"],
+  attributeBindings: ["type", "disabled"],
 
-  isDisabled: oneWay("builder.isLoading"),
+  disabled: oneWay("builder.isLoading"),
   builder: computed({
     get() {
       return this._builder;

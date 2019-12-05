@@ -99,6 +99,28 @@ module('Integration | Component | form-builder/input', function(hooks) {
     assert.dom(this.element).hasText('Title value: Hello my input');
   });
 
+  test('it is disabled while saving or when explicitly disabled', async function(assert) {
+    this.builder = FormBuilderMock.create({
+      isLoading: false
+    });
+    this.disabled = false;
+
+    await render(hbs`
+      {{form-builder/input attr="title" as="string" disabled=disabled builder=builder}}
+    `);
+
+    assert.dom('input').isNotDisabled();
+
+    this.set('builder.isLoading', true);
+
+    assert.dom('input').isDisabled();
+
+    this.set('builder.isLoading', false);
+    this.set('disabled', true);
+
+    assert.dom('input').isDisabled();
+  });
+
   test('it reflects error updates', async function(assert) {
     this.set('builder', FormBuilderMock.create({
       isValid: true,

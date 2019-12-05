@@ -8,8 +8,9 @@ import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
 import byDefault from 'ember-form-builder/utilities/by-default';
 import { once } from '@ember/runloop';
+import { A } from '@ember/array';
 
-const extension = {
+export default Component.extend({
   layout,
 
   translationService: service("formBuilderTranslations"),
@@ -61,26 +62,21 @@ const extension = {
     }));
   },
 
-  additionalAttributeNames: computed("attrs", function() {
-    let additionalAttributeNames = [];
-    for(let key in this.get("attrs")) {
-      if (simpleInputAttributeNames.indexOf(key) < 0) {
-        additionalAttributeNames.push(key);
-      }
-    }
-
-    return additionalAttributeNames;
-  }),
-
-  config: computed('additionalAttributeNames.[]', function() {
-    let attrs = (this.additionalAttributeNames || []).concat([
-      'inputElementId', 'name', 'value', 'texts',
-      'validations', 'canValidate'
-    ]);
+  config: computed(function() {
+    let attrs = A(
+      Object.keys(this.get('attrs')).concat([
+        'inputElementId', 'name', 'value', 'texts', 'validations',
+        'canValidate', 'disabled:combinedDisabled'
+      ])
+    ).removeObjects(['attr', 'builder', 'as', 'label', 'placeholder', 'hint']);
     return EmberObject.extend(
-      ...attrs.map((key) => ({
-        [key]: alias(`content.${key}`)
-      }))
+      ...attrs.map((key) => key.split(':').length > 1 ?
+        {
+          [key.split(':')[0]]: alias(`content.${key.split(':')[1]}`)
+        } : {
+          [key]: alias(`content.${key}`)
+        }
+      )
     ).create({ content: this });
   }),
 
@@ -99,13 +95,12 @@ const extension = {
       name = prefix + '[' + name + ']';
     }
     return name;
+  }),
+
+  combinedDisabled: computed('builder.isLoading', 'disabled', function() {
+    return !!this.get('builder.isLoading') || !!this.get('disabled');
   })
-};
-
-let simpleInputAttributeNames = Object.keys(extension).concat(["builder", "attr"]);
-const SimpleInput = Component.extend(extension);
-
-SimpleInput.reopenClass({
+}).reopenClass({
   positionalParams: ["attr"]
 });
 
@@ -131,5 +126,3 @@ const TextProxy = EmberObject.extend({
     return this.get(key);
   }
 });
-
-export default SimpleInput;
