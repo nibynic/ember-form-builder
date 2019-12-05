@@ -22,7 +22,7 @@ module('Integration | Component | form-builder/submit', function(hooks) {
       'post.actions.submit': 'Zapisz post',
       'formBuilder.actions.submit': 'Zapisz'
     };
-    this.owner.register('service:form-builder-translations', EmberObject.extend({
+    this.owner.register('service:intl', EmberObject.extend({
       t(key)      { return translations[key]; },
       exists(key) { return !!translations[key]; }
     }));

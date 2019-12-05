@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/form-builder/submit';
-import { isPresent, isEmpty } from '@ember/utils';
 import { computed } from '@ember/object';
 import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
@@ -8,7 +7,7 @@ import byDefault from 'ember-form-builder/utilities/by-default';
 
 const SimpleSubmit = Component.extend({
   layout,
-  
+
   translationService: service("formBuilderTranslations"),
   tagName: "button",
   type: "submit",
@@ -28,24 +27,8 @@ const SimpleSubmit = Component.extend({
     }
   }),
 
-  text: byDefault("builder.translationKey", 'translationService.locale', function() {
-    var key;
-    var defaultKey = "formBuilder.actions.submit";
-
-    if (isPresent(this.get("builder.translationKey"))) {
-      key = this.get("builder.translationKey") + ".actions.submit";
-    } else {
-      key = defaultKey;
-    }
-
-    var result;
-    if (this.get("translationService").exists(key)) {
-      result = this.get("translationService").t(key);
-    } else if (this.get("translationService").exists(defaultKey)) {
-      result = this.get("translationService").t(defaultKey);
-    }
-    if (isEmpty(result)) { result = "Save"; }
-    return result;
+  text: byDefault('builder.translationKey', 'translationService.locale', function() {
+    return this.get('translationService').t(this.get('builder.translationKey'), 'action', 'submit') || 'Save';
   })
 });
 

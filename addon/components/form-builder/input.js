@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/form-builder/input';
-import { isEmpty, isPresent } from '@ember/utils';
+import { isPresent } from '@ember/utils';
 import { alias, reads } from '@ember/object/computed';
 import EmberObject, { computed, defineProperty } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -98,34 +98,18 @@ const extension = {
     return name;
   }),
 
-  label: byDefault("builder.translationKey", "attr", 'translationService.locale', function() {
-    var key = this.get("builder.translationKey") + ".attributes." + this.get("attr");
-
-    var result;
-    if (this.get("translationService").exists(key)) {
-      result = this.get("translationService").t(key);
-    }
-    if (isEmpty(result)) {
-      result = humanize(this.get("attr"));
-    }
-    return result;
+  label: byDefault('builder.translationKey', 'attr', 'translationService.locale', function() {
+    let attr = this.get('attr');
+    return this.get('translationService').t(this.get('builder.translationKey'), 'attribute', attr) || humanize(attr);
   }),
 
-  hint: byDefault("builder.translationKey", "attr", 'translationService.locale', function() {
-    var key = this.get("builder.translationKey") + ".hints." + this.get("attr");
-
-    if (this.get("translationService").exists(key)) {
-      return this.get("translationService").t(key);
-    }
+  hint: byDefault('builder.translationKey', 'attr', 'translationService.locale', function() {
+    return this.get('translationService').t(this.get('builder.translationKey'), 'hint', this.get('attr'));
   }),
 
-  placeholder: byDefault("builder.translationKey", "attr", 'translationService.locale', function() {
-    var key = this.get("builder.translationKey") + ".placeholders." + this.get("attr");
-
-    if (this.get("translationService").exists(key)) {
-      return this.get("translationService").t(key);
-    }
-  })
+  placeholder: byDefault('builder.translationKey', 'attr', 'translationService.locale', function() {
+    return this.get('translationService').t(this.get('builder.translationKey'), 'placeholder', this.get('attr'));
+  }),
 };
 
 let simpleInputAttributeNames = Object.keys(extension).concat(["builder", "attr"]);

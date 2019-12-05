@@ -238,7 +238,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
       'blogPost.attributes.title':              'Tytuł posta',
       'blogPost.hints.title':                   'Maksymalnie 45 znaków'
     };
-    this.owner.register('service:form-builder-translations', EmberObject.extend({
+    this.owner.register('service:intl', EmberObject.extend({
       t(key)      { return translations[key]; },
       exists(key) { return !!translations[key]; }
     }));
