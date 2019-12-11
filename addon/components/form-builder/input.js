@@ -47,7 +47,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    
+
     defineProperty(this, 'validations', reads(`builder.validationAdapter.attributes.${this.get('attr')}`));
 
     var valueAttribute = "object." + this.get("attr");
@@ -65,7 +65,7 @@ export default Component.extend({
   config: computed(function() {
     let attrs = A(
       Object.keys(this.get('attrs')).concat([
-        'inputElementId', 'name', 'value', 'texts', 'validations',
+        'inputElementId', 'name', 'type', 'value', 'texts', 'validations',
         'canValidate', 'disabled:combinedDisabled'
       ])
     ).removeObjects(['attr', 'builder', 'as', 'label', 'placeholder', 'hint']);
