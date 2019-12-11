@@ -34,13 +34,18 @@ module('Integration | Component | form-builder/fields', function(hooks) {
       },
       removeChild() {}
     });
+    this.index = 1;
 
     await render(hbs`
-      {{#form-builder/fields on=parent as="sample-child" as |f|}}
+      {{#form-builder/fields on=parent as="sample-child" index=index as |f|}}
         {{f.builder.name}}
       {{/form-builder/fields}}
     `);
 
-    assert.dom(this.element).hasText('sampleModel[sampleChild]');
+    assert.dom(this.element).hasText('sampleModel[sampleChildren][1]');
+
+    this.set('index', 2);
+
+    assert.dom(this.element).hasText('sampleModel[sampleChildren][2]');
   });
 });

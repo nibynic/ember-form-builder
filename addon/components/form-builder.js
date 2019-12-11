@@ -1,8 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/form-builder';
-import { isPresent } from '@ember/utils';
 import { computed } from '@ember/object';
-import { reads } from '@ember/object/computed';
+import { reads, alias } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 
 export default Component.extend({
@@ -48,26 +47,15 @@ export default Component.extend({
     );
   },
 
-  formBuilder: computed("for", "as", "translationKey", 'index', function() {
-    let params = {};
-    let mapping = {
-      for: 'object',
-      as: 'modelName',
-      translationKey: 'translationKey',
-      model: 'model',
-      index: 'index'
-    };
-    Object.entries(mapping).forEach(([from, to]) => {
-      let value = this.get(from);
-      if (isPresent(value)) {
-        params[to] = value;
-      }
-    });
-    if (this.get('as') === '') {
-      params.modelName = this.get('as');
-    }
-    return getOwner(this).factoryFor('model:form-builder').create(params);
+  formBuilder: computed(function() {
+    return getOwner(this).factoryFor('model:form-builder').create();
   }),
+
+  for:            alias('formBuilder.object'),
+  as:             alias('formBuilder.modelName'),
+  translationKey: alias('formBuilder.translationKey'),
+  model:          alias('formBuilder.model'),
+  index:          alias('formBuilder.index'),
 
   isValid: reads('formBuilder.isValid'),
 

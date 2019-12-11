@@ -2,28 +2,24 @@ import FormBuilder from 'ember-form-builder/components/form-builder';
 import { computed } from '@ember/object';
 
 export default FormBuilder.extend({
-  tagName: "div",
-  parentFormBuilder: null,
+  tagName: 'div',
 
-  on: computed({
-    set(key, value) {
-      if (value && value.builder) {
-        this.set("parentFormBuilder", value.builder);
-      } else {
-        this.set("parentFormBuilder", value);
-      }
-
-      return this.get("parentFormBuilder");
+  parentFormBuilder: computed('on.formBuilder', {
+    get() {
+      return this._parentFormBuilder || this.get('on.formBuilder') || this.get('on');
+    },
+    set(k, v) {
+      return this._parentFormBuilder = v;
     }
   }),
 
-  init() {
+  didInsertElement() {
     this._super(...arguments);
-    this.get("parentFormBuilder").addChild(this.get("formBuilder"));
+    this.get('parentFormBuilder').addChild(this.get('formBuilder'));
   },
 
-  destroy() {
+  willDestroy() {
     this._super(...arguments);
-    this.get("parentFormBuilder").removeChild(this.get("formBuilder"));
+    this.get('parentFormBuilder').removeChild(this.get('formBuilder'));
   }
 });
