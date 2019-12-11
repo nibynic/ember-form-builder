@@ -10,10 +10,11 @@ module('Integration | Component | form-builder', function(hooks) {
 
   test('it renders', async function(assert) {
     await render(hbs`
-      {{form-builder}}
+      {{form-builder novalidate=true}}
     `);
 
     assert.dom('form').exists();
+    assert.dom('form').hasAttribute('novalidate');
   });
 
   test('it sets model name', async function(assert) {

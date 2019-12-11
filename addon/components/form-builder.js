@@ -7,8 +7,11 @@ import { getOwner } from '@ember/application';
 
 export default Component.extend({
   layout,
-  
-  tagName: "form",
+
+  tagName: 'form',
+  attributeBindings: ['novalidate'],
+
+  novalidate: false,
 
   action() {},
   submitFailed() {},
