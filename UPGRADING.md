@@ -322,3 +322,29 @@ export default Controller.extend({
   }
 })
 ```
+
+## Renamed `as` attribute
+
+`form-builder` and `form-builder/fields` `as` attribute is now called `name`.
+
+### Before
+
+```handlebars
+{{#form-builder for=this action="submit" as="post" as |f|}}
+
+  {{f.input "title"}}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+### After
+
+```handlebars
+{{#form-builder for=this action="submit" name="post" as |f|}}
+
+  {{f.input "title"}}
+  {{f.submit}}
+
+{{/form-builder}}
+```

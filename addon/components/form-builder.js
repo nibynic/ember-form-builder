@@ -52,7 +52,7 @@ export default Component.extend({
   }),
 
   for:            alias('formBuilder.object'),
-  as:             alias('formBuilder.modelName'),
+  name:           alias('formBuilder.modelName'),
   translationKey: alias('formBuilder.translationKey'),
   model:          alias('formBuilder.model'),
   index:          alias('formBuilder.index'),

@@ -37,7 +37,7 @@ module('Integration | Component | form-builder/fields', function(hooks) {
     this.index = 1;
 
     await render(hbs`
-      {{#form-builder/fields on=parent as="sample-child" index=index as |f|}}
+      {{#form-builder/fields on=parent name="sample-child" index=index as |f|}}
         {{f.builder.name}}
       {{/form-builder/fields}}
     `);

@@ -21,7 +21,7 @@ module('Integration | Component | form-builder', function(hooks) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
-      {{#form-builder for=object as="overriden-type" as |f|}}
+      {{#form-builder for=object name="overriden-type" as |f|}}
         <div data-test-model-name>{{f.builder.modelName}}</div>
       {{/form-builder}}
     `);
@@ -33,7 +33,7 @@ module('Integration | Component | form-builder', function(hooks) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
-      {{#form-builder for=object as="" as |f|}}
+      {{#form-builder for=object name="" as |f|}}
         <div data-test-model-name>{{f.builder.modelName}}</div>
         <div data-test-translation-key>{{f.builder.translationKey}}</div>
         <div data-test-name>{{f.builder.name}}</div>
@@ -47,7 +47,7 @@ module('Integration | Component | form-builder', function(hooks) {
 
   test('it sets name', async function(assert) {
     await render(hbs`
-      {{#form-builder as="sample-model" index=index as |f|}}
+      {{#form-builder name="sample-model" index=index as |f|}}
         <div data-test-name>{{f.builder.name}}</div>
       {{/form-builder}}
     `);
