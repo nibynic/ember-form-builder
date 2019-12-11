@@ -24,22 +24,22 @@ module("Unit | Service | FormBuilderTranslations", function(hooks) {
 
   test('it finds translations for given scope and type', function(assert) {
     let exists = sinon.stub();
-    let t = sinon.stub().callsFake((k) => k);
+    let t = sinon.stub().callsFake((k) => `t:${k}`);
     this.owner.register('service:intl', EmberObject.extend({ t, exists }));
     let service = this.owner.lookup('service:form-builder-translations');
 
     exists.returns(true);
 
-    assert.equal(service.t('post', 'attribute', 'title'), 'post.attributes.title');
-    assert.equal(service.t('components.myForm', 'hint', 'url'), 'components.myForm.hints.url');
-    assert.equal(service.t('user.admin', 'action', 'submit'), 'user.admin.actions.submit');
+    assert.equal(service.t('post', 'attribute', 'title'), 't:post.attributes.title');
+    assert.equal(service.t('components.myForm', 'hint', 'url'), 't:components.myForm.hints.url');
+    assert.equal(service.t('user.admin', 'action', 'submit'), 't:user.admin.actions.submit');
 
     exists.callsFake((k) => !!k.match('formBuilder'));
 
-    assert.equal(service.t('post', 'attribute', 'title'), 'formBuilder.attributes.title');
-    assert.equal(service.t('components.myForm', 'hint', 'url'), 'formBuilder.hints.url');
-    assert.equal(service.t('user.admin', 'action', 'submit'), 'formBuilder.actions.submit');
-    assert.equal(service.t('formBuilder.isRequired'), 'formBuilder.isRequired');
+    assert.equal(service.t('post', 'attribute', 'title'), 't:formBuilder.attributes.title');
+    assert.equal(service.t('components.myForm', 'hint', 'url'), 't:formBuilder.hints.url');
+    assert.equal(service.t('user.admin', 'action', 'submit'), 't:formBuilder.actions.submit');
+    assert.equal(service.t('formBuilder.isRequired'), 't:formBuilder.isRequired');
 
     exists.returns(false);
 

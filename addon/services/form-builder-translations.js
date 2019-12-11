@@ -28,7 +28,7 @@ export default Service.extend({
       ].find(
         (key) => service.exists(key)
       );
-      return service.t(key);
+      return key ? service.t(key) : undefined;
     } else {
       return null;
     }
