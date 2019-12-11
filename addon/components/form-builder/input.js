@@ -47,8 +47,8 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-
-    defineProperty(this, 'validations', reads(`builder.validations.${this.get('attr')}`));
+    
+    defineProperty(this, 'validations', reads(`builder.validationAdapter.attributes.${this.get('attr')}`));
 
     var valueAttribute = "object." + this.get("attr");
     defineProperty(this, "value", computed(valueAttribute, {

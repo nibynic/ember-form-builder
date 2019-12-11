@@ -133,9 +133,11 @@ module('Integration | Component | form-builder/input', function(hooks) {
 
     assert.dom('.invalid-feedback').doesNotExist();
 
-    this.set('builder.validations', {
-      title: {
-        errors: ['can\'t be blank', 'is too short']
+    this.set('builder.validationAdapter', {
+      attributes: {
+        title: {
+          errors: ['can\'t be blank', 'is too short']
+        }
       }
     });
 
@@ -227,9 +229,11 @@ module('Integration | Component | form-builder/input', function(hooks) {
 
   test('it renders the required mark', async function(assert) {
     this.set('builder', FormBuilderMock.create({
-      validations: {
-        title: {
-          required: true
+      validationAdapter: {
+        attributes: {
+          title: {
+            required: true
+          }
         }
       }
     }));
