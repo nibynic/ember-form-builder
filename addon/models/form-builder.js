@@ -82,5 +82,7 @@ export default EmberObject.extend({
       .reject(isBlank).map(
         (n, i) => i > 0 ? `[${n}]` : n
       ).join('');
-  })
+  }),
+
+  isLoading: reads('parent.isLoading')
 });

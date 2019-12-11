@@ -17,6 +17,49 @@ module('Unit | Models | FormBuilder', function(hooks) {
     assert.equal(builder.configuration.validationsAddon, 'ember-validations'); // default value
   });
 
+  module('hierarchy', function(hooks) {
+    hooks.beforeEach(function() {
+      this.builder = this.owner.factoryFor('model:form-builder').create({
+        modelName: 'post'
+      });
+      this.child = this.owner.factoryFor('model:form-builder').create({
+        modelName: 'author'
+      });
+      this.builder.addChild(this.child);
+      this.grandchild = this.owner.factoryFor('model:form-builder').create({
+        modelName: 'device'
+      });
+      this.child.addChild(this.grandchild);
+    });
+
+    test('it registers and deregisters children', function(assert) {
+      assert.deepEqual(this.builder.children, [this.child]);
+      assert.equal(this.child.parent, this.builder);
+
+      this.builder.removeChild(this.child);
+
+      assert.deepEqual(this.builder.children, []);
+      assert.equal(this.child.parent, undefined);
+    });
+
+    test('it generates nested names', function(assert) {
+      assert.equal(this.child.name, 'post[author]');
+      assert.equal(this.grandchild.name, 'post[author][device]');
+
+      this.child.set('index', 2);
+
+      assert.equal(this.child.name, 'post[authors][2]');
+      assert.equal(this.grandchild.name, 'post[authors][2][device]');
+    });
+
+    test('it propagates loading state', function(assert) {
+      this.builder.set('isLoading', true);
+
+      assert.equal(this.child.isLoading, true);
+      assert.equal(this.grandchild.isLoading, true);
+    });
+  });
+
   module('model detection', function(hooks) {
     hooks.beforeEach(function() {
       this.model = EmberObject.extend({ type: 'my-model' }).create();
