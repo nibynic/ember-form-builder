@@ -1,10 +1,12 @@
+import { fillIn } from '@ember/test-helpers';
+
 export default {
   read(input) {
     let value = input.querySelector('input').value;
     return value ? value * 1 : value;
   },
 
-  write(input, value) {
-    input.querySelector('input').value = value;
+  async write(input, value) {
+    await fillIn(input.querySelector('input'), value);
   }
 };

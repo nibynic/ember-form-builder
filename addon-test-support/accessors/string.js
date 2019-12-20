@@ -1,9 +1,11 @@
+import { fillIn } from '@ember/test-helpers';
+
 export default {
   read(input) {
     return input.querySelector('input').value;
   },
 
-  write(input, value) {
-    input.querySelector('input').value = value;
+  async write(input, value) {
+    await fillIn(input.querySelector('input'), value);
   }
 };

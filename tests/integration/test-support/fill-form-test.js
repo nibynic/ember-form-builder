@@ -1,13 +1,13 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { readForm } from 'ember-form-builder/test-support';
+import { fillForm } from 'ember-form-builder/test-support';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | TestSupport | readForm', function(hooks) {
+module('Integration | TestSupport | fillForm', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it reads model data', async function(assert) {
+  test('it writes model data', async function(assert) {
     this.model = {
       firstName:  'Jan',
       age:        37
@@ -19,11 +19,16 @@ module('Integration | TestSupport | readForm', function(hooks) {
       {{/form-builder}}
     `);
 
-    assert.deepEqual(readForm('person', ['firstName', 'age']), this.model);
-    assert.deepEqual(readForm('person', this.model), this.model);
+    let newData = {
+      firstName:  'Wilhelm',
+      age:        17
+    };
+    await fillForm('person', newData);
+
+    assert.deepEqual(this.model, newData);
   });
 
-  test('it reads nested object data', async function(assert) {
+  test('it writes nested object data', async function(assert) {
     this.model = {
       address: {
         street: 'Elm Str'
@@ -37,14 +42,18 @@ module('Integration | TestSupport | readForm', function(hooks) {
       {{/form-builder}}
     `);
 
-    assert.deepEqual(readForm('person', ['address.street']), this.model);
-    assert.deepEqual(readForm('person', this.model), this.model);
+    let newData = {
+      address: {
+        street: 'Sesame Str'
+      }
+    };
 
-    assert.deepEqual(readForm('person.address', ['street']), this.model.address);
-    assert.deepEqual(readForm('person.address', this.model.address), this.model.address);
+    await fillForm('person', newData);
+
+    assert.deepEqual(this.model, newData);
   });
 
-  test('it reads nested array data', async function(assert) {
+  test('it writes nested array data', async function(assert) {
     this.model = {
       children: [
         { firstName: 'Jan' },
@@ -61,10 +70,20 @@ module('Integration | TestSupport | readForm', function(hooks) {
       {{/form-builder}}
     `);
 
-    assert.deepEqual(readForm('person', ['children.0.firstName', 'children.1.firstName']), this.model);
-    assert.deepEqual(readForm('person', this.model), this.model);
+    let newData = {
+      children: [
+        undefined,
+        { firstName: 'Kris' }
+      ]
+    };
 
-    assert.deepEqual(readForm('person.children.1', ['firstName']), this.model.children[1]);
-    assert.deepEqual(readForm('person.children.1', this.model.children[1]), this.model.children[1]);
+    await fillForm('person', newData);
+
+    assert.deepEqual(this.model, {
+      children: [
+        { firstName: 'Jan' },
+        { firstName: 'Kris' }
+      ]
+    });
   });
 });

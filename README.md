@@ -189,7 +189,7 @@ Those are the default values:
 Ember Form Builder ships with several test helpers that allow you to easily read
 and write form data.
 
-### Reading form data
+In the examples below we use this component:
 
 ```handlebars
 {{!-- app/components/my-form --}}
@@ -204,6 +204,8 @@ and write form data.
 {{/form-builder}}
 ```
 
+### Reading form data
+
 ```js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -214,7 +216,7 @@ import hbs from 'htmlbars-inline-precompile';
 module('Integration | Components | my-form', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it reads model data', async function(assert) {
+  test('it displays model data', async function(assert) {
     this.model = {
       firstName:  'Jan',
       age:        37,
@@ -224,7 +226,7 @@ module('Integration | Components | my-form', function(hooks) {
     };
     await render(hbs`{{my-form model=model}}`);
 
-    // pass a list of attribute paths...
+    // pass a list of attributes to read...
     assert.deepEqual(readForm('person', ['firstName', 'age', 'children.0.firstName']), this.model);
 
     // ...or just an object (its keys will be converted to paths)
@@ -232,6 +234,47 @@ module('Integration | Components | my-form', function(hooks) {
   });
 ```
 
+### Filling out forms
+
+```js
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import { fillForm } from 'ember-form-builder/test-support';
+import hbs from 'htmlbars-inline-precompile';
+
+module('Integration | Components | my-form', function(hooks) {
+  setupRenderingTest(hooks);
+
+  test('it updates data', async function(assert) {
+    this.model = {
+      firstName:  'Jan',
+      age:        37,
+      children: [
+        { firstName: 'Anna' }
+      ]
+    };
+    await render(hbs`{{my-form model=model}}`);
+
+    let newData = {
+      firstName:  'Viktor',
+      age:        32,
+      children: [
+        { firstName: 'Joanna' }
+      ]
+    };
+
+    await fillForm('person', {
+      firstName:  'Viktor',
+      age:        32,
+      children: [
+        { firstName: 'Joanna' }
+      ]
+    });
+
+    assert.deepEqual(this.model, newData);
+  });
+```
 
 
 ## Upgrading
