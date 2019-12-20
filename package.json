@@ -36,7 +36,6 @@
     "ember-sinon": "^4.0.0",
     "ember-source": "https://s3.amazonaws.com/builds.emberjs.com/canary/shas/bc435eb0a11868f7e0f8381f9a4bb2ba7728d9e8.tgz",
     "ember-source-channel-url": "^2.0.1",
-    "ember-test-selectors": "^2.1.0",
     "ember-try": "^1.2.1",
     "eslint-plugin-ember": "^7.1.0",
     "eslint-plugin-node": "^10.0.0",
@@ -61,6 +60,7 @@
     "ember-cli-babel": "^7.11.1",
     "ember-cli-htmlbars": "^4.0.5",
     "ember-inflector": "^3.0.0",
+    "ember-test-selectors": "^3.0.0",
     "ember-truth-helpers": "^2.1.0"
   },
   "ember-addon": {

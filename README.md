@@ -184,7 +184,57 @@ Those are the default values:
 }
 ```
 
-## Upgrading ##
+## Test support
+
+Ember Form Builder ships with several test helpers that allow you to easily read
+and write form data.
+
+### Reading form data
+
+```handlebars
+{{!-- app/components/my-form --}}
+{{#form-builder for=model name="person" as |f|}}
+  {{f.input "firstName"}}
+  {{f.input "age" as="number"}}
+  {{#each model.children as |child i|}}
+    {{#f.fields for=child name="child" index=i as |ff|}}
+      {{ff.input "firstName"}}
+    {{/f.fields}}
+  {{/each}}
+{{/form-builder}}
+```
+
+```js
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import { readForm } from 'ember-form-builder/test-support';
+import hbs from 'htmlbars-inline-precompile';
+
+module('Integration | Components | my-form', function(hooks) {
+  setupRenderingTest(hooks);
+
+  test('it reads model data', async function(assert) {
+    this.model = {
+      firstName:  'Jan',
+      age:        37,
+      children: [
+        { firstName: 'Anna' }
+      ]
+    };
+    await render(hbs`{{my-form model=model}}`);
+
+    // pass a list of attribute paths...
+    assert.deepEqual(readForm('person', ['firstName', 'age', 'children.0.firstName']), this.model);
+
+    // ...or just an object (its keys will be converted to paths)
+    assert.deepEqual(readForm('person', this.model), this.model);
+  });
+```
+
+
+
+## Upgrading
 
 Please check out the [upgrading documentation](UPGRADING.md).
 

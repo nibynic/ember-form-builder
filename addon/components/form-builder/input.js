@@ -13,6 +13,9 @@ import { A } from '@ember/array';
 export default Component.extend({
   layout,
 
+  'data-test-input-type': reads('type'),
+  'data-test-input-name': reads('name'),
+
   translationService: service("formBuilderTranslations"),
   hasFocusedOut: false,
   as: byDefault("_model", "attr", function() {
