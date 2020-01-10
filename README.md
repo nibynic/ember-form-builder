@@ -122,7 +122,7 @@ Ember Form Builder supports `ember-intl` and `ember-i18n` at the moment, however
 Ember Form Builder automatically detects internationalization addon and tries to guess the translation keys.
 
 use case | label | hint | placeholder | submit | required
---- | --- | --- | --- | ---
+--- | --- | --- | --- | --- | --- 
 Explicit | `label="My attribute"` | `hint="My hint"` | `placeholder="My placeholder"` | `text="My submit"` | `not possible`
 Custom form translation key: `{{#form-builder translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
 Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | Looks up `article.placeholders.attribute` | `not possible`
