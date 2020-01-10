@@ -1,10 +1,24 @@
 import { assert } from '@ember/debug';
-import string from './string';
+import boolean from './boolean';
+import checkboxes from './checkboxes';
+import collection from './collection';
+import date from './date';
 import number from './number';
+import string from './string';
+import text from './text';
 
 const Map = {
+  boolean,
+  checkboxes,
+  collection,
+  date,
+  email: string,
+  number,
+  password: string,
   string,
-  number
+  tel: string,
+  text,
+  url: string
 };
 
 export default {
