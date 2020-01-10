@@ -276,6 +276,35 @@ module('Integration | Components | my-form', function(hooks) {
   });
 ```
 
+### Reading validation errors
+
+```js
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import { fillForm, readErrors } from 'ember-form-builder/test-support';
+import hbs from 'htmlbars-inline-precompile';
+
+module('Integration | Components | my-form', function(hooks) {
+  setupRenderingTest(hooks);
+
+  test('it validates data', async function(assert) {
+    this.model = {
+      age:  37
+    };
+    await render(hbs`{{my-form model=model}}`);
+    await fillForm('person', {
+      age:  2
+    });
+
+    let errors = {
+      age: 'must be greater than or equal to 16'
+    }
+
+    assert.deepEqual(readErrors('person', errors), errors);
+  });
+```
+
 
 ## Upgrading
 

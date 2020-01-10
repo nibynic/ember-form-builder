@@ -9,7 +9,7 @@
       <small class="form-text text-muted">{{config.texts.hint}}</small>
     {{/if}}
     {{#if isInvalid}}
-      <div class="invalid-feedback">
+      <div class="invalid-feedback" data-test-errors>
         {{#each config.validations.errors as |error i|~}}
           {{if i ", "}}{{error}}
         {{~/each}}
