@@ -240,7 +240,7 @@ module('Integration | Components | my-form', function(hooks) {
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { fillForm } from 'ember-form-builder/test-support';
+import { fillForm, pick } from 'ember-form-builder/test-support';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Components | my-form', function(hooks) {
@@ -264,15 +264,15 @@ module('Integration | Components | my-form', function(hooks) {
       ]
     };
 
-    await fillForm('person', {
-      firstName:  'Viktor',
-      age:        32,
-      children: [
-        { firstName: 'Joanna' }
-      ]
-    });
+    await fillForm('person', newData);
 
     assert.deepEqual(this.model, newData);
+
+    // if your model includes attributes that should not be compared, use the pick() helper:
+
+    this.model.lastName = 'Larsson';
+
+    assert.deepEqual(pick(this.model, newData), newData);
   });
 ```
 
