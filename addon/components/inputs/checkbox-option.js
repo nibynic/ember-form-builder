@@ -5,13 +5,13 @@ import { alias } from '@ember/object/computed';
 
 export default SelectOption.extend({
   layout,
-  
-  tagName: "div",
+
+  tagName: 'div',
   attributeBindings: [],
 
-  isChecked: alias("isSelected"),
+  isChecked: alias('isSelected'),
 
-  inputElementId: computed("elementId", function() {
-    return this.get("elementId") + "-input";
+  inputElementId: computed('elementId', function() {
+    return this.get('elementId') + '-input';
   })
 });

@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import layout from '../../templates/components/inputs/collection-input';
 import { get, computed } from '@ember/object';
 import { A, isArray } from '@ember/array';
-import { reads, alias, or } from '@ember/object/computed';
+import { reads, alias } from '@ember/object/computed';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { next, cancel } from '@ember/runloop';
@@ -15,17 +15,7 @@ export default Component.extend({
   attributeBindings: ['autocomplete', 'autofocus', 'dir', 'disabled', 'inputmode',
     'multiple', 'name', 'pattern', 'placeholder', 'required', 'size', 'tabindex'],
 
-  defaults: Object.freeze({
-    optionValuePath:        'content',
-    optionStringValuePath:  'value.id',
-    optionLabelPath:        'content.name'
-  }),
-
-  optionValuePath:        or('config.optionValuePath', 'defaults.optionValuePath'),
-  optionStringValuePath:  or('config.optionStringValuePath', 'defaults.optionStringValuePath'),
-  optionLabelPath:        or('config.optionLabelPath', 'defaults.optionLabelPath'),
-
-  optionComponentName: "inputs/select-option",
+  optionComponentName: 'inputs/select-option',
 
   value: alias('config.value'),
 
@@ -35,7 +25,19 @@ export default Component.extend({
     });
   }),
 
-  resolvedCollection: reads('collectionPromise.content'),
+  resolvedCollection: computed('collectionPromise.content.[]', function() {
+    return (this.get('collectionPromise.content') || []).map((option) => {
+      if (typeof option === 'object') {
+        return option;
+      } else {
+        return {
+          value:    option,
+          label:    option,
+          content:  option
+        };
+      }
+    });
+  }),
 
   init() {
     this._super(...arguments);
@@ -59,23 +61,15 @@ export default Component.extend({
   },
 
   _setSelection: function(indicies) {
-    this.get('collectionPromise').then((collection) => {
-      var selection = A(collection).objectsAt(indicies);
-      var valuePath = this.get("optionValuePath");
-      var newValues = A(selection.map(function(item) {
-        if (typeof item === "string" || valuePath === "content") {
-          return item;
-        } else if (item) {
-          return get(item, valuePath.replace(/^content\./, ""));
-        } else {
-          return item;
-        }
-      }));
+    this.get('collectionPromise').then(() => {
 
-      if (isArray(this.get("value"))) {
-        A(this.get("value")).replace(0, this.get("value.length"), newValues);
+      let newValues = A(A(this.get('resolvedCollection')).objectsAt(indicies)).mapBy('content');
+      let value = this.get('value');
+
+      if (isArray(value)) {
+        A(value).replace(0, get(value, 'length'), newValues);
       } else {
-        this.set("value", newValues.get("firstObject"));
+        this.set('value', newValues[0]);
       }
     });
   },

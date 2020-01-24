@@ -1,161 +1,178 @@
-import { A } from '@ember/array';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click } from '@ember/test-helpers';
+import { render, click, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | inputs/checkboxes-input', async function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders collection of strings as radio buttons or checkboxes', async function(assert) {
-    this.set('config', {
-      collection: ['Cooking', 'Sports', 'Politics'],
-      value: 'Cooking'
+  module('collection of strings', function(hooks) {
+    hooks.beforeEach(async function() {
+      this.config = {
+        name: 'myInput',
+        disabled: false,
+        autocomplete: 'country',
+        collection: ['France', 'Spain', 'Germany', 'United Kingdom']
+      };
     });
 
-    await render(hbs`
-      {{inputs/checkboxes-input config=config}}
-    `);
+    module('single select', function(hooks) {
+      hooks.beforeEach(async function() {
+        this.set('config.value', 'France');
+        await render(hbs`{{inputs/checkboxes-input config=config}}`);
+      });
 
-    let options = this.element.querySelectorAll('label');
+      test('it renders', async function(assert) {
+        assert.dom('input').hasAttribute('type', 'radio');
+        assert.dom('input').hasAttribute('name', 'myInput');
+        assert.dom('input[value=France]').exists();
+        assert.dom(this.element).includesText('France');
+        assert.dom('input[value=Spain]').exists();
+        assert.dom(this.element).includesText('Spain');
+        assert.dom('input[value=Germany]').exists();
+        assert.dom(this.element).includesText('Germany');
+        assert.dom('input[value="United Kingdom"]').exists();
+        assert.dom(this.element).includesText('United Kingdom');
+      });
 
-    assert.dom('input').hasAttribute('type', 'radio');
-    assert.dom(options[0]).hasText('Cooking');
-    assert.dom(options[1]).hasText('Sports');
-    assert.dom(options[2]).hasText('Politics');
-    assert.dom(options[0].querySelector('input')).hasAttribute('value', 'Cooking');
-    assert.dom(options[1].querySelector('input')).hasAttribute('value', 'Sports');
-    assert.dom(options[2].querySelector('input')).hasAttribute('value', 'Politics');
+      test('it updates value', async function(assert) {
+        assert.dom('input[value=France]').isChecked();
 
-    this.set('config.value', ['Cooking']);
-    this.set('config.multiple', true);
+        this.set('config.value', 'Germany');
 
-    options = this.element.querySelectorAll('label');
+        assert.dom('input[value=Germany]').isChecked();
 
-    assert.dom('input').hasAttribute('type', 'checkbox');
-    assert.dom(options[0]).hasText('Cooking');
-    assert.dom(options[1]).hasText('Sports');
-    assert.dom(options[2]).hasText('Politics');
-    assert.dom(options[0].querySelector('input')).hasAttribute('value', 'Cooking');
-    assert.dom(options[1].querySelector('input')).hasAttribute('value', 'Sports');
-    assert.dom(options[2].querySelector('input')).hasAttribute('value', 'Politics');
-  });
+        await click('input[value=Spain]');
 
-  test('it renders collection objects as inputs', async function(assert) {
-    this.set('config', {
-      collection: [{
-        id: 1, name: 'Cooking', slug: 'cooking', headline: 'For kitchen geeks!'
-      }, {
-        id: 2, name: 'Sports', slug: 'sports', headline: 'For couch potatos'
-      }, {
-        id: 3, name: 'Politics', slug: 'politics', headline: 'For nerds'
-      }],
-      value: {
-        id: 2, name: 'Sports', slug: 'sports', headline: 'For couch potatos'
-      }
+        assert.equal(this.config.value, 'Spain');
+      });
+
+      test('it can be disabled', async function(assert) {
+        assert.dom('input:disabled').doesNotExist();
+
+        this.set('config.disabled', true);
+
+        assert.dom('input:disabled').exists({ count: 4 });
+      });
+
+      test('it supports presence validations', async function(assert) {
+        assert.dom('input[required]').doesNotExist();
+
+        this.set('config.validations', { required: true });
+
+        assert.dom('input[required]').exists({ count: 4 });
+      });
     });
 
-    await render(hbs`
-      {{inputs/checkboxes-input config=config}}
-    `);
+    module('multiple select', function(hooks) {
+      hooks.beforeEach(async function() {
+        this.set('config.value', ['France']);
+        await render(hbs`{{inputs/checkboxes-input config=config}}`);
+      });
 
-    let options = this.element.querySelectorAll('label');
+      test('it renders', async function(assert) {
+        assert.dom('input[type=checkbox]').exists({ count: 4 });
+      });
 
-    assert.dom(options[0]).hasText('Cooking');
-    assert.dom(options[1]).hasText('Sports');
-    assert.dom(options[2]).hasText('Politics');
-    assert.dom(options[0].querySelector('input')).hasAttribute('value', "1");
-    assert.dom(options[1].querySelector('input')).hasAttribute('value', "2");
-    assert.dom(options[2].querySelector('input')).hasAttribute('value', "3");
+      test('it updates value', async function(assert) {
+        assert.dom('input:checked').exists({ count: 1 });
+        assert.dom('input[value=France]').isChecked();
 
-    this.set('config.optionLabelPath', 'content.headline');
-    this.set('config.optionStringValuePath', 'value.slug');
+        this.config.value.addObject('Germany');
+        await settled();
 
-    options = this.element.querySelectorAll('label');
+        assert.dom('input:checked').exists({ count: 2 });
+        assert.dom('input[value=Germany]').isChecked();
 
-    assert.dom(options[0]).hasText('For kitchen geeks!');
-    assert.dom(options[1]).hasText('For couch potatos');
-    assert.dom(options[2]).hasText('For nerds');
-    assert.dom(options[0].querySelector('input')).hasAttribute('value', 'cooking');
-    assert.dom(options[1].querySelector('input')).hasAttribute('value', 'sports');
-    assert.dom(options[2].querySelector('input')).hasAttribute('value', 'politics');
+        await click('input[value=Spain]');
+
+        assert.deepEqual(this.config.value, ['France', 'Spain', 'Germany']);
+
+        await click('input[value=Germany]');
+
+        assert.deepEqual(this.config.value, ['France', 'Spain']);
+      });
+
+      test('it does not render required attribute', async function(assert) {
+        this.set('config.validations', { required: true });
+
+        assert.dom('input[required]').doesNotExist();
+      });
+    });
   });
 
-  test('it selects given values', async function(assert) {
-    let collection = [{
-      id: 1, name: 'Cooking'
-    }, {
-      id: 2, name: 'Sports'
-    }, {
-      id: 3, name: 'Politics'
-    }];
-    this.set('config', {
-      value: collection[1],
-      collection
-    })
-
-    await render(hbs`
-      {{inputs/checkboxes-input config=config}}
-    `);
-
-    assert.dom('input[type=radio]:checked').exists({ count: 1 });
-    assert.dom('input[type=radio][value="2"]').isChecked();
-
-    this.set('config.value', collection[2]);
-
-    assert.dom('input[type=radio]:checked').exists({ count: 1 });
-    assert.dom('input[type=radio][value="3"]').isChecked();
-
-    this.set('config.value', A([collection[2]]));
-    this.set('config.multiple', true);
-
-    assert.dom('input[type=checkbox]:checked').exists({ count: 1 });
-    assert.dom('input[type=checkbox][value="3"]').isChecked();
-
-  });
-
-  test('it updates value after changing', async function(assert) {
-    this.set('config', {
-      collection: [{
-        id: 1, name: 'Cooking'
+  module('collection of objects', function(hooks) {
+    hooks.beforeEach(async function() {
+      this.collection = [{
+        value: 1, label: 'Cooking', content: {}
       }, {
-        id: 2, name: 'Sports'
+        value: 2, label: 'Sports', content: {}
       }, {
-        id: 3, name: 'Politics'
-      }],
-      value: {
-        id: 1, name: 'Cooking'
-      }
+        value: 3, label: 'Politics', content: {}
+      }];
     });
 
-    await render(hbs`
-      {{inputs/checkboxes-input config=config}}
-    `);
+    module('single select', function(hooks) {
+      hooks.beforeEach(async function() {
+        this.set('config', {
+          value:      this.collection[1].content,
+          collection: this.collection
+        });
 
-    await click('input[value="1"]');
-    await click('input[value="3"]');
+        await render(hbs`
+          {{inputs/checkboxes-input config=config}}
+        `);
+      });
 
-    assert.equal(this.config.value.id, 3);
+      test('it renders', async function(assert) {
+        assert.dom('input').hasAttribute('type', 'radio');
+        assert.dom('input[value="1"]').exists();
+        assert.dom(this.element).includesText('Cooking');
+        assert.dom('input[value="2"]').exists();
+        assert.dom(this.element).includesText('Sports');
+        assert.dom('input[value="3"]').exists();
+        assert.dom(this.element).includesText('Politics');
+      });
 
-    this.set('config.value', []);
+      test('it selects given values', async function(assert) {
+        assert.dom('input:checked').exists({ count: 1 });
+        assert.dom('input[value="2"]').isChecked();
 
-    await click('input[value="1"]');
-    await click('input[value="3"]');
+        this.set('config.value', this.collection[2].content);
+        await settled();
 
-    assert.deepEqual(this.config.value, [
-      {
-        id: 1, name: 'Cooking'
-      }, {
-        id: 3, name: 'Politics'
-      }
-    ]);
+        assert.dom('input:checked').exists({ count: 1 });
+        assert.dom('input[value="3"]').isChecked();
+      });
+    });
 
-    await click('input[value="3"]');
+    module('multiple select', function(hooks) {
+      hooks.beforeEach(async function() {
+        this.set('config', {
+          value:      [this.collection[1].content, this.collection[2].content],
+          collection: this.collection
+        });
 
-    assert.deepEqual(this.config.value, [
-      {
-        id: 1, name: 'Cooking'
-      }
-    ]);
+        await render(hbs`
+          {{inputs/checkboxes-input config=config}}
+        `);
+      });
+
+      test('it renders', async function(assert) {
+        assert.dom('input[type=checkbox]').exists({ count: 3 });
+      });
+
+      test('it selects given values', async function(assert) {
+        assert.dom('input:checked').exists({ count: 2 });
+        assert.dom('input[value="2"]').isChecked();
+        assert.dom('input[value="3"]').isChecked();
+
+        this.get('config.value').pushObject(this.collection[0].content);
+        await settled();
+
+        assert.dom('input:checked').exists({ count: 3 });
+        assert.dom('input[value="1"]').isChecked();
+      });
+    });
   });
 });

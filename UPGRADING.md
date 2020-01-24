@@ -348,3 +348,64 @@ export default Controller.extend({
 
 {{/form-builder}}
 ```
+
+## Removed path attributes from collection and checkboxes inputs
+
+`collection-input` and `checkboxes-input` do not accept `optionLabelPath`,
+`optionValuePath` and `optionStringValuePath` anymore. Instead you should
+provide a collection of pre-formatted objects with `label`, `value` and `content`
+attributes.
+
+### Before
+
+```handlebars
+{{#form-builder for=this action="submit" as="post" as |f|}}
+
+  {{f.input
+    "country"
+    collection=(array "France" "UK" "Germany")
+  }}
+  {{f.input
+    "category"
+    collection=categories
+    optionLabelPath="content.name"
+    optionValuePath="content"
+    optionStringValuePath="content.id"
+  }}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+### After
+
+```handlebars
+{{#form-builder for=this action="submit" name="post" as |f|}}
+
+  {{f.input
+    "country"
+    collection=(array "France" "UK" "Germany")
+  }}
+  {{f.input
+    "category"
+    collection=formattedCategories
+  }}
+  {{f.submit}}
+
+{{/form-builder}}
+```
+
+```javascript
+import Controller from '@ember/controller';
+import { computed } from '@ember/object';
+
+export default Controller.extend({
+  formattedCategories: computed('categories.@each.{id,name}', function() {
+    return this.get('categories').mapBy((category) => ({
+      value: category.id,
+      label: cateogry.name,
+      content: category
+    }));
+  })
+});
+```
