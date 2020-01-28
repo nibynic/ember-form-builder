@@ -1,0 +1,57 @@
+<h1>Our amazing party</h1>
+
+<FormBuilder @for={{this}} @name="party" as |f|>
+
+  <f.input @attr="title" />
+  <f.input @attr="description" @as="text" />
+  <f.input @attr="date" @as="date" />
+  <f.input @attr="amazingMode" @as="boolean" @wrapper="inline"/>
+
+  <f.input
+    @attr="attractions"
+    @collection={{array "grill" "music" "fireworks" "balloons" "bonfire"}}
+    @as="checkboxes"
+  />
+  <f.input
+    @attr="theme"
+    @collection={{array "Star Wars" "Pocahontas" "Lagaan"}}
+    @as="checkboxes"
+  />
+
+  <f.input
+    @attr="guests"
+    @collection={{array "Jan" "Ann" "Patricia" "Victor" "Amelie"}}
+  />
+  <f.input
+    @attr="puppyPolicy"
+    @collection={{array "No puppies" "Supervised only" "Without restrictions"}}
+  />
+
+  <f.input @attr="secret" @as="password" />
+
+  <f.fields @for={{this.model.organizer}} @name="organizer" as |fo|>
+    <fieldset>
+      <legend>Organizer</legend>
+      <fo.input @attr="email" @as="email" />
+      <fo.input @attr="phone" @as="tel" />
+      <fo.input @attr="homepage" @as="url" />
+    </fieldset>
+  </f.fields>
+
+  <fieldset>
+    <legend>Shopping list</legend>
+    <ol>
+      {{#each model.shoppingItems as |item i|}}
+        <f.fields @for={{item}} @name="shoppingItem" @index={{i}} as |fs|>
+          <li>
+            <fs.input @attr="name" />
+            <fs.input @attr="amount" @as="number" />
+          </li>
+        </f.fields>
+      {{/each}}
+    </ol>
+  </fieldset>
+
+  <f.submit />
+
+</FormBuilder>
