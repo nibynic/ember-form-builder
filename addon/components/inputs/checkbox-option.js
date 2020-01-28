@@ -11,7 +11,7 @@ export default SelectOption.extend({
 
   isChecked: alias('isSelected'),
 
-  inputElementId: computed('elementId', function() {
+  inputElementId: computed(function() {
     return this.get('elementId') + '-input';
   })
 });

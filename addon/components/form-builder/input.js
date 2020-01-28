@@ -87,7 +87,7 @@ export default Component.extend({
     return TextProxy.create({ content: this });
   }),
 
-  inputElementId: byDefault("elementId", function() {
+  inputElementId: byDefault(function() {
     return this.get("elementId") + "Input";
   }),
 
