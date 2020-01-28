@@ -41,7 +41,7 @@
   <fieldset>
     <legend>Shopping list</legend>
     <ol>
-      {{#each model.shoppingItems as |item i|}}
+      {{#each this.model.shoppingItems as |item i|}}
         <f.fields @for={{item}} @name="shoppingItem" @index={{i}} as |fs|>
           <li>
             <fs.input @attr="name" />

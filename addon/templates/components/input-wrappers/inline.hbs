@@ -1,16 +1,16 @@
-{{#let (and config.canValidate config.validations.errors) as |isInvalid|}}
+{{#let (and this.config.canValidate this.config.validations.errors) as |isInvalid|}}
   <div class="form-check">
     {{component
-      inputComponent
+      this.inputComponent
       class=(concat "form-check-input" (if isInvalid " is-invalid"))
     }}
-    {{component labelComponent class="form-check-label"}}
-    {{#if config.texts.hint}}
-      <small class="form-text text-muted">{{config.texts.hint}}</small>
+    {{component this.labelComponent class="form-check-label"}}
+    {{#if this.config.texts.hint}}
+      <small class="form-text text-muted">{{this.config.texts.hint}}</small>
     {{/if}}
     {{#if isInvalid}}
       <div class="invalid-feedback" data-test-errors>
-        {{#each config.validations.errors as |error i|~}}
+        {{#each this.config.validations.errors as |error i|~}}
           {{if i ", "}}{{error}}
         {{~/each}}
       </div>

@@ -1,20 +1,20 @@
-{{#let (and config.canValidate config.validations.errors) as |isInvalid|}}
+{{#let (and this.config.canValidate this.config.validations.errors) as |isInvalid|}}
   <div class="form-group">
-    {{#if config.texts.label}}
-      {{component labelComponent}}
+    {{#if this.config.texts.label}}
+      {{component this.labelComponent}}
     {{/if}}
     <div class="field">
       {{component
-        inputComponent
+        this.inputComponent
         class=(concat "form-control" (if isInvalid " is-invalid"))
       }}
     </div>
-    {{#if config.texts.hint}}
-      <small class="form-text text-muted">{{config.texts.hint}}</small>
+    {{#if this.config.texts.hint}}
+      <small class="form-text text-muted">{{this.config.texts.hint}}</small>
     {{/if}}
     {{#if isInvalid}}
       <div class="invalid-feedback" data-test-errors>
-        {{#each config.validations.errors as |error i|~}}
+        {{#each this.config.validations.errors as |error i|~}}
           {{if i ", "}}{{error}}
         {{~/each}}
       </div>

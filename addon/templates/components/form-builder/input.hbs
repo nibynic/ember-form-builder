@@ -1,6 +1,6 @@
 {{component
-  (concat "input-wrappers/" wrapper)
-  config=config
-  inputComponent=(component (concat "inputs/" type "-input") config=config)
-  labelComponent=(component "form-builder/label" for=inputElementId isRequired=validations.required text=texts.label)
+  (concat "input-wrappers/" this.wrapper)
+  config=this.config
+  inputComponent=(component (concat "inputs/" this.type "-input") config=this.config)
+  labelComponent=(component "form-builder/label" for=this.inputElementId isRequired=this.validations.required text=this.texts.label)
 }}
