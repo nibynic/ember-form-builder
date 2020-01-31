@@ -13,7 +13,7 @@ export default Component.extend({
 
   tagName: 'select',
   attributeBindings: ['autocomplete', 'autofocus', 'dir', 'disabled', 'inputmode',
-    'multiple', 'name', 'pattern', 'placeholder', 'required', 'size', 'tabindex'],
+    'multiple', 'name', 'pattern', 'placeholder', 'readonly', 'required', 'size', 'tabindex'],
 
   optionComponentName: 'inputs/select-option',
 
@@ -80,6 +80,6 @@ export default Component.extend({
 
   required: reads('config.validations.required')
 }, ...['autocomplete', 'autofocus', 'collection', 'dir', 'disabled',
-  'inputmode', 'inputElementId', 'name', 'pattern', 'size', 'tabindex'].map(
+  'inputmode', 'inputElementId', 'name', 'pattern', 'readonly', 'size', 'tabindex'].map(
   (attr) => ({ [attr]: reads(`config.${attr}`) })
 ));

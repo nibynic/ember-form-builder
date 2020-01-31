@@ -13,6 +13,6 @@ export default TextField.extend({
   placeholder: reads('config.texts.placeholder'),
 },
 ...['autocomplete', 'autofocus', 'dir', 'disabled', 'inputmode', 'inputElementId',
- 'list', 'name', 'pattern', 'size', 'tabindex'].map(
+ 'list', 'name', 'pattern', 'readonly', 'size', 'tabindex'].map(
   (attr) => ({ [attr]: reads(`config.${attr}`) })
 ));

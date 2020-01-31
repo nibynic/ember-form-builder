@@ -13,6 +13,6 @@ export default Checkbox.extend({
 
   required: reads('config.validations.required')
 }, ...['autocomplete', 'autofocus', 'disabled', 'form', 'indeterminate', 'name',
-  'tabindex'].map(
+  'readonly', 'tabindex'].map(
   (attr) => ({ [attr]: reads(`config.${attr}`) })
 ));

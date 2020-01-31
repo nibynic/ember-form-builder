@@ -13,6 +13,6 @@ export default TextArea.extend({
   placeholder: reads('config.texts.placeholder')
 },
 ...['autocomplete', 'autofocus', 'dir', 'disabled', 'height', 'inputmode',
-  'inputElementId', 'list', 'name', 'pattern', 'size', 'tabindex'].map(
+  'inputElementId', 'list', 'name', 'pattern', 'readonly', 'size', 'tabindex'].map(
   (attr) => ({ [attr]: reads(`config.${attr}`) })
 ));
