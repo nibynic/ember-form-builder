@@ -162,6 +162,29 @@ module('Integration | Component | form-builder', function(hooks) {
       assert.dom('[data-test-is-loading]').doesNotExist();
     });
 
+    test('it doesn’t crash if promise is resolved after component was destroyed', async function(assert) {
+      await render(hbs`
+        {{#unless hideComponent}}
+          {{#form-builder for=this action=(action submit) as |f|}}
+            {{#if f.builder.isLoading}}
+              <div data-test-is-loading></div>
+            {{/if}}
+            <input type="submit">
+          {{/form-builder}}
+        {{/unless}}
+      `);
+
+      click('input[type=submit]');
+      await waitFor('[data-test-is-loading]');
+
+      this.set('hideComponent', true);
+
+      this.resolvePromise();
+      await settled();
+
+      assert.ok(true);
+    });
+
     test('it doesn’t override provided isLoading property', async function(assert) {
       this.set('isLoading', true);
 

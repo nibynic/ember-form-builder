@@ -44,7 +44,7 @@ export default Component.extend({
           this.set('formBuilder.isLoading', false);
         }
       }
-    );
+    ).catch(() => {});
   },
 
   formBuilder: computed(function() {
