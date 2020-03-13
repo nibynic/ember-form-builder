@@ -19,7 +19,7 @@ module('Integration | Component | inputs/checkboxes-input', async function(hooks
     module('single select', function(hooks) {
       hooks.beforeEach(async function() {
         this.set('config.value', 'France');
-        await render(hbs`{{inputs/checkboxes-input config=config}}`);
+        await render(hbs`<Inputs::CheckboxesInput @config={{config}} />`);
       });
 
       test('it renders', async function(assert) {
@@ -67,7 +67,7 @@ module('Integration | Component | inputs/checkboxes-input', async function(hooks
     module('multiple select', function(hooks) {
       hooks.beforeEach(async function() {
         this.set('config.value', ['France']);
-        await render(hbs`{{inputs/checkboxes-input config=config}}`);
+        await render(hbs`<Inputs::CheckboxesInput @config={{config}} />`);
       });
 
       test('it renders', async function(assert) {
@@ -120,7 +120,7 @@ module('Integration | Component | inputs/checkboxes-input', async function(hooks
         });
 
         await render(hbs`
-          {{inputs/checkboxes-input config=config}}
+          <Inputs::CheckboxesInput @config={{config}} />
         `);
       });
 
@@ -154,7 +154,7 @@ module('Integration | Component | inputs/checkboxes-input', async function(hooks
         });
 
         await render(hbs`
-          {{inputs/checkboxes-input config=config}}
+          <Inputs::CheckboxesInput @config={{config}} />
         `);
       });
 

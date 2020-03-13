@@ -15,7 +15,7 @@ module('Integration | Component | form-builder/fields', function(hooks) {
 
     await render(hbs`
       {{#if isVisible}}
-        {{form-builder/fields on=parent}}
+        <FormBuilder::Fields @on={{parent}} />
       {{/if}}
     `);
 
@@ -37,9 +37,9 @@ module('Integration | Component | form-builder/fields', function(hooks) {
     this.index = 1;
 
     await render(hbs`
-      {{#form-builder/fields on=parent name="sample-child" index=index as |f|}}
+      <FormBuilder::Fields @on={{parent}} @name="sample-child" @index={{index}} as |f|>
         {{f.builder.name}}
-      {{/form-builder/fields}}
+      </FormBuilder::Fields>
     `);
 
     assert.dom(this.element).hasText('sampleModel[sampleChildren][1]');

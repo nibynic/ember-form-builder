@@ -20,7 +20,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
     module('single select', function(hooks) {
       hooks.beforeEach(async function() {
         this.set('config.value', 'France');
-        await render(hbs`{{inputs/collection-input config=config}}`);
+        await render(hbs`<Inputs::CollectionInput @config={{config}} />`);
       });
 
       test('it renders', async function(assert) {
@@ -65,7 +65,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
     module('multiple select', function(hooks) {
       hooks.beforeEach(async function() {
         this.set('config.value', ['France']);
-        await render(hbs`{{inputs/collection-input config=config}}`);
+        await render(hbs`<Inputs::CollectionInput @config={{config}} />`);
       });
 
       test('it renders', async function(assert) {
@@ -108,7 +108,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
         });
 
         await render(hbs`
-          {{inputs/collection-input config=config}}
+          <Inputs::CollectionInput @config={{config}} />
         `);
       });
 
@@ -138,7 +138,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
       test('it sets the value after being displayed', async function(assert) {
         this.set('config.value', undefined);
         await render(hbs`
-          {{inputs/collection-input config=config}}
+          <Inputs::CollectionInput @config={{config}} />
         `);
 
         assert.equal(this.config.value, this.collection[0].content);
@@ -153,7 +153,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
         });
 
         await render(hbs`
-          {{inputs/collection-input config=config}}
+          <Inputs::CollectionInput @config={{config}} />
         `);
       });
 
@@ -176,7 +176,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
       test('it does not set the value after being displayed', async function(assert) {
         this.set('config.value', []);
         await render(hbs`
-          {{inputs/collection-input config=config}}
+          <Inputs::CollectionInput @config={{config}} />
         `);
 
         assert.deepEqual(this.config.value, []);
@@ -191,7 +191,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
       });
 
       await render(hbs`
-        {{inputs/collection-input config=config}}
+        <Inputs::CollectionInput @config={{config}} />
       `);
 
       assert.equal(this.config.value, 'Cooking');

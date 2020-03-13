@@ -17,7 +17,7 @@ module('Integration | Component | inputs/text-input', function(hooks) {
       }
     };
 
-    await render(hbs`{{inputs/text-input config=config}}`);
+    await render(hbs`<Inputs::TextInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {

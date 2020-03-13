@@ -9,7 +9,7 @@ module('Integration | Component | form-builder/submit', function(hooks) {
 
   test('it renders a submit button', async function(assert) {
     await render(hbs`
-      {{form-builder/submit data-test-submit=true}}
+      <FormBuilder::Submit @data-test-submit={{true}} />
     `);
 
     assert.dom('[data-test-submit]').matchesSelector('button');
@@ -29,7 +29,7 @@ module('Integration | Component | form-builder/submit', function(hooks) {
     this.set('builder', EmberObject.create());
 
     await render(hbs`
-      {{form-builder/submit data-test-submit=true builder=builder}}
+      <FormBuilder::Submit @data-test-submit={{true}} @builder={{builder}} />
     `);
 
     assert.dom('[data-test-submit]').hasText('Zapisz');
@@ -55,7 +55,7 @@ module('Integration | Component | form-builder/submit', function(hooks) {
     }));
 
     await render(hbs`
-      {{form-builder/submit data-test-submit=true builder=builder}}
+      <FormBuilder::Submit @data-test-submit={{true}} @builder={{builder}} />
     `);
 
     assert.dom('[data-test-submit]').isNotDisabled();

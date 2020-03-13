@@ -16,7 +16,7 @@ module('Integration | Component | inputs/date-input', function(hooks) {
         placeholder: 'Birth date'
       }
     };
-    await render(hbs`{{inputs/date-input config=config}}`);
+    await render(hbs`<Inputs::DateInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {

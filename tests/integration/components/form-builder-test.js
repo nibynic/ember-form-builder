@@ -10,7 +10,7 @@ module('Integration | Component | form-builder', function(hooks) {
 
   test('it renders', async function(assert) {
     await render(hbs`
-      {{form-builder novalidate=true}}
+      <FormBuilder novalidate />
     `);
 
     assert.dom('form').exists();
@@ -21,9 +21,9 @@ module('Integration | Component | form-builder', function(hooks) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
-      {{#form-builder for=object name="overriden-type" as |f|}}
+      <FormBuilder @for={{object}} @name="overriden-type" as |f|>
         <div data-test-model-name>{{f.builder.modelName}}</div>
-      {{/form-builder}}
+      </FormBuilder>
     `);
 
     assert.dom('[data-test-model-name]').hasText('overriden-type');
@@ -33,11 +33,11 @@ module('Integration | Component | form-builder', function(hooks) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
-      {{#form-builder for=object name="" as |f|}}
+      <FormBuilder @for={{object}} @name="" as |f|>
         <div data-test-model-name>{{f.builder.modelName}}</div>
         <div data-test-translation-key>{{f.builder.translationKey}}</div>
         <div data-test-name>{{f.builder.name}}</div>
-      {{/form-builder}}
+      </FormBuilder>
     `);
 
     assert.dom('[data-test-model-name]').hasText('');
@@ -47,9 +47,9 @@ module('Integration | Component | form-builder', function(hooks) {
 
   test('it sets name', async function(assert) {
     await render(hbs`
-      {{#form-builder name="sample-model" index=index as |f|}}
+      <FormBuilder @name="sample-model" @index={{index}} as |f|>
         <div data-test-name>{{f.builder.name}}</div>
-      {{/form-builder}}
+      </FormBuilder>
     `);
 
     assert.dom('[data-test-name]').hasText('sampleModel');
@@ -66,11 +66,11 @@ module('Integration | Component | form-builder', function(hooks) {
       this.didFail = sinon.stub();
 
       await render(hbs`
-        {{#form-builder for=this action=(action submit) submitFailed=(action didFail) as |f|}}
+        <FormBuilder @for={{this}} @action={{action submit}} @submitFailed={{action didFail}} as |f|>
           <div data-test-is-valid>{{f.builder.isValid}}</div>
           <div data-test-status>{{f.builder.status}}</div>
           <input type="submit">
-        {{/form-builder}}
+        </FormBuilder>
       `);
     });
 
@@ -117,10 +117,10 @@ module('Integration | Component | form-builder', function(hooks) {
       this.submit.returns(resolve());
       this.set('status', 'failure');
       await render(hbs`
-        {{#form-builder for=this action=(action submit) status=status as |f|}}
+        <FormBuilder @for={{this}} @action={{action submit}} @status={{status}} as |f|>
           <div data-test-status>{{f.builder.status}}</div>
           <input type="submit">
-        {{/form-builder}}
+        </FormBuilder>
       `);
 
       assert.dom('[data-test-status]').hasText('failure');
@@ -143,12 +143,12 @@ module('Integration | Component | form-builder', function(hooks) {
 
     test('it detects loading state', async function(assert) {
       await render(hbs`
-        {{#form-builder for=this action=(action submit) as |f|}}
+        <FormBuilder @for={{this}} @action={{action submit}} as |f|>
           {{#if f.builder.isLoading}}
             <div data-test-is-loading></div>
           {{/if}}
           <input type="submit">
-        {{/form-builder}}
+        </FormBuilder>
       `);
 
       click('input[type=submit]');
@@ -165,12 +165,12 @@ module('Integration | Component | form-builder', function(hooks) {
     test('it doesn’t crash if promise is resolved after component was destroyed', async function(assert) {
       await render(hbs`
         {{#unless hideComponent}}
-          {{#form-builder for=this action=(action submit) as |f|}}
+          <FormBuilder @for={{this}} @action={{action submit}} as |f|>
             {{#if f.builder.isLoading}}
               <div data-test-is-loading></div>
             {{/if}}
             <input type="submit">
-          {{/form-builder}}
+          </FormBuilder>
         {{/unless}}
       `);
 
@@ -189,12 +189,12 @@ module('Integration | Component | form-builder', function(hooks) {
       this.set('isLoading', true);
 
       await render(hbs`
-        {{#form-builder for=this action=(action submit) isLoading=isLoading as |f|}}
+        <FormBuilder @for={{this}} @action={{action submit}} @isLoading={{isLoading}} as |f|>
           {{#if f.builder.isLoading}}
             <div data-test-is-loading></div>
           {{/if}}
           <input type="submit">
-        {{/form-builder}}
+        </FormBuilder>
       `);
 
       assert.dom('[data-test-is-loading]').exists();

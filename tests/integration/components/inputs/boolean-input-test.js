@@ -14,7 +14,7 @@ module('Integration | Component | inputs/boolean-input', function(hooks) {
       autocomplete: 'country'
     };
 
-    await render(hbs`{{inputs/boolean-input config=config}}`);
+    await render(hbs`<Inputs::BooleanInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {

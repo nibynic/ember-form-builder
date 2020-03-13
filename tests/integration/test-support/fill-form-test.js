@@ -13,10 +13,10 @@ module('Integration | TestSupport | fillForm', function(hooks) {
       age:        37
     };
     await render(hbs`
-      {{#form-builder for=model name="person" as |f|}}
+      <FormBuilder @for={{model}} @name="person" as |f|>
         {{f.input "firstName"}}
         {{f.input "age" as="number"}}
-      {{/form-builder}}
+      </FormBuilder>
     `);
 
     let newData = {
@@ -35,11 +35,11 @@ module('Integration | TestSupport | fillForm', function(hooks) {
       }
     };
     await render(hbs`
-      {{#form-builder for=model name="person" as |f|}}
-        {{#f.fields for=model.address name="address" as |ff|}}
+      <FormBuilder @for={{model}} @name="person" as |f|>
+        <f.fields @for={{model.address}} @name="address" as |ff|>
           {{ff.input "street"}}
-        {{/f.fields}}
-      {{/form-builder}}
+        </f.fields>
+      </FormBuilder>
     `);
 
     let newData = {
@@ -61,13 +61,13 @@ module('Integration | TestSupport | fillForm', function(hooks) {
       ]
     };
     await render(hbs`
-      {{#form-builder for=model name="person" as |f|}}
+      <FormBuilder @for={{model}} @name="person" as |f|>
         {{#each model.children as |child i|}}
-          {{#f.fields for=child name="child" index=i as |ff|}}
+          <f.fields @for={{child}} @name="child" @index={{i}} as |ff|>
             {{ff.input "firstName"}}
-          {{/f.fields}}
+          </f.fields>
         {{/each}}
-      {{/form-builder}}
+      </FormBuilder>
     `);
 
     let newData = {

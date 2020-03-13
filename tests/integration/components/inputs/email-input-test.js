@@ -17,7 +17,7 @@ module('Integration | Component | inputs/email-input', function(hooks) {
       }
     };
 
-    await render(hbs`{{inputs/email-input config=config}}`);
+    await render(hbs`<Inputs::EmailInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {

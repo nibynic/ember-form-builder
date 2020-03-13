@@ -23,7 +23,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     }));
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} />
     `);
 
     assert.dom('input').hasValue('Testing testing 123');
@@ -46,7 +46,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('customProperty', A(['a', 'b', 'c']));
 
     await render(hbs`
-      {{form-builder/input attr="title" as="fake" builder=builder customProperty=customProperty}}
+      <FormBuilder::Input @attr="title" @as="fake" @builder={{builder}} @customProperty={{customProperty}} />
     `);
 
     assert.dom('[data-test-additional-attributes]').hasText('a b c', 'Initial options are correctly displayed');
@@ -67,7 +67,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     }));
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} />
     `);
 
     assert.dom('input').hasAttribute('name', 'article[title]')
@@ -90,7 +90,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     }));
 
     await render(hbs`
-      {{form-builder/input attr="title" builder=builder wrapper="my-wrapper"}}
+      <FormBuilder::Input @attr="title" @builder={{builder}} @wrapper="my-wrapper" />
     `);
 
     assert.dom('[data-test-my-wrapper]').exists();
@@ -106,7 +106,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.disabled = false;
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" disabled=disabled builder=builder}}
+      <FormBuilder::Input @attr="title" @as="string" @disabled={{disabled}} @builder={{builder}} />
     `);
 
     assert.dom('input').isNotDisabled();
@@ -128,7 +128,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     }));
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} />
     `);
 
     assert.dom('.invalid-feedback').doesNotExist();
@@ -163,7 +163,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder hint=hint}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} @hint={{hint}} />
     `);
 
     assert.dom('small').doesNotExist();
@@ -177,7 +177,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder placeholder=placeholder}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} @placeholder={{placeholder}} />
     `);
 
     assert.dom('input').doesNotHaveAttribute('placeholder');
@@ -191,7 +191,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{form-builder/input attr="multiWordAttribute" as="string" builder=builder}}
+      <FormBuilder::Input @attr="multiWordAttribute" @as="string" @builder={{builder}} />
     `);
 
     assert.dom('label').hasText('Multi word attribute', 'The humanized label test is rendered');
@@ -201,7 +201,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder label="Custom title"}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} @label="Custom title" />
     `);
 
     assert.dom('label').hasText('Custom title', 'The custom label test is rendered');
@@ -211,7 +211,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} />
     `);
 
     assert.dom('label').hasAttribute('for', this.element.querySelector('input').id);
@@ -221,7 +221,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder label=false}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} @label={{false}} />
     `);
 
     assert.dom('label').doesNotExist();
@@ -239,7 +239,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     }));
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} />
     `);
 
     assert.dom('label abbr').hasText('*');
@@ -252,7 +252,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
       this.set('type', type);
 
       await render(hbs`
-        {{form-builder/input attr="title" as=type builder=builder}}
+        <FormBuilder::Input @attr="title" @as={{type}} @builder={{builder}} />
       `);
 
       assert.dom('input, select, textarea').exists({ count: 1 }, `Rendered correctly for type ${type}`);
@@ -274,7 +274,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder', FormBuilderMock.create());
 
     await render(hbs`
-      {{form-builder/input attr="title" as="string" builder=builder}}
+      <FormBuilder::Input @attr="title" @as="string" @builder={{builder}} />
     `);
 
     assert.dom('label').hasText('Title', 'Label was humanized without translation key');

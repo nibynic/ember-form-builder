@@ -17,7 +17,7 @@ module('Integration | Component | inputs/number-input', function(hooks) {
       }
     };
 
-    await render(hbs`{{inputs/number-input config=config}}`);
+    await render(hbs`<Inputs::NumberInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {

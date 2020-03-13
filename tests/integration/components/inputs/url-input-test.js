@@ -17,7 +17,7 @@ module('Integration | Component | inputs/url-input', function(hooks) {
       }
     };
 
-    await render(hbs`{{inputs/url-input config=config}}`);
+    await render(hbs`<Inputs::UrlInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {

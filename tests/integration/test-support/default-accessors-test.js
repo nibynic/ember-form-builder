@@ -13,9 +13,9 @@ module('Integration | TestSupport | default accessors', function(hooks) {
     };
     this.as = 'string';
     await render(hbs`
-      {{#form-builder for=model name="myModel" as |f|}}
+      <FormBuilder @for={{model}} @name="myModel" as |f|>
         {{f.input "myAttr" as=as collection=collection}}
-      {{/form-builder}}
+      </FormBuilder>
     `);
   });
 

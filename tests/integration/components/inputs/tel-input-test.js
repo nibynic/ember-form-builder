@@ -17,7 +17,7 @@ module('Integration | Component | inputs/tel-input', function(hooks) {
       }
     };
 
-    await render(hbs`{{inputs/tel-input config=config}}`);
+    await render(hbs`<Inputs::TelInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {

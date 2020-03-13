@@ -17,7 +17,7 @@ module('Integration | Component | form-builder/label', function(hooks) {
     }));
 
     await render(hbs`
-      {{form-builder/label attr="title" isRequired=true}}
+      <FormBuilder::Label @attr="title" @isRequired={{true}} />
     `);
 
     assert.dom('abbr').hasAttribute('title', 'Wymagane');

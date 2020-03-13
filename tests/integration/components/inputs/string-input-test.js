@@ -17,7 +17,7 @@ module('Integration | Component | inputs/string-input', function(hooks) {
       }
     };
 
-    await render(hbs`{{inputs/string-input config=config}}`);
+    await render(hbs`<Inputs::StringInput @config={{config}} />`);
   });
 
   test('it renders', async function(assert) {
