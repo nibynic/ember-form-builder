@@ -1,15 +1,18 @@
-import EmberObject, {
-  computed,
-  defineProperty
-} from '@ember/object';
+import classic from 'ember-classic-decorator';
 import { reads } from '@ember/object/computed';
+import EmberObject, {
+  defineProperty,
+  computed
+} from '@ember/object';
 import { resolve } from 'rsvp';
 
-export default EmberObject.extend({
-  attributes: computed('object', function() {
+@classic
+export default class EmberValidations extends EmberObject {
+  @computed('object')
+  get attributes() {
     let object = this.object;
     return AttributesProxy.create({ object });
-  }),
+  }
 
   validate() {
     if (this.get('object.validate')) {
@@ -18,33 +21,38 @@ export default EmberObject.extend({
       return resolve();
     }
   }
-});
+}
 
-const AttributesProxy = EmberObject.extend({
-  cache: computed(function() {
+@classic
+class AttributesProxy extends EmberObject {
+  @computed
+  get cache() {
     return {};
-  }),
+  }
 
   unknownProperty(key) {
     return this.cache[key] = this.cache[key] || Attribute.create({
       key, object: this.object
     });
   }
-});
+}
 
-const Attribute = EmberObject.extend({
+@classic
+class Attribute extends EmberObject {
   init() {
-    this._super(...arguments);
+    undefined;
     defineProperty(this, 'validations', reads(`object.validations.${this.key}`));
     defineProperty(this, 'errors', reads(`object.errors.${this.key}`));
     defineProperty(this, 'warnings', reads(`object.warnings.${this.key}`));
-  },
+  }
 
-  required: computed('validations.presence', function() {
+  @computed('validations.presence')
+  get required() {
     return !!this.get('validations.presence');
-  }),
+  }
 
-  number: computed('validations.number.{integer,gt,gte,lt,lte,disabled}', function() {
+  @computed('validations.number.{integer,gt,gte,lt,lte,disabled}')
+  get number() {
     if (this.get('validations.numericality')) {
       return {
         integer:  !!this.get('validations.numericality.onlyInteger'),
@@ -56,5 +64,5 @@ const Attribute = EmberObject.extend({
     } else {
       return undefined;
     }
-  })
-});
+  }
+}

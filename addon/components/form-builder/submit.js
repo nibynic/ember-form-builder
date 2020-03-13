@@ -1,36 +1,43 @@
+import classic from 'ember-classic-decorator';
+import { attributeBindings, tagName, layout as templateLayout } from '@ember-decorators/component';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { oneWay } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/form-builder/submit';
-import { computed } from '@ember/object';
-import { oneWay } from '@ember/object/computed';
-import { inject as service } from '@ember/service';
 import byDefault from 'ember-form-builder/utilities/by-default';
 
-const SimpleSubmit = Component.extend({
-  layout,
+@classic
+@templateLayout(layout)
+@tagName("button")
+@attributeBindings("type", "disabled")
+class SimpleSubmit extends Component {
+  @service("formBuilderTranslations")
+  translationService;
 
-  translationService: service("formBuilderTranslations"),
-  tagName: "button",
-  type: "submit",
-  attributeBindings: ["type", "disabled"],
+  type = "submit";
 
-  disabled: oneWay("builder.isLoading"),
-  builder: computed({
-    get() {
-      return this._builder;
-    },
-    set(key, value) {
-      if (value && value.builder) {
-        return this._builder = value.builder;
-      } else {
-        return this._builder = value;
-      }
+  @oneWay("builder.isLoading")
+  disabled;
+
+  @computed
+  get builder() {
+    return this._builder;
+  }
+
+  set builder(value) {
+    if (value && value.builder) {
+      return this._builder = value.builder;
+    } else {
+      return this._builder = value;
     }
-  }),
+  }
 
-  text: byDefault('builder.translationKey', 'translationService.locale', function() {
+  @byDefault('builder.translationKey', 'translationService.locale', function() {
     return this.get('translationService').t(this.get('builder.translationKey'), 'action', 'submit') || 'Save';
   })
-});
+  text;
+}
 
 SimpleSubmit.reopenClass({
   positionalParams: ["builder"]

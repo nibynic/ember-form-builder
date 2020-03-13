@@ -1,8 +1,9 @@
+import classic from 'ember-classic-decorator';
+import { reads } from '@ember/object/computed';
 import { camelize } from '@ember/string';
 import { all } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
-import { reads } from '@ember/object/computed';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import byDefault from 'ember-form-builder/utilities/by-default';
@@ -10,31 +11,33 @@ import { getOwner } from '@ember/application';
 import defaultConfiguration from 'ember-form-builder/configuration';
 import { assign } from '@ember/polyfills';
 
-export default EmberObject.extend({
-  status: null,
+@classic
+export default class FormBuilder extends EmberObject {
+  status = null;
+  isValid = true;
 
-  isValid: true,
-
-  children: computed(function() {
+  @computed
+  get children() {
     return A([]);
-  }),
+  }
 
   addChild(childFormBuilder) {
     this.get("children").addObject(childFormBuilder);
     childFormBuilder.set('parent', this);
-  },
+  }
 
   removeChild(childFormBuilder) {
     this.get("children").removeObject(childFormBuilder);
     childFormBuilder.set('parent', null);
-  },
+  }
 
-  configuration: computed(function() {
+  @computed
+  get configuration() {
     return assign(
       {}, defaultConfiguration,
       getOwner(this).factoryFor('config:environment').class.formBuilder || {}
     );
-  }),
+  }
 
   validate() {
     var validations = [];
@@ -52,26 +55,33 @@ export default EmberObject.extend({
         throw e;
       }
     );
-  },
+  }
 
-  validationAdapter: computed('configuration.validationsAddon', function() {
+  @computed('configuration.validationsAddon')
+  get validationAdapter() {
     let name = this.get('configuration.validationsAddon');
     return getOwner(this).factoryFor(`validation-adapter:${name}`).create({ object: this.object });
-  }),
+  }
 
-  dataAdapter: computed('configuration.validationsAddon', function() {
+  @computed('configuration.validationsAddon')
+  get dataAdapter() {
     let name = this.get('configuration.dataAddon');
     return getOwner(this).factoryFor(`data-adapter:${name}`).create({ object: this.object });
-  }),
+  }
 
-  model: reads('dataAdapter.model'),
-  modelName: reads('dataAdapter.modelName'),
+  @reads('dataAdapter.model')
+  model;
 
-  translationKey: byDefault('modelName', function() {
+  @reads('dataAdapter.modelName')
+  modelName;
+
+  @byDefault('modelName', function() {
     return camelize(this.get('modelName') || '');
-  }),
+  })
+  translationKey;
 
-  name: computed('modelName', 'parent.name', 'index', function() {
+  @computed('modelName', 'parent.name', 'index')
+  get name() {
     let prefix = camelize(this.get('parent.name') || '');
     let name = camelize(this.get('modelName') || '');
     let index = this.get('index');
@@ -82,7 +92,8 @@ export default EmberObject.extend({
       .reject(isBlank).map(
         (n, i) => i > 0 ? `[${n}]` : n
       ).join('');
-  }),
+  }
 
-  isLoading: reads('parent.isLoading')
-});
+  @reads('parent.isLoading')
+  isLoading;
+}

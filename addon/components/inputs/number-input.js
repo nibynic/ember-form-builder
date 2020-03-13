@@ -1,50 +1,50 @@
-import StringInput from './string-input';
-import { isPresent } from '@ember/utils';
+import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
+import StringInput from './string-input';
+import { isPresent } from '@ember/utils';
 
-export default StringInput.extend({
-  type: 'number',
+@classic
+export default class NumberInput extends StringInput {
+  type = 'number';
 
-  value: computed('config.value', {
-    get() {
-      return this.get('config.value');
-    },
-    set(k, v) {
-      v = parseFloat(v);
-      v = isNaN(v) ? undefined : v;
-      this.set('config.value', v);
-      return v;
+  @computed('config.value')
+  get value() {
+    return this.get('config.value');
+  }
+
+  set value(v) {
+    v = parseFloat(v);
+    v = isNaN(v) ? undefined : v;
+    this.set('config.value', v);
+    return v;
+  }
+
+  @reads('config.validations.number')
+  validations;
+
+  @computed('validations.integer')
+  get step() {
+    return this.get('validations.integer') ? 1 : 0.01;
+  }
+
+  @computed('validations.{gt,gte}', 'step')
+  get min() {
+    var n = this.get('validations.gt');
+    if (isPresent(n)) {
+      return n * 1 + this.get('step');
+    } else {
+      return this.get('validations.gte');
     }
-  }),
+  }
 
-  validations: reads('config.validations.number'),
-
-  step: computed('validations.integer', {
-    get() {
-      return this.get('validations.integer') ? 1 : 0.01;
+  @computed('validations.{lt,lte}', 'step')
+  get max() {
+    var n = this.get('validations.lt');
+    if (isPresent(n)) {
+      return n * 1 - this.get('step');
+    } else {
+      return this.get('validations.lte');
     }
-  }),
-
-  min: computed('validations.{gt,gte}', 'step', {
-    get() {
-      var n = this.get('validations.gt');
-      if (isPresent(n)) {
-        return n * 1 + this.get('step');
-      } else {
-        return this.get('validations.gte');
-      }
-    }
-  }),
-
-  max: computed('validations.{lt,lte}', 'step', {
-    get() {
-      var n = this.get('validations.lt');
-      if (isPresent(n)) {
-        return n * 1 - this.get('step');
-      } else {
-        return this.get('validations.lte');
-      }
-    }
-  })
-});
+  }
+}

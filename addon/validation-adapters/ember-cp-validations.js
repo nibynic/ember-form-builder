@@ -1,15 +1,18 @@
+import classic from 'ember-classic-decorator';
+import { reads } from '@ember/object/computed';
 import { resolve, reject } from 'rsvp';
 import EmberObject, {
-  computed,
-  defineProperty
+  defineProperty,
+  computed
 } from '@ember/object';
-import { reads } from '@ember/object/computed';
 
-export default EmberObject.extend({
-  attributes: computed('object', function() {
+@classic
+export default class EmberCpValidations extends EmberObject {
+  @computed('object')
+  get attributes() {
     let object = this.object;
     return AttributesProxy.create({ object });
-  }),
+  }
 
   validate() {
     if (this.get('object.validate')) {
@@ -24,33 +27,38 @@ export default EmberObject.extend({
       return resolve();
     }
   }
-});
+}
 
-const AttributesProxy = EmberObject.extend({
-  cache: computed(function() {
+@classic
+class AttributesProxy extends EmberObject {
+  @computed
+  get cache() {
     return {};
-  }),
+  }
 
   unknownProperty(key) {
     return this.cache[key] = this.cache[key] || Attribute.create({
       key, object: this.object
     });
   }
-});
+}
 
-const Attribute = EmberObject.extend({
+@classic
+class Attribute extends EmberObject {
   init() {
-    this._super(...arguments);
+    undefined;
     defineProperty(this, 'validations', reads(`object.validations.attrs.${this.key}.options`));
     defineProperty(this, 'errors', reads(`object.validations.attrs.${this.key}.messages`));
     defineProperty(this, 'warnings', reads(`object.validations.attrs.${this.key}.warningMessages`));
-  },
+  }
 
-  required: computed('validations.presence.{presence,disabled}', function() {
+  @computed('validations.presence.{presence,disabled}')
+  get required() {
     return this.get('validations.presence.presence') && !this.get('validations.presence.disabled');
-  }),
+  }
 
-  number: computed('validations.number.{integer,gt,gte,lt,lte,disabled}', function() {
+  @computed('validations.number.{integer,gt,gte,lt,lte,disabled}')
+  get number() {
     if (this.get('validations.number.integer') && !this.get('validations.number.disabled')) {
       return {
         integer:  !!this.get('validations.number.integer'),
@@ -62,5 +70,5 @@ const Attribute = EmberObject.extend({
     } else {
       return undefined;
     }
-  })
-});
+  }
+}

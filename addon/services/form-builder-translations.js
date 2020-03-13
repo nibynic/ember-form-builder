@@ -1,23 +1,28 @@
+import classic from 'ember-classic-decorator';
+import { computed } from '@ember/object';
+import { reads } from '@ember/object/computed';
 import Service from '@ember/service';
 import { A } from '@ember/array';
-import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
-import { computed } from '@ember/object';
 import { pluralize } from 'ember-inflector';
 
 
-export default Service.extend({
-  i18n: computed(function() {
+@classic
+export default class FormBuilderTranslationsService extends Service {
+  @computed
+  get i18n() {
     return getOwner(this).lookup("service:i18n");
-  }),
+  }
 
-  intl: computed(function() {
+  @computed
+  get intl() {
     return getOwner(this).lookup("service:intl");
-  }),
+  }
 
-  translationService: computed('i18n', 'intl', function() {
+  @computed('i18n', 'intl')
+  get translationService() {
     return A([this.get('i18n'), this.get('intl')]).compact()[0];
-  }),
+  }
 
   t(scope, kind, name) {
     let service = this.get('translationService');
@@ -32,7 +37,8 @@ export default Service.extend({
     } else {
       return null;
     }
-  },
+  }
 
-  locale: reads('translationService.locale')
-});
+  @reads('translationService.locale')
+  locale;
+}

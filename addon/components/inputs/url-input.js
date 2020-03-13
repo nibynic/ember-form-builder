@@ -1,5 +1,7 @@
+import classic from 'ember-classic-decorator';
 import StringInput from './string-input';
 
-export default StringInput.extend({
-  type: 'url'
-});
+@classic
+export default class UrlInput extends StringInput {
+  type = 'url';
+}

@@ -1,5 +1,7 @@
+import classic from 'ember-classic-decorator';
 import StringInput from './string-input';
 
-export default StringInput.extend({
-  type: 'tel'
-});
+@classic
+export default class TelInput extends StringInput {
+  type = 'tel';
+}

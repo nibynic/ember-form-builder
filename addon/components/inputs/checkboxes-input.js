@@ -1,12 +1,14 @@
+import classic from 'ember-classic-decorator';
+import { tagName, layout as templateLayout } from '@ember-decorators/component';
+import { computed } from '@ember/object';
 import CollectionInput from 'ember-form-builder/components/inputs/collection-input';
 import layout from '../../templates/components/inputs/checkboxes-input';
-import { computed } from '@ember/object';
 
-export default CollectionInput.extend({
-  layout,
-
-  tagName: 'div',
-  optionComponentName: 'inputs/checkbox-option',
+@classic
+@templateLayout(layout)
+@tagName('div')
+export default class CheckboxesInput extends CollectionInput {
+  optionComponentName = 'inputs/checkbox-option';
 
   change() {
     var indices = [];
@@ -16,13 +18,15 @@ export default CollectionInput.extend({
       }
     });
     this._setSelection(indices);
-  },
+  }
 
-  inputType: computed('multiple', function() {
+  @computed('multiple')
+  get inputType() {
     return this.get('multiple') ? 'checkbox' : 'radio';
-  }),
+  }
 
-  normalizedRequired: computed('required', 'multiple', function() {
+  @computed('required', 'multiple')
+  get normalizedRequired() {
     return !this.get('multiple') && this.get('required');
-  })
-});
+  }
+}

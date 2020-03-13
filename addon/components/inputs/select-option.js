@@ -1,30 +1,34 @@
+import classic from 'ember-classic-decorator';
+import { attributeBindings, tagName, layout as templateLayout } from '@ember-decorators/component';
+import { computed } from '@ember/object';
+import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/inputs/select-option';
 import { isArray } from '@ember/array';
-import { computed } from '@ember/object';
-import { reads } from '@ember/object/computed';
 
-export default Component.extend({
-  layout,
+@classic
+@templateLayout(layout)
+@tagName('option')
+@attributeBindings('value', 'isSelected:selected')
+export default class SelectOption extends Component {
+  @reads('content.label')
+  label;
 
-  tagName: 'option',
-  attributeBindings: ['value', 'isSelected:selected'],
+  @reads('content.value')
+  value;
 
-  label: reads('content.label'),
-  value: reads('content.value'),
+  @computed('selectedValue.[]', 'content.content')
+  set isSelected(v) {
+    return this.get('isSelected');
+  }
 
-  isSelected: computed('selectedValue.[]', 'content.content', {
-    set: function(key) {
-      return this.get(key);
-    },
-    get: function() {
-      let selectedValue = this.get('selectedValue');
-      let content = this.get('content.content');
-      if (isArray(selectedValue)) {
-        return selectedValue.includes(content);
-      } else {
-        return selectedValue === content;
-      }
+  get isSelected() {
+    let selectedValue = this.get('selectedValue');
+    let content = this.get('content.content');
+    if (isArray(selectedValue)) {
+      return selectedValue.includes(content);
+    } else {
+      return selectedValue === content;
     }
-  })
-});
+  }
+}

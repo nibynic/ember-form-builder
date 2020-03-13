@@ -1,11 +1,14 @@
+import classic from 'ember-classic-decorator';
 import EmberObject, { computed } from '@ember/object';
 
-export default EmberObject.extend({
-  isModel() {},
+@classic
+export default class Base extends EmberObject {
+  isModel() {}
 
-  model: computed('object.model', function() {
+  @computed('object.model')
+  get model() {
     return this.isModel(this.get('object.model')) ?
       this.get('object.model') :
       this.get('object');
-  })
-});
+  }
+}
