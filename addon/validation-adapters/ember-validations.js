@@ -1,4 +1,7 @@
-import EmberObject, { computed, defineProperty } from '@ember/object';
+import EmberObject, {
+  computed,
+  defineProperty
+} from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 

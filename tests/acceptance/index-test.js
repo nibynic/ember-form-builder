@@ -1,7 +1,12 @@
 import { module, test } from 'qunit';
 import { visit, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import { readForm, fillForm, readErrors, pick } from 'ember-form-builder/test-support';
+import {
+  readForm,
+  fillForm,
+  readErrors,
+  pick
+} from 'ember-form-builder/test-support';
 
 module('Acceptance | index', function(hooks) {
   setupApplicationTest(hooks);

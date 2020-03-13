@@ -2,7 +2,10 @@ import Component from '@ember/component';
 import layout from '../../templates/components/form-builder/input';
 import { isPresent } from '@ember/utils';
 import { alias, reads } from '@ember/object/computed';
-import EmberObject, { computed, defineProperty } from '@ember/object';
+import EmberObject, {
+  computed,
+  defineProperty
+} from '@ember/object';
 import { inject as service } from '@ember/service';
 import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
