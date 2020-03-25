@@ -4,9 +4,9 @@ import { computed } from '@ember/object';
 export default FormBuilder.extend({
   tagName: 'div',
 
-  parentFormBuilder: computed('on.formBuilder', {
+  parentFormBuilder: computed('on.builder', {
     get() {
-      return this._parentFormBuilder || this.get('on.formBuilder') || this.get('on');
+      return this._parentFormBuilder || this.get('on.builder') || this.get('on');
     },
     set(k, v) {
       return this._parentFormBuilder = v;
