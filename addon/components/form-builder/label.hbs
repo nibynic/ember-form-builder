@@ -1,0 +1,8 @@
+<label for={{@for}} ...attributes>
+  {{#if @isRequired}}<abbr title={{this.requiredText}}>*</abbr>{{/if}}
+  {{#if hasBlock}}
+    {{yield}}
+  {{else}}
+    {{@text}}
+  {{/if}}
+</label>

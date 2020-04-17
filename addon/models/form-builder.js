@@ -32,12 +32,12 @@ export default class FormBuilder extends EmberObject {
   }
 
   addChild(childFormBuilder) {
-    this.get("children").addObject(childFormBuilder);
+    this.children.addObject(childFormBuilder);
     childFormBuilder.set('parent', this);
   }
 
   removeChild(childFormBuilder) {
-    this.get("children").removeObject(childFormBuilder);
+    this.children.removeObject(childFormBuilder);
     childFormBuilder.set('parent', null);
   }
 
@@ -46,7 +46,7 @@ export default class FormBuilder extends EmberObject {
 
     validations.push(this.validationAdapter.validate());
 
-    this.get("children").forEach((child) => {
+    this.children.forEach((child) => {
       validations.push(child.validate());
     });
 
@@ -74,9 +74,9 @@ export default class FormBuilder extends EmberObject {
 
   @computed('modelName', 'parent.name', 'index')
   get name() {
-    let prefix = camelize(this.get('parent.name') || '');
-    let name = camelize(this.get('modelName') || '');
-    let index = this.get('index');
+    let prefix = camelize((this.parent && this.parent.name) || '');
+    let name = camelize(this.modelName || '');
+    let index = this.index;
     if (!isBlank(index)) {
       name = pluralize(name);
     }

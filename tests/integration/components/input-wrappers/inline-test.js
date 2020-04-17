@@ -14,10 +14,14 @@ module('Integration | Component | input-wrappers/inline', function(hooks) {
       }
     };
     await render(hbs`
-      <InputWrappers::Inline @config={{config}} @inputComponent={{component "inputs/string-input" data-test-my-input=true}} @labelComponent={{component "form-builder/label" data-test-my-label=true}} />
+      <InputWrappers::Inline
+        @config={{config}}
+        @inputComponent={{component "inputs/string-input" data-test-my-input=true}}
+        @labelComponent={{component "form-builder/label" for="my-label"}}
+      />
     `);
 
-    assert.dom('[data-test-my-label]').exists();
+    assert.dom('[for="my-label"]').exists();
     assert.dom('[data-test-my-input]').exists();
     assert.dom('.text-muted').doesNotExist();
     assert.dom('.invalid-feedback').doesNotExist();
