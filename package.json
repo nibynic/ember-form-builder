@@ -76,6 +76,7 @@
     }
   },
   "resolutions": {
+    "clean-css": "^4.1.11",
     "minimist": "^0.2.1"
   }
 }
