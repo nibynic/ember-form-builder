@@ -74,5 +74,8 @@
     "versionCompatibility": {
       "ember": ">3.16.4"
     }
+  },
+  "resolutions": {
+    "minimist": "^0.2.1"
   }
 }
