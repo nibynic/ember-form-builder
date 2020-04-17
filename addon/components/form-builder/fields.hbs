@@ -1,0 +1,12 @@
+<div
+  ...attributes
+  {{did-insert this.initializeBuilder}}
+  {{will-destroy this.destroyBuilder}}
+>
+  {{yield (hash
+    input=(component "form-builder/input" builder=this.formBuilder)
+    fields=(component "form-builder/fields" on=this.formBuilder)
+    submit=(component "form-builder/submit" builder=this.formBuilder)
+    builder=this.formBuilder
+  )}}
+</div>

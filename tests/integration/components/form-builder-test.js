@@ -66,7 +66,7 @@ module('Integration | Component | form-builder', function(hooks) {
       this.didFail = sinon.stub();
 
       await render(hbs`
-        <FormBuilder @for={{this}} @action={{action submit}} @submitFailed={{action didFail}} as |f|>
+        <FormBuilder @for={{this}} @action={{action this.submit}} @submitFailed={{action this.didFail}} as |f|>
           <div data-test-is-valid>{{f.builder.isValid}}</div>
           <div data-test-status>{{f.builder.status}}</div>
           <input type="submit">

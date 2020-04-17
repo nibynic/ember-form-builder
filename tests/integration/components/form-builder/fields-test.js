@@ -19,6 +19,7 @@ module('Integration | Component | form-builder/fields', function(hooks) {
       {{/if}}
     `);
 
+    assert.dom('form').doesNotExist();
     assert.ok(addChild.calledOnce);
 
     this.set('isVisible', false);

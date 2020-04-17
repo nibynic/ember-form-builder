@@ -1,26 +1,14 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import { computed } from '@ember/object';
 import FormBuilder from 'ember-form-builder/components/form-builder';
+import { action } from '@ember/object';
 
-@classic
-@tagName('div')
 export default class Fields extends FormBuilder {
-  @computed('on.formBuilder')
-  get parentFormBuilder() {
-    return this._parentFormBuilder || this.get('on.formBuilder') || this.get('on');
-  }
-  set parentFormBuilder(v) {
-    return this._parentFormBuilder = v;
+  @action
+  initializeBuilder() {
+    this.args.on.addChild(this.formBuilder);
   }
 
-  didInsertElement() {
-    super.didInsertElement(...arguments);
-    this.get('parentFormBuilder').addChild(this.get('formBuilder'));
-  }
-
-  willDestroy() {
-    super.willDestroy(...arguments);
-    this.get('parentFormBuilder').removeChild(this.get('formBuilder'));
+  @action
+  destroyBuilder() {
+    this.args.on.removeChild(this.formBuilder);
   }
 }

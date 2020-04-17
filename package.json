@@ -63,7 +63,8 @@
     "ember-cli-htmlbars": "^4.2.2",
     "ember-inflector": "^3.0.0",
     "ember-test-selectors": "^3.0.0",
-    "ember-truth-helpers": "^2.1.0"
+    "ember-truth-helpers": "^2.1.0",
+    "@ember/render-modifiers": "^1.0.2"
   },
   "ember": {
     "edition": "octane"

@@ -20,14 +20,14 @@ module('Unit | Models | FormBuilder', function(hooks) {
   module('hierarchy', function(hooks) {
     hooks.beforeEach(function() {
       this.builder = this.owner.factoryFor('model:form-builder').create({
-        modelName: 'post'
+        settings: { modelName: 'post' }
       });
       this.child = this.owner.factoryFor('model:form-builder').create({
-        modelName: 'author'
+        settings: { modelName: 'author' }
       });
       this.builder.addChild(this.child);
       this.grandchild = this.owner.factoryFor('model:form-builder').create({
-        modelName: 'device'
+        settings: { modelName: 'device' }
       });
       this.child.addChild(this.grandchild);
     });
@@ -53,7 +53,7 @@ module('Unit | Models | FormBuilder', function(hooks) {
     });
 
     test('it propagates loading state', function(assert) {
-      this.builder.set('isLoading', true);
+      this.set('builder.settings.isLoading', true);
 
       assert.equal(this.child.isLoading, true);
       assert.equal(this.grandchild.isLoading, true);

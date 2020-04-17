@@ -1,94 +1,91 @@
-import classic from 'ember-classic-decorator';
-import { attributeBindings, tagName, layout as templateLayout } from '@ember-decorators/component';
+import Component from '@glimmer/component';
 import { computed } from '@ember/object';
-import { alias, reads } from '@ember/object/computed';
-import Component from '@ember/component';
-import layout from '../templates/components/form-builder';
+import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
+import optional from 'ember-form-builder/utilities/optional-action';
+import { tracked } from '@glimmer/tracking';
+import { dependentKeyCompat } from '@ember/object/compat';
 
-@classic
-@templateLayout(layout)
-@tagName('form')
-@attributeBindings('novalidate')
 export default class FormBuilder extends Component {
   novalidate = false;
-  action() {}
-  submitFailed() {}
+
+  @optional action() {}
+  @optional submitFailed() {}
 
   submit(event) {
     event.preventDefault();
-    if (!this._isLoadingOverridden) {
-      this.set('formBuilder.isLoading', true);
+    if (!('isLoading' in this.args)) {
+      this.settings.isLoading = true;
     }
-    if (!this._statusOverridden) {
-      this.set('formBuilder.status', undefined);
+    if (!('status' in this.args)) {
+      this.settings.status = undefined;
     }
-    this.get('formBuilder').validate().then(
+    this.formBuilder.validate().then(
       () => this.action()
     ).then(
       () => {
-        if (!this._statusOverridden) {
-          this.set('formBuilder.status', 'success');
+        if (!('status' in this.args)) {
+          this.settings.status = 'success';
         }
       },
       (e) => {
-        if (!this._statusOverridden) {
-          this.set('formBuilder.status', 'failure');
+        if (!('status' in this.args)) {
+          this.settings.status = 'failure';
         }
         this.submitFailed(e);
         throw e;
       }
     ).finally(
       () => {
-        if (!this._isLoadingOverridden) {
-          this.set('formBuilder.isLoading', false);
+        if (!('isLoading' in this.args)) {
+          this.settings.isLoading = false;
         }
       }
     ).catch(() => {});
   }
 
   @computed
+  get settings() {
+    let settings = new Settings();
+    settings.source = this.args;
+    return settings;
+  }
+
+  @computed
   get formBuilder() {
-    return getOwner(this).factoryFor('model:form-builder').create();
+    return getOwner(this).factoryFor('model:form-builder').create({ settings: this.settings });
   }
+}
 
-  @alias('formBuilder.object')
-  for;
+const NOT_SET = Math.random();
 
-  @alias('formBuilder.modelName')
-  name;
+class Settings {
+  @tracked source;
 
-  @alias('formBuilder.translationKey')
-  translationKey;
+  @reads('source.for')            object;
+  @reads('source.name')           modelName;
+  @reads('source.translationKey') translationKey;
+  @reads('source.index')          index;
 
-  @alias('formBuilder.model')
-  model;
 
-  @alias('formBuilder.index')
-  index;
+  @tracked _isLoading = NOT_SET;
 
-  @reads('formBuilder.isValid')
-  isValid;
-
-  @computed('formBuilder.isLoading')
+  @dependentKeyCompat
   get isLoading() {
-    return this.get('formBuilder.isLoading');
+    return (this._isLoading !== NOT_SET && this._isLoading) || this.source.isLoading;
   }
-
   set isLoading(v) {
-    this._isLoadingOverridden = true;
-    this.set('formBuilder.isLoading', v);
-    return v;
+    return this._isLoading = v;
   }
 
-  @computed('formBuilder.status')
+
+  @tracked _status = NOT_SET;
+
+  @dependentKeyCompat
   get status() {
-    return this.get('formBuilder.status');
+    return (this._status !== NOT_SET && this._status) || this.source.status;
   }
-
   set status(v) {
-    this._statusOverridden = true;
-    this.set('formBuilder.status', v);
-    return v;
+    return this._status = v;
   }
 }

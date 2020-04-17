@@ -6,15 +6,17 @@ import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
-import byDefault from 'ember-form-builder/utilities/by-default';
 import { getOwner } from '@ember/application';
 import defaultConfiguration from 'ember-form-builder/configuration';
 import { assign } from '@ember/polyfills';
+import { tracked } from '@glimmer/tracking';
 
 @classic
 export default class FormBuilder extends EmberObject {
-  status = null;
-  isValid = true;
+  @tracked isValid = true;
+  @tracked parent;
+
+  @tracked settings = {};
 
   @computed
   get children() {
@@ -69,16 +71,18 @@ export default class FormBuilder extends EmberObject {
     return getOwner(this).factoryFor(`data-adapter:${name}`).create({ object: this.object });
   }
 
-  @reads('dataAdapter.model')
-  model;
+  @reads('settings.object')       object;
+  @reads('settings.status')       status;
+  @reads('settings.index')        index;
+  @reads('dataAdapter.model')     model;
 
-  @reads('dataAdapter.modelName')
-  modelName;
+  get modelName() {
+    return this.settings.modelName || this.dataAdapter.modelName;
+  }
 
-  @byDefault('modelName', function() {
-    return camelize(this.get('modelName') || '');
-  })
-  translationKey;
+  get translationKey() {
+    return this.settings.translationKey || camelize(this.modelName || '');
+  }
 
   @computed('modelName', 'parent.name', 'index')
   get name() {
@@ -93,7 +97,9 @@ export default class FormBuilder extends EmberObject {
         (n, i) => i > 0 ? `[${n}]` : n
       ).join('');
   }
-
-  @reads('parent.isLoading')
-  isLoading;
+  
+  get isLoading() {
+    return (this.settings.isLoading !== undefined && this.settings.isLoading) ||
+      (this.parent && this.parent.isLoading);
+  }
 }
