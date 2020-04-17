@@ -1,4 +1,3 @@
-import classic from 'ember-classic-decorator';
 import { reads } from '@ember/object/computed';
 import { camelize } from '@ember/string';
 import { all } from 'rsvp';
@@ -11,16 +10,25 @@ import defaultConfiguration from 'ember-form-builder/configuration';
 import { assign } from '@ember/polyfills';
 import { tracked } from '@glimmer/tracking';
 
-@classic
 export default class FormBuilder extends EmberObject {
   @tracked isValid = true;
   @tracked parent;
 
-  @tracked settings = {};
+  settings = {};
+  children = A([]);
 
-  @computed
-  get children() {
-    return A([]);
+  init() {
+    super.init(...arguments);
+
+    let owner = getOwner(this);
+
+    this.configuration = assign(
+      {}, defaultConfiguration,
+      owner.factoryFor('config:environment').class.formBuilder || {}
+    );
+
+    this.validationAdapter  = owner.factoryFor(`validation-adapter:${this.configuration.validationsAddon}`).create({ object: this.object });
+    this.dataAdapter        = owner.factoryFor(`data-adapter:${this.configuration.dataAddon}`).create({ object: this.object });
   }
 
   addChild(childFormBuilder) {
@@ -31,14 +39,6 @@ export default class FormBuilder extends EmberObject {
   removeChild(childFormBuilder) {
     this.get("children").removeObject(childFormBuilder);
     childFormBuilder.set('parent', null);
-  }
-
-  @computed
-  get configuration() {
-    return assign(
-      {}, defaultConfiguration,
-      getOwner(this).factoryFor('config:environment').class.formBuilder || {}
-    );
   }
 
   validate() {
@@ -57,18 +57,6 @@ export default class FormBuilder extends EmberObject {
         throw e;
       }
     );
-  }
-
-  @computed('configuration.validationsAddon')
-  get validationAdapter() {
-    let name = this.get('configuration.validationsAddon');
-    return getOwner(this).factoryFor(`validation-adapter:${name}`).create({ object: this.object });
-  }
-
-  @computed('configuration.validationsAddon')
-  get dataAdapter() {
-    let name = this.get('configuration.dataAddon');
-    return getOwner(this).factoryFor(`data-adapter:${name}`).create({ object: this.object });
   }
 
   @reads('settings.object')       object;
@@ -97,7 +85,7 @@ export default class FormBuilder extends EmberObject {
         (n, i) => i > 0 ? `[${n}]` : n
       ).join('');
   }
-  
+
   get isLoading() {
     return (this.settings.isLoading !== undefined && this.settings.isLoading) ||
       (this.parent && this.parent.isLoading);

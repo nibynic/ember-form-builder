@@ -8,13 +8,15 @@ module('Unit | Models | FormBuilder', function(hooks) {
   setupTest(hooks);
 
   test('it provides form builder configuration', function(assert) {
-    this.owner.factoryFor('config:environment').class.formBuilder = {
+    this.configStub = sinon.stub(this.owner.factoryFor('config:environment').class, 'formBuilder').value({
       dataAddon: 'ember-orbit'
-    };
+    });
     let builder = this.owner.factoryFor('model:form-builder').create();
 
     assert.equal(builder.configuration.dataAddon, 'ember-orbit'); // overriden value
     assert.equal(builder.configuration.validationsAddon, 'ember-validations'); // default value
+
+    this.configStub.restore();
   });
 
   module('hierarchy', function(hooks) {
@@ -62,16 +64,20 @@ module('Unit | Models | FormBuilder', function(hooks) {
 
   module('model detection', function(hooks) {
     hooks.beforeEach(function() {
+      this.configStub = sinon.stub(this.owner.factoryFor('config:environment').class, 'formBuilder').value({
+        dataAddon: 'ember-orbit'
+      });
       this.model = EmberObject.extend({ type: 'my-model' }).create();
       this.builder = this.owner.factoryFor('model:form-builder').create({
         object: this.model
       });
     });
 
+    hooks.afterEach(function() {
+      this.configStub.restore();
+    });
+
     test('it uses data adapter specified in the config', function(assert) {
-      this.owner.factoryFor('config:environment').class.formBuilder = {
-        dataAddon: 'ember-orbit'
-      };
       const EmberOrbitAdapter = this.owner.factoryFor('data-adapter:ember-orbit').class;
 
       assert.ok(this.builder.dataAdapter instanceof EmberOrbitAdapter);
@@ -86,20 +92,26 @@ module('Unit | Models | FormBuilder', function(hooks) {
 
   module('validation', function(hooks) {
     hooks.beforeEach(function() {
+      this.configStub = sinon.stub(this.owner.factoryFor('config:environment').class, 'formBuilder').value({
+        validationsAddon: 'ember-cp-validations'
+      });
       this.object = {};
       this.builder = this.owner.factoryFor('model:form-builder').create({
         object: this.object
       });
     });
 
+    hooks.afterEach(function() {
+      this.configStub.restore();
+    });
+
     test('it uses validation adapter specified in the config', function(assert) {
-      this.owner.factoryFor('config:environment').class.formBuilder = {
-        validationsAddon: 'ember-cp-validations'
-      };
       const EmberCpValidationsAdapter = this.owner.factoryFor('validation-adapter:ember-cp-validations').class;
 
       assert.ok(this.builder.validationAdapter instanceof EmberCpValidationsAdapter);
       assert.equal(this.builder.validationAdapter.object, this.object);
+
+      this.configStub.restore();
     });
 
     test('it performs validation on the adapter', async function(assert) {
