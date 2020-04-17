@@ -25,6 +25,7 @@ export default class FormBuilderTranslationsService extends Service {
   }
 
   t(scope, kind, name) {
+    this.locale;
     let service = this.get('translationService');
     if (service) {
       let key = [

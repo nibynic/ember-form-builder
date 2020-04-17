@@ -1,46 +1,16 @@
-import classic from 'ember-classic-decorator';
-import { attributeBindings, tagName, layout as templateLayout } from '@ember-decorators/component';
-import { computed } from '@ember/object';
+import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { oneWay } from '@ember/object/computed';
-import Component from '@ember/component';
-import layout from '../../templates/components/form-builder/submit';
-import byDefault from 'ember-form-builder/utilities/by-default';
 
-@classic
-@templateLayout(layout)
-@tagName("button")
-@attributeBindings("type", "disabled")
-class SimpleSubmit extends Component {
-  @service("formBuilderTranslations")
-  translationService;
+export default class Submit extends Component {
+  @service('formBuilderTranslations') translationService;
 
-  type = "submit";
-
-  @oneWay("builder.isLoading")
-  disabled;
-
-  @computed
   get builder() {
-    return this._builder;
+    return (this.args.builder && this.args.builder.builder) || this.args.builder;
   }
 
-  set builder(value) {
-    if (value && value.builder) {
-      return this._builder = value.builder;
-    } else {
-      return this._builder = value;
-    }
+  get text() {
+    return this.args.text ||
+      this.translationService.t(this.builder && this.builder.translationKey, 'action', 'submit') ||
+      'Save';
   }
-
-  @byDefault('builder.translationKey', 'translationService.locale', function() {
-    return this.get('translationService').t(this.get('builder.translationKey'), 'action', 'submit') || 'Save';
-  })
-  text;
 }
-
-SimpleSubmit.reopenClass({
-  positionalParams: ["builder"]
-});
-
-export default SimpleSubmit;
