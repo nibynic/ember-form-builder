@@ -10,7 +10,6 @@ export default class Fields extends FormBuilder {
   get parentFormBuilder() {
     return this._parentFormBuilder || this.get('on.formBuilder') || this.get('on');
   }
-
   set parentFormBuilder(v) {
     return this._parentFormBuilder = v;
   }
