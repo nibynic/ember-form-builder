@@ -1,5 +1,5 @@
 {{#let (and @config.canValidate @config.validations.errors) as |isInvalid|}}
-  <div class="form-check">
+  <div class="form-check" ...attributes>
     <@inputComponent
       class={{concat "form-check-input" (if isInvalid " is-invalid")}}
     />

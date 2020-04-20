@@ -1,5 +1,5 @@
 {{#let (and @config.canValidate @config.validations.errors) as |isInvalid|}}
-  <div class="form-group">
+  <div class="form-group" ...attributes>
     {{#if @config.texts.label}}
       <@labelComponent />
     {{/if}}

@@ -1,5 +1,5 @@
 import classic from 'ember-classic-decorator';
-import { layout as templateLayout } from '@ember-decorators/component';
+import { tagName, layout as templateLayout } from '@ember-decorators/component';
 import { inject as service } from '@ember/service';
 import { reads, alias } from '@ember/object/computed';
 import Component from '@ember/component';
@@ -14,15 +14,13 @@ import guessType from "ember-form-builder/utilities/guess-type";
 import byDefault from 'ember-form-builder/utilities/by-default';
 import { once } from '@ember/runloop';
 import { A } from '@ember/array';
+import { guidFor } from '@ember/object/internals';
+import { action } from '@ember/object';
 
 @classic
+@tagName('')
 @templateLayout(layout)
 export default class Input extends Component {
-  @reads('type')
-  'data-test-input-type';
-
-  @reads('name')
-  'data-test-input-name';
 
   @service("formBuilderTranslations")
   translationService;
@@ -65,7 +63,8 @@ export default class Input extends Component {
     }
   }
 
-  focusOut() {
+  @action
+  handleFocusOut() {
     once(this, this.set, 'hasFocusedOut', true);
   }
 
@@ -116,7 +115,7 @@ export default class Input extends Component {
   }
 
   @byDefault(function() {
-    return this.get("elementId") + "Input";
+    return `${guidFor(this)}Input`;
   })
   inputElementId;
 
