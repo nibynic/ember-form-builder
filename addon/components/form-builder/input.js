@@ -1,58 +1,81 @@
+import classic from 'ember-classic-decorator';
+import { layout as templateLayout } from '@ember-decorators/component';
+import { inject as service } from '@ember/service';
+import { reads, alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/form-builder/input';
 import { isPresent } from '@ember/utils';
-import { alias, reads } from '@ember/object/computed';
 import EmberObject, {
-  computed,
-  defineProperty
+  defineProperty,
+  computed
 } from '@ember/object';
-import { inject as service } from '@ember/service';
 import humanize from "ember-form-builder/utilities/humanize";
 import guessType from "ember-form-builder/utilities/guess-type";
 import byDefault from 'ember-form-builder/utilities/by-default';
 import { once } from '@ember/runloop';
 import { A } from '@ember/array';
 
-export default Component.extend({
-  layout,
+@classic
+@templateLayout(layout)
+export default class Input extends Component {
+  @reads('type')
+  'data-test-input-type';
 
-  'data-test-input-type': reads('type'),
-  'data-test-input-name': reads('name'),
+  @reads('name')
+  'data-test-input-name';
 
-  translationService: service("formBuilderTranslations"),
-  hasFocusedOut: false,
-  as: byDefault("_model", "attr", function() {
+  @service("formBuilderTranslations")
+  translationService;
+
+  hasFocusedOut = false;
+
+  @byDefault("_model", "attr", function() {
     return guessType(this.get("_model"), this.get("attr"), this);
-  }),
-  attr: null,
+  })
+  as;
 
-  type:           reads('as'),
-  wrapper:        'default',
-  object:         reads('builder.object'),
-  _model:         reads('builder.model'),
-  modelName:      reads('builder.modelName'),
-  configuration:  reads('builder.configuration'),
+  attr = null;
 
-  builder: computed({
-    set(key, value) {
-      if (value && value.builder) {
-        return value.builder;
-      } else {
-        return value;
-      }
+  @reads('as')
+  type;
+
+  wrapper = 'default';
+
+  @reads('builder.object')
+  object;
+
+  @reads('builder.model')
+  _model;
+
+  @reads('builder.modelName')
+  modelName;
+
+  @reads('builder.configuration')
+  configuration;
+
+  @computed
+  get builder() {
+    return this._builder;
+  }
+  set builder(value) {
+    if (value && value.builder) {
+      return this._builder = value.builder;
+    } else {
+      return this._builder = value;
     }
-  }),
+  }
 
   focusOut() {
     once(this, this.set, 'hasFocusedOut', true);
-  },
+  }
 
-  canValidate: byDefault('hasFocusedOut', 'builder.isValid', function() {
+  @byDefault('hasFocusedOut', 'builder.isValid', function() {
     return this.get('hasFocusedOut') || !this.get('builder.isValid');
-  }),
+  })
+  canValidate;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     defineProperty(this, 'validations', reads(`builder.validationAdapter.attributes.${this.get('attr')}`));
 
@@ -66,9 +89,10 @@ export default Component.extend({
         return value;
       }
     }));
-  },
+  }
 
-  config: computed(function() {
+  @computed
+  get config() {
     let attrs = A(
       Object.keys(this.get('attrs')).concat([
         'inputElementId', 'name', 'type', 'value', 'texts', 'validations',
@@ -84,31 +108,34 @@ export default Component.extend({
         }
       )
     ).create({ content: this });
-  }),
+  }
 
-  texts: computed(function() {
+  @computed
+  get texts() {
     return TextProxy.create({ content: this });
-  }),
+  }
 
-  inputElementId: byDefault(function() {
+  @byDefault(function() {
     return this.get("elementId") + "Input";
-  }),
+  })
+  inputElementId;
 
-  name: computed('builder.name', 'attr', function() {
+  @computed('builder.name', 'attr')
+  get name() {
     var prefix = this.get('builder.name');
     var name = this.get('attr');
     if (isPresent(prefix)) {
       name = prefix + '[' + name + ']';
     }
     return name;
-  }),
+  }
 
-  combinedDisabled: computed('builder.isLoading', 'disabled', function() {
+  @computed('builder.isLoading', 'disabled')
+  get combinedDisabled() {
     return !!this.get('builder.isLoading') || !!this.get('disabled');
-  })
-}).reopenClass({
-  positionalParams: ["attr"]
-});
+  }
+}
+
 
 const TextProxy = EmberObject.extend({
   humanizedAttributes: Object.freeze(['label']),

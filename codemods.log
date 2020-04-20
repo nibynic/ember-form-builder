@@ -1,0 +1,40 @@
+2020-04-20T07:57:18.179Z [warn] [addon/configuration.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.444Z [warn] [addon/utilities/guess-type.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.458Z [warn] [addon/utilities/by-default.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.448Z [warn] [addon/utilities/humanize.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.475Z [warn] [addon/utilities/optional-action.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.789Z [warn] [addon/components/inputs/collection-input.js]: FAILURE 
+Validation errors: 
+	class has chained definition (e.g. EmberObject.extend().reopenClass();
+2020-04-20T07:57:18.838Z [warn] [addon/components/form-builder/input.js]: FAILURE 
+Validation errors: 
+	class has chained definition (e.g. EmberObject.extend().reopenClass();
+2020-04-20T07:57:18.845Z [warn] [addon/components/form-builder/input.js]: FAILURE 
+Validation errors: 
+	class has chained definition (e.g. EmberObject.extend().reopenClass();
+2020-04-20T07:57:18.846Z [warn] [addon/components/form-builder/input.js]: FAILURE 
+Validation errors: 
+	[humanizedAttributes]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[humanizedAttributes]: Transform not supported - value has modifiers like 'property' or 'meta'
+	[typeMapping]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[typeMapping]: Transform not supported - value has modifiers like 'property' or 'meta'
+2020-04-20T07:57:18.870Z [warn] [addon/components/form-builder/label.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.878Z [warn] [addon/components/form-builder/submit.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.885Z [warn] [addon/components/form-builder/fields.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T07:57:18.929Z [warn] [addon/components/form-builder.js]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-04-20T08:00:30.868Z [warn] [addon/components/form-builder/input.js]: FAILURE 
+Validation errors: 
+	class has chained definition (e.g. EmberObject.extend().reopenClass();
+2020-04-20T08:00:30.869Z [warn] [addon/components/form-builder/input.js]: FAILURE 
+Validation errors: 
+	class has chained definition (e.g. EmberObject.extend().reopenClass();
+2020-04-20T08:00:30.869Z [warn] [addon/components/form-builder/input.js]: FAILURE 
+Validation errors: 
+	[humanizedAttributes]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[humanizedAttributes]: Transform not supported - value has modifiers like 'property' or 'meta'
+	[typeMapping]: Transform not supported - need option '--decorators=true' or the property type CallExpression can not be transformed
+	[typeMapping]: Transform not supported - value has modifiers like 'property' or 'meta'
+2020-04-20T08:04:23.572Z [warn] [addon/components/form-builder/input.js]: FAILURE 
+Validation errors: 
+	class has chained definition (e.g. EmberObject.extend().reopenClass();
+2020-04-20T08:04:23.590Z [info] [addon/components/form-builder/input.js]: SUCCESS
