@@ -1,5 +1,3 @@
-import { get } from '@ember/object';
-
 function typeForProperty(object, property) {
   try {
     return object.constructor.metaForProperty &&
@@ -10,24 +8,25 @@ function typeForProperty(object, property) {
   }
 }
 
-export default function(object, attribute, input) {
-  if (attribute.match(/password/i)) {
+export default function(model, { attr, collection }) {
+  attr = attr || '';
+  if (attr.match(/password/i)) {
     return "password";
   }
 
-  if (attribute.match(/email/)) {
+  if (attr.match(/email/)) {
     return "email";
   }
 
-  if (attribute.match(/^(is|has|did)/)) {
+  if (attr.match(/^(is|has|did)/)) {
     return "boolean";
   }
 
-  if (get(input, "collection")) {
+  if (collection) {
     return "collection";
   }
 
-  var type = typeForProperty(object, attribute);
+  var type = typeForProperty(model, attr);
   if (type) { return type; }
 
   return "string";
