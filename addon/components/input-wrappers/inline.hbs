@@ -1,0 +1,18 @@
+{{#let (and @config.canValidate @config.validations.errors) as |isInvalid|}}
+  <div class="form-check">
+    <@inputComponent
+      class={{concat "form-check-input" (if isInvalid " is-invalid")}}
+    />
+    <@labelComponent class="form-check-label" />
+    {{#if @config.texts.hint}}
+      <small class="form-text text-muted">{{@config.texts.hint}}</small>
+    {{/if}}
+    {{#if isInvalid}}
+      <div class="invalid-feedback" data-test-errors>
+        {{#each @config.validations.errors as |error i|~}}
+          {{if i ", "}}{{error}}
+        {{~/each}}
+      </div>
+    {{/if}}
+  </div>
+{{/let}}
