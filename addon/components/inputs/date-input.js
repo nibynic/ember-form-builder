@@ -1,31 +1,28 @@
-import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
 import StringInput from './string-input';
+import { action, set, computed } from '@ember/object';
 
-@classic
 export default class DateInput extends StringInput {
   type = 'date';
 
-  @computed('config.value')
+  @computed('args.config.value')
   get value() {
-    var date = this.get('config.value');
-    return formatDate(date);
+    return formatDate(this.args.config.value);
   }
 
-  set value(value) {
+  @action
+  handleChange(e) {
+    let value = e.target.value;
     if (value.length === 0) {
-      this.set('config.value', undefined);
+      set(this, 'args.config.value', undefined);
     } else {
-      var timestamp = Date.parse(value + 'T00:00Z');
+      let timestamp = Date.parse(value + 'T00:00Z');
       if (isNaN(timestamp)) {
         return value;
       } else {
         var date = new Date(timestamp);
-        this.set('config.value', date);
-        return formatDate(date);
+        set(this, 'args.config.value', date);
       }
     }
-    return undefined;
   }
 }
 

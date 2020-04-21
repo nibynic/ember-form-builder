@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import EmberObject from '@ember/object';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, settled, triggerEvent } from '@ember/test-helpers';
+import { render, settled, triggerEvent, fillIn } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
@@ -23,7 +23,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
 
   hooks.beforeEach(function() {
     this.builder = new FormBuilderMock();
-  })
+  });
 
 
   test('it reflects value updates', async function(assert) {
@@ -40,6 +40,19 @@ module('Integration | Component | form-builder/input', function(hooks) {
     this.set('builder.object.title', 'Another test!');
 
     assert.dom('input').hasValue('Another test!');
+  });
+
+  test('it updates value', async function(assert) {
+    this.builder.object = {
+      title: 'Testing testing 123'
+    }
+
+    await render(hbs`
+      <FormBuilder::Input @attr="title" @as="string" @builder={{this.builder}} />
+    `);
+    await fillIn('input', '456');
+
+    assert.equal(this.builder.object.title, '456');
   });
 
   test('it proxies auxiliary attributes', async function(assert) {

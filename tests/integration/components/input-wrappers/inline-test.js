@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
+import Component from '@ember/component';
 
 module('Integration | Component | input-wrappers/inline', function(hooks) {
   setupRenderingTest(hooks);
@@ -13,15 +14,21 @@ module('Integration | Component | input-wrappers/inline', function(hooks) {
         errors:     ['cannot be blank', 'is too short']
       }
     };
+    this.owner.register('component:inputs/my-input', Component.extend({
+      layout: hbs`<div data-test-my-input></div>`
+    }));
+    this.owner.register('component:my-label', Component.extend({
+      layout: hbs`<div data-test-my-label></div>`
+    }));
     await render(hbs`
       <InputWrappers::Inline
         @config={{config}}
-        @inputComponent={{component "inputs/string-input" data-test-my-input=true}}
-        @labelComponent={{component "form-builder/label" for="my-label"}}
+        @inputComponent={{component "inputs/my-input"}}
+        @labelComponent={{component "my-label"}}
       />
     `);
 
-    assert.dom('[for="my-label"]').exists();
+    assert.dom('[data-test-my-label]').exists();
     assert.dom('[data-test-my-input]').exists();
     assert.dom('.text-muted').doesNotExist();
     assert.dom('.invalid-feedback').doesNotExist();

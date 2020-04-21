@@ -1,50 +1,50 @@
-import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
-import { reads } from '@ember/object/computed';
 import StringInput from './string-input';
+import { action, get, set, computed } from '@ember/object';
+import { reads } from '@ember/object/computed';
+
 import { isPresent } from '@ember/utils';
 
-@classic
 export default class NumberInput extends StringInput {
   type = 'number';
 
-  @computed('config.value')
+  @computed('args.config.value')
   get value() {
-    return this.get('config.value');
+    return this.args.config.value;
   }
 
-  set value(v) {
-    v = parseFloat(v);
-    v = isNaN(v) ? undefined : v;
-    this.set('config.value', v);
-    return v;
+  @action
+  handleChange(e) {
+    let value = e.target.value;
+    value = parseFloat(value);
+    value = isNaN(value) ? undefined : value;
+    set(this, 'args.config.value', value);
   }
 
-  @reads('config.validations.number')
+  @reads('args.config.validations.number')
   validations;
 
   @computed('validations.integer')
   get step() {
-    return this.get('validations.integer') ? 1 : 0.01;
+    return get(this, 'validations.integer') ? 1 : 0.01;
   }
 
   @computed('validations.{gt,gte}', 'step')
   get min() {
-    var n = this.get('validations.gt');
+    var n = get(this, 'validations.gt');
     if (isPresent(n)) {
-      return n * 1 + this.get('step');
+      return n * 1 + this.step;
     } else {
-      return this.get('validations.gte');
+      return get(this, 'validations.gte');
     }
   }
 
   @computed('validations.{lt,lte}', 'step')
   get max() {
-    var n = this.get('validations.lt');
+    var n = get(this, 'validations.lt');
     if (isPresent(n)) {
-      return n * 1 - this.get('step');
+      return n * 1 - this.step;
     } else {
-      return this.get('validations.lte');
+      return get(this, 'validations.lte');
     }
   }
 }
