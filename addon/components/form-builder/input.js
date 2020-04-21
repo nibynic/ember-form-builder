@@ -1,100 +1,50 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { reads, alias } from '@ember/object/computed';
+import { alias } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
 import EmberObject, {
   defineProperty,
   computed,
   action
 } from '@ember/object';
-import humanize from "ember-form-builder/utilities/humanize";
-import guessType from "ember-form-builder/utilities/guess-type";
+import humanize from 'ember-form-builder/utilities/humanize';
+import guessType from 'ember-form-builder/utilities/guess-type';
 import { A } from '@ember/array';
 import { guidFor } from '@ember/object/internals';
+import classic from 'ember-classic-decorator';
+import { dependentKeyCompat } from '@ember/object/compat';
 
 export default class Input extends Component {
 
-  @service("formBuilderTranslations")
+  @service('formBuilderTranslations')
   translationService;
 
-  @tracked
-  hasFocusedOut = false;
-
-  get type() {
-    return this.args.as || guessType(this._model, this.args);
+  
+  constructor() {
+    super(...arguments);
+    defineProperty(this, 'value', alias(`args.builder.object.${this.args.attr}`));
+    defineProperty(this, 'validations', alias(`args.builder.validationAdapter.attributes.${this.args.attr}`));
   }
 
-  attr = null;
+  config  = new ConfigProxy(this);
+  texts   = TextProxy.create({ context: this });
+
+
+  get type() {
+    return this.args.as || guessType(this.args.builder.model, this.args);
+  }
 
   get wrapper() {
     return this.args.wrapper || 'default';
-  }
-
-  @reads('builder.object')
-  object;
-
-  @reads('builder.model')
-  _model;
-
-  @reads('builder.modelName')
-  modelName;
-
-  @reads('builder.configuration')
-  configuration;
-
-  get builder() {
-    let builder = this.args.builder;
-    return (builder && builder.builder) || builder;
-  }
-
-  @action
-  handleFocusOut() {
-    this.hasFocusedOut = true;
-  }
-
-
-  @computed('hasFocusedOut', 'builder.isValid')
-  get canValidate() {
-    return this.hasFocusedOut || !this.builder.isValid;
-  }
-
-  constructor() {
-    super(...arguments);
-    defineProperty(this, 'value', alias(`builder.object.${this.args.attr}`))
-    defineProperty(this, 'validations', alias(`builder.validationAdapter.attributes.${this.args.attr}`))
-  }
-
-  @computed
-  get config() {
-    let attrs = A(
-      Object.keys(this.args).map(
-        (key) => `args.${key}`
-      ).concat([
-        'inputElementId', 'name', 'type', 'value', 'texts', 'validations',
-        'canValidate', 'disabled'
-      ])
-    ).removeObjects(['attr', 'builder', 'as', 'label', 'placeholder', 'hint']);
-    return EmberObject.extend(
-      ...attrs.map((key) => ({
-          [key.split('.').reverse()[0]]: alias(`content.${key}`)
-        })
-      )
-    ).create({ content: this });
-  }
-
-  @computed
-  get texts() {
-    return TextProxy.create({ content: this.args, translationService: this.translationService });
   }
 
   get inputElementId() {
     return this.args.inputElementId || `${guidFor(this)}Input`;
   }
 
-  @computed('builder.name', 'args.attr')
   get name() {
-    var prefix = this.builder.name;
+    var prefix = this.args.builder.name;
     var name = this.args.attr;
     if (isPresent(prefix)) {
       name = prefix + '[' + name + ']';
@@ -102,33 +52,86 @@ export default class Input extends Component {
     return name;
   }
 
-  @computed('builder.isLoading', 'args.disabled')
   get disabled() {
-    return !!this.builder.isLoading || !!this.args.disabled;
+    return !!this.args.builder.isLoading || !!this.args.disabled;
+  }
+
+  @tracked
+  hasFocusedOut = false;
+
+  @action
+  handleFocusOut() {
+    this.hasFocusedOut = true;
+  }
+
+  get canValidate() {
+    return this.hasFocusedOut || !this.args.builder.isValid;
   }
 }
 
+class ConfigProxy {
+  @alias('content.value') value;
 
-const TextProxy = EmberObject.extend({
-  humanizedAttributes: Object.freeze(['label']),
-  typeMapping: Object.freeze({ label: 'attribute' }),
-  translationService: null,
+  get inputElementId()  { return this.content.inputElementId; }
+  get name()            { return this.content.name; }
+  get type()            { return this.content.type; }
+  get texts()           { return this.content.texts; }
+  get validations()     { return this.content.validations; }
+  get canValidate()     { return this.content.canValidate; }
+  @dependentKeyCompat
+  get disabled()        { return this.content.disabled; }
+
+  constructor(content) {
+    this.content = content;
+
+    A(Object.keys(content.args))
+      .removeObjects(['attr', 'as', 'builder', 'canValidate', 'disabled',
+        'hint', 'inputElementId', 'label', 'name', 'placeholder', 'type',
+        'texts', 'validations'])
+      .forEach(
+        (key) => defineProperty(this, key, alias(`content.args.${key}`))
+      );
+  }
+}
+
+@classic
+class TextProxy extends EmberObject {
+
+  init() {
+    super.init(...arguments);
+    this.content = this.context.args;
+    this.translationService = this.context.translationService;
+  }
+
+  @computed('content.{label,attr,builder.translationKey}', 'translationService.locale')
+  get label() {
+    if (this.exists('label')) {
+      return this.content.label ||
+        this.translate('attribute') ||
+        humanize(this.content.attr);
+    }
+    return undefined;
+  }
+
+  exists(type) {
+    return this.content[type] !== false;
+  }
+
+  translate(type) {
+    return  this.translationService.t(
+      this.content.builder.translationKey, type, this.content.attr
+    );
+  }
 
   unknownProperty(key) {
-    defineProperty(this, key, computed(`content.{${key},attr,builder.translationKey}`, 'translationService.locale', function() {
-      let originalValue = this.get(`content.${key}`);
-      let attr = this.get('content.attr');
-      let mappedKey = this.get('typeMapping')[key] || key;
-      if (originalValue !== false) {
-        return originalValue || this.translationService.t(
-          this.get('content.builder.translationKey'), mappedKey, attr
-        ) || (
-          this.get('humanizedAttributes').includes(key) ? humanize(attr) : undefined
-        );
-      } else {
+    defineProperty(this, key, computed(`content.{${key},attr,builder.translationKey}`, 'translationService.locale', {
+      get() {
+        if (this.exists(key)) {
+          return this.content[key] || this.translate(key);
+        }
         return undefined;
       }
     }));
-    return this.get(key);
+    return this[key];
   }
-});
+}

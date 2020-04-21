@@ -172,7 +172,7 @@ module('Integration | Component | form-builder/input', function(hooks) {
 
   test('it renders a placeholder when provided', async function(assert) {
     await render(hbs`
-      <FormBuilder::Input @attr="title" @as="string" @builder={{this.builder}} @placeholder={{placeholder}} />
+      <FormBuilder::Input @attr="title" @as="string" @builder={{this.builder}} @placeholder={{this.placeholder}} />
     `);
 
     assert.dom('input').doesNotHaveAttribute('placeholder');
