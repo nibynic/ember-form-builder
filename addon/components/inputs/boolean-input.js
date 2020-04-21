@@ -1,24 +1,9 @@
-import classic from 'ember-classic-decorator';
-import { attributeBindings } from '@ember-decorators/component';
-import { reads, alias } from '@ember/object/computed';
-import Checkbox from '@ember/component/checkbox';
+import Component from '@glimmer/component';
+import { action, set } from '@ember/object';
 
-@classic
-@attributeBindings('autocomplete')
-export default class BooleanInput extends Checkbox.extend(
-  ...['autocomplete', 'autofocus', 'disabled', 'form', 'indeterminate', 'name',
-    'readonly', 'tabindex'].map(
-    (attr) => ({ [attr]: reads(`config.${attr}`) })
-  )
-) {
-  @alias('config.value')
-  checked;
-
-  init() {
-    super.init(...arguments);
-    this.elementId = this.get('config.elementId');
+export default class extends Component {
+  @action
+  handleChange(e) {
+    set(this, 'args.config.value', e.target.checked);
   }
-
-  @reads('config.validations.required')
-  required;
 }

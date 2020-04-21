@@ -1,0 +1,17 @@
+<input
+  type="checkbox"
+  id={{@config.inputElementId}}
+  name={{@config.name}}
+
+  checked={{@config.value}}
+  {{on "change" this.handleChange}}
+
+  required={{@config.validations.required}}
+
+  autocomplete={{@config.autocomplete}}
+  autofocus={{@config.autofocus}}
+  disabled={{@config.disabled}}
+  indeterminate={{@config.indeterminate}}
+  readonly={{@config.readonly}}
+  tabindex={{@config.tabindex}}
+/>
