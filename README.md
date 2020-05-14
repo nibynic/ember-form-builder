@@ -20,17 +20,17 @@ npm install --save-dev ember-form-builder
 ## Usage
 
 ```handlebars
-{{#form-builder for=this action=(action "submit") as |f|}}
+<FormBuilder @for={{this}} @action={{this.submit}} as |f|>
 
-  {{f.input "title"}}
-  {{f.input "category" collection=categories}}
-  {{f.input "isPublished"}}
-  {{f.input "publishedOn" as="date"}}
-  {{f.input "price" hint="Leave empty if this is a free article"}}
+  <f.input @attr="title" />
+  <f.input @attr="category" @collection={{categories}} />
+  <f.input @attr="isPublished" />
+  <f.input @attr="publishedOn" @as="date" />
+  <f.input @attr="price" @hint="Leave empty if this is a free article" />
 
-  {{f.submit}}
+  <f.submit />
 
-{{/form-builder}}
+</FormBuilder>
 ```
 
 ### Built-in inputs
@@ -55,30 +55,33 @@ You can easily extend any of the above inputs by overriding them and requiring a
 
 ```js
 // In app/components/inputs/text-input.js
-import TextInput from "ember-form-builder/components/inputs/text-input";
+import OriginalTextInput from 'ember-form-builder/components/inputs/text-input';
+import { action, set } from '@ember/object';
 
-export default TextInput.extend({
-  init() {
-    this._super();
-    this.attributeBindings.push("customAttribute");
-  },
-
-  customAttribute: Ember.computed(function() {
-    /* some code */
-  })
-});
-
+export default class TextInput extends OriginalTextInput {
+  @action
+  handleChange(e) {
+    set(this, 'args.config.value', e.target.value.trim());
+  }
+}
 ```
 
 ### Custom inputs
 
 To provide your own input types simply implement a component named `your-type-input` and put it into `components/inputs` folder. Like this:
 
-```js
-// In app/components/inputs/your-type-input.js
-import Ember from "ember";
+```hbs
+{{!-- In app/components/inputs/your-type-input.hbs --}}
+<input
+  type="range"
 
-export default Ember.Component.extend({});
+  id={{@config.inputElementId}}
+  name={{@config.name}}
+
+  value={{@config.value}}
+
+  {{on "change" this.handleChange}}
+/>
 ```
 
 You can then use your input using the `as` option:
@@ -121,8 +124,8 @@ Ember Form Builder automatically detects internationalization addon and tries to
 
 use case | label | hint | placeholder | submit | required
 --- | --- | --- | --- | --- | ---
-Explicit | `label="My attribute"` | `hint="My hint"` | `placeholder="My placeholder"` | `text="My submit"` | `not possible`
-Custom form translation key: `{{#form-builder translationKey="custom.key"}}` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
+Explicit | `@label="My attribute"` | `@hint="My hint"` | `@placeholder="My placeholder"` | `@text="My submit"` | `not possible`
+Custom form translation key: `<FormBuilder @translationKey="custom.key" />` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
 Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | Looks up `article.placeholders.attribute` | `not possible`
 Default | humanizes attribute name | empty | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
 Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | empty | "Save" | "Required"
@@ -132,24 +135,24 @@ Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | empty 
 ### Changing input templates and CSS classes
 
 Ember Form Builder uses input wrappers to allow you control the generated HTML and CSS.
-Input wrapper is a component that receives `inputComponent`, `labelComponent` and `config` arguments.
+Input wrapper is a component that receives `@inputComponent`, `@labelComponent` and `@config` arguments.
 
-`inputComponent` and `labelComponent` are preconfigured component instances, so you can
+`@inputComponent` and `@labelComponent` are preconfigured component instances, so you can
 easily render them in any place you need.
 
-`config` is a hash containing some predefined keys (`inputElementId`, `name`, `value`, `texts`,
-`validations`, `canValidate`), as well as all attributes that you pass to
-the `{{f.input}}` call.
+`@config` is a hash containing some predefined keys (`inputElementId`, `name`, `value`, `texts`,
+`validations`, `canValidate`), as well as all arguments that you pass to
+the `<f.input />` call.
 
 ```handlebars
-{{!-- app/components/input-wrappers/my-wrapper --}}
+{{!-- app/components/input-wrappers/my-wrapper.hbs --}}
 <div class="my-input">
-  {{component labelComponent}}
+  <@labelComponent />
   <div class="my-field">
-    {{component inputComponent class="my-input-control"}}
+    <@inputComponent class="my-input-control" />
   </div>
-  {{#if config.validations.errors}}
-    <div class="my-errors">{{config.validations.errors}}</div>
+  {{#if @config.validations.errors}}
+    <div class="my-errors">{{@config.validations.errors}}</div>
   {{/if}}
 </div>
 ```
@@ -157,16 +160,16 @@ the `{{f.input}}` call.
 Ember Form Builder ships with `default` and `inline` wrappers that are compatible
 with [Bootstrap](https://getbootstrap.com/) form markup. You can overwrite them or
 define your own wrappers. Then to select a wrapper for a specific input, just pass
-its name in the `wrapper` attribute:
+its name in the `@wrapper` attribute:
 
 ```handlebars
-{{#form-builder for=this action=(action "submit") as |f|}}
+<FormBuilder @for={{this}} @action={{this.submit}} as |f|>
 
-  {{f.input "title" wrapper="my-wrapper"}}
-  {{f.input "isPublished" wrapper="inline"}}
-  {{f.submit}}
+  <f.input @attr="title" @wrapper="my-wrapper" />
+  <f.input @attr="isPublished" @wrapper="inline" />
+  <f.submit />
 
-{{/form-builder}}
+</FormBuilder>
 ```
 
 ### Configuration
@@ -191,15 +194,15 @@ In the examples below we use this component:
 
 ```handlebars
 {{!-- app/components/my-form --}}
-{{#form-builder for=model name="person" as |f|}}
-  {{f.input "firstName"}}
-  {{f.input "age" as="number"}}
-  {{#each model.children as |child i|}}
-    {{#f.fields for=child name="child" index=i as |ff|}}
-      {{ff.input "firstName"}}
-    {{/f.fields}}
+<FormBuilder @for={{@model}} @name="person" as |f|>
+  <f.input @attr="firstName" />
+  <f.input @attr="age" @as="number" />
+  {{#each @model.children as |child i|}}
+    <f.fields @for={{child}} @name="child" @index={{i}} as |ff|>
+      <ff.input @attr="firstName" />
+    </f.fields>
   {{/each}}
-{{/form-builder}}
+</FormBuilder>
 ```
 
 ### Reading form data
@@ -222,7 +225,7 @@ module('Integration | Components | my-form', function(hooks) {
         { firstName: 'Anna' }
       ]
     };
-    await render(hbs`{{my-form model=model}}`);
+    await render(hbs`<MyForm @model={{this.model}} />`);
 
     // pass a list of attributes to read...
     assert.deepEqual(readForm('person', ['firstName', 'age', 'children.0.firstName']), this.model);
@@ -252,7 +255,7 @@ module('Integration | Components | my-form', function(hooks) {
         { firstName: 'Anna' }
       ]
     };
-    await render(hbs`{{my-form model=model}}`);
+    await render(hbs`<MyForm @model={{this.model}} />`);
 
     let newData = {
       firstName:  'Viktor',
@@ -290,7 +293,7 @@ module('Integration | Components | my-form', function(hooks) {
     this.model = {
       age:  37
     };
-    await render(hbs`{{my-form model=model}}`);
+    await render(hbs`<MyForm @model={{this.model}} />`);
     await fillForm('person', {
       age:  2
     });
