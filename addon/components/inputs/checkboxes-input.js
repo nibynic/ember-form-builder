@@ -5,9 +5,14 @@ export default class CheckboxesInput extends CollectionInput {
   optionComponentName = 'inputs/checkbox-option';
 
   @action
-  handleChange(e) {
+  registerWrapper(el) {
+    this.wrapper = el;
+  }
+
+  @action
+  handleChange() {
     var indices = [];
-    e.currentTarget.querySelectorAll('input').forEach(function(input, i) {
+    this.wrapper.querySelectorAll('input').forEach(function(input, i) {
       if(input.checked) {
         indices.push(i);
       }

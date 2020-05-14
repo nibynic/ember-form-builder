@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import optional from 'ember-form-builder/utilities/optional-action';
@@ -12,6 +12,7 @@ export default class FormBuilder extends Component {
   @optional action() {}
   @optional submitFailed() {}
 
+  @action
   submit(event) {
     event.preventDefault();
     if (!('isLoading' in this.args)) {

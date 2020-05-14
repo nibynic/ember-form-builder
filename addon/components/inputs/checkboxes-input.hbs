@@ -1,7 +1,7 @@
 {{#let (component this.optionComponentName) as |Option|}}
   <div
     {{did-insert this.setDefaultValue}}
-    {{on "change" this.handleChange}}
+    {{did-insert this.registerWrapper}}
     ...attributes
   >
     {{#each this.resolvedCollection as |option|}}
@@ -12,6 +12,7 @@
         @required={{this.normalizedRequired}}
         @inputName={{@config.name}}
         @inputType={{this.inputType}}
+        {{on "change" this.handleChange}}
       />
     {{/each}}
   </div>

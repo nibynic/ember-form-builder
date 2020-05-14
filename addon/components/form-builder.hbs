@@ -1,6 +1,6 @@
 <form
   ...attributes
-  onsubmit={{action this.submit}}
+  {{on "submit" this.submit}}
 >
   {{yield (hash
     input=(component "form-builder/input" builder=this.formBuilder)
