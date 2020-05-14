@@ -6,6 +6,6 @@ export default class EmberData extends Base {
   modelName;
 
   isModel(object) {
-    return object && object.constructor.hasOwnProperty('modelName');
+    return object && !!object.constructor.modelName;
   }
 }

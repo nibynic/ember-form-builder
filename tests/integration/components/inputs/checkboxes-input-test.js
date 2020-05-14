@@ -167,7 +167,7 @@ module('Integration | Component | inputs/checkboxes-input', async function(hooks
         assert.dom('input[value="2"]').isChecked();
         assert.dom('input[value="3"]').isChecked();
 
-        this.get('config.value').pushObject(this.collection[0].content);
+        this.config.value.pushObject(this.collection[0].content);
         await settled();
 
         assert.dom('input:checked').exists({ count: 3 });

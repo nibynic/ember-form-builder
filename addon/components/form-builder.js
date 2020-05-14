@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 import optional from 'ember-form-builder/utilities/optional-action';
@@ -45,23 +45,20 @@ export default class FormBuilder extends Component {
     ).catch(() => {});
   }
 
-  @computed
-  get settings() {
-    let settings = new Settings();
-    settings.source = this.args;
-    return settings;
-  }
-
-  @computed
-  get formBuilder() {
-    return getOwner(this).factoryFor('model:form-builder').create({ settings: this.settings });
+  constructor() {
+    super(...arguments);
+    this.settings = new Settings(this.args);
+    this.formBuilder = getOwner(this).factoryFor('model:form-builder').create({ settings: this.settings });
   }
 }
 
 const NOT_SET = Math.random();
 
 class Settings {
-  @tracked source;
+
+  constructor(source) {
+    this.source = source;
+  }
 
   @reads('source.for')            object;
   @reads('source.name')           modelName;

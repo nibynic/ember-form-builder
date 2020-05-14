@@ -166,7 +166,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
         assert.dom('option[value="2"]').matchesSelector(':checked');
         assert.dom('option[value="3"]').matchesSelector(':checked');
 
-        this.get('config.value').pushObject(this.collection[0].content);
+        this.config.value.pushObject(this.collection[0].content);
         await settled();
 
         assert.dom('option:checked').exists({ count: 3 });

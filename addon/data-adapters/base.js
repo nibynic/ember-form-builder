@@ -5,8 +5,8 @@ export default class Base extends EmberObject {
 
   @computed('object.model')
   get model() {
-    return this.isModel(this.get('object.model')) ?
-      this.get('object.model') :
-      this.get('object');
+    return this.isModel(this.object.model) ?
+      this.object.model :
+      this.object;
   }
 }

@@ -18,12 +18,12 @@ export default class FormBuilderTranslationsService extends Service {
 
   @computed('i18n', 'intl')
   get translationService() {
-    return A([this.get('i18n'), this.get('intl')]).compact()[0];
+    return A([this.i18n, this.intl]).compact()[0];
   }
 
   t(scope, kind, name) {
     this.locale;
-    let service = this.get('translationService');
+    let service = this.translationService;
     if (service) {
       let key = [
         A([scope, pluralize(kind), name]).compact().join('.'),

@@ -16,7 +16,7 @@ export default class EmberCpValidations extends EmberObject {
   }
 
   validate() {
-    if (this.get('object.validate')) {
+    if (this.object.validate) {
       return this.object.validate().then(({ validations }) => {
         if (validations.isValid) {
           return resolve();

@@ -119,10 +119,10 @@ class TextProxy extends ObjectProxy {
   }
 
   unknownProperty(key) {
-    defineProperty(this, key, computed(`content.{${key},attr,builder.translationKey}`, 'translationService.locale', {
-      get() {
-        if (this.exists(key)) {
-          return this.content[key] || this.translate(key);
+    defineProperty(this, key, computed('content', `content.{${key},attr,builder.translationKey}`, 'translationService.locale', {
+      get(k) {
+        if (this.exists(k)) {
+          return this.content[k] || this.translate(k);
         }
         return undefined;
       }

@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { resolve, reject } from 'rsvp';
 import sinon from 'sinon';
+import { get } from '@ember/object';
 
 module('Unit | ValidationAdapter | EmberValidations', function(hooks) {
   setupTest(hooks);
@@ -39,8 +40,8 @@ module('Unit | ValidationAdapter | EmberValidations', function(hooks) {
       firstName: ['should start with a capital letter']
     });
 
-    assert.deepEqual(this.get('adapter.attributes.firstName.errors'), ['cannot be blank']);
-    assert.deepEqual(this.get('adapter.attributes.firstName.warnings'), ['should start with a capital letter']);
+    assert.deepEqual(get(this, 'adapter.attributes.firstName.errors'), ['cannot be blank']);
+    assert.deepEqual(get(this, 'adapter.attributes.firstName.warnings'), ['should start with a capital letter']);
   });
 
   test('it maps required fields', function(assert) {
@@ -50,7 +51,7 @@ module('Unit | ValidationAdapter | EmberValidations', function(hooks) {
       }
     });
 
-    assert.equal(this.get('adapter.attributes.firstName.required'), true);
+    assert.equal(get(this, 'adapter.attributes.firstName.required'), true);
   });
 
   test('it maps number validations', function(assert) {
@@ -66,6 +67,6 @@ module('Unit | ValidationAdapter | EmberValidations', function(hooks) {
       }
     });
 
-    assert.deepEqual(this.get('adapter.attributes.age.number'), { gt: 1, gte: 2, lt: 3, lte: 4, integer: true });
+    assert.deepEqual(get(this, 'adapter.attributes.age.number'), { gt: 1, gte: 2, lt: 3, lte: 4, integer: true });
   });
 });

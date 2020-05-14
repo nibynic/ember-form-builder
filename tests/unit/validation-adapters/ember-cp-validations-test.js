@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import sinon from 'sinon';
 import { resolve } from 'rsvp';
+import { get } from '@ember/object';
 
 module('Unit | ValidationAdapter | EmberCpValidations', function(hooks) {
   setupTest(hooks);
@@ -47,8 +48,8 @@ module('Unit | ValidationAdapter | EmberCpValidations', function(hooks) {
       }
     });
 
-    assert.deepEqual(this.get('adapter.attributes.firstName.errors'), ['cannot be blank']);
-    assert.deepEqual(this.get('adapter.attributes.firstName.warnings'), ['should start with a capital letter']);
+    assert.deepEqual(get(this, 'adapter.attributes.firstName.errors'), ['cannot be blank']);
+    assert.deepEqual(get(this, 'adapter.attributes.firstName.warnings'), ['should start with a capital letter']);
   });
 
   test('it maps required fields', function(assert) {
@@ -62,11 +63,11 @@ module('Unit | ValidationAdapter | EmberCpValidations', function(hooks) {
       }
     });
 
-    assert.equal(this.get('adapter.attributes.firstName.required'), true);
+    assert.equal(get(this, 'adapter.attributes.firstName.required'), true);
 
     this.set('object.validations.attrs.firstName.options.presence.disabled', true);
 
-    assert.equal(this.get('adapter.attributes.firstName.required'), false);
+    assert.equal(get(this, 'adapter.attributes.firstName.required'), false);
   });
 
   test('it maps number validations', function(assert) {
@@ -80,10 +81,10 @@ module('Unit | ValidationAdapter | EmberCpValidations', function(hooks) {
       }
     });
 
-    assert.deepEqual(this.get('adapter.attributes.age.number'), { gt: 1, gte: 2, lt: 3, lte: 4, integer: true });
+    assert.deepEqual(get(this, 'adapter.attributes.age.number'), { gt: 1, gte: 2, lt: 3, lte: 4, integer: true });
 
     this.set('object.validations.attrs.age.options.number.disabled', true);
 
-    assert.equal(this.get('adapter.attributes.age.number'));
+    assert.equal(get(this, 'adapter.attributes.age.number'));
   });
 });
