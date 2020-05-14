@@ -1,0 +1,17 @@
+{{#let (component this.optionComponentName) as |Option|}}
+  <div
+    {{did-insert this.setDefaultValue}}
+    {{on "change" this.handleChange}}
+  >
+    {{#each this.resolvedCollection as |option|}}
+      <Option
+        @content={{option}}
+        @selectedValue={{this.value}}
+        @disabled={{@config.disabled}}
+        @required={{this.normalizedRequired}}
+        @inputName={{@config.name}}
+        @inputType={{this.inputType}}
+      />
+    {{/each}}
+  </div>
+{{/let}}

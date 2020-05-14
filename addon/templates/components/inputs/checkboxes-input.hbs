@@ -1,7 +1,0 @@
-{{#each this.resolvedCollection as |option|}}
-  {{component this.optionComponentName content=option selectedValue=this.value
-    disabled=this.disabled required=this.normalizedRequired
-    inputName=this.config.name inputType=this.inputType
-    action="selectValue"
-  }}
-{{/each}}
