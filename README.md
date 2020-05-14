@@ -14,7 +14,7 @@ labels, validations, hints without repeating yourself. It's strongly inspired by
 ## Installation
 
 ```
-npm install --save-dev ember-form-builder
+ember install ember-form-builder
 ```
 
 ## Usage
