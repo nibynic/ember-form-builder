@@ -1,23 +1,10 @@
-import classic from 'ember-classic-decorator';
-import { reads, alias } from '@ember/object/computed';
-import TextArea from '@ember/component/text-area';
+import Component from '@glimmer/component';
+import { action, set } from '@ember/object';
 
-@classic
-export default class TextInput extends TextArea.extend(...['autocomplete', 'autofocus', 'dir', 'disabled', 'height', 'inputmode',
-  'inputElementId', 'list', 'name', 'pattern', 'readonly', 'size', 'tabindex'].map(
-  (attr) => ({ [attr]: reads(`config.${attr}`) })
-)) {
-  @alias('config.value')
-  value;
-
-  init() {
-    super.init(...arguments);
-    this.elementId = this.get('inputElementId');
+export default class extends Component {
+  @action
+  handleChange(e) {
+    set(this, 'args.config.value', e.target.value);
   }
 
-  @reads('config.validations.required')
-  required;
-
-  @reads('config.texts.placeholder')
-  placeholder;
 }

@@ -1,9 +1,8 @@
-<input
-  type={{this.type}}
+<textarea
   id={{@config.inputElementId}}
   name={{@config.name}}
 
-  value={{this.value}}
+  value={{@config.value}}
   {{on "input" this.handleChange}}
   {{on "change" this.handleChange}}
 
@@ -14,18 +13,13 @@
   autofocus={{@config.autofocus}}
   dir={{@config.dir}}
   disabled={{@config.disabled}}
+  height={{@config.height}}
   inputmode={{@config.inputmode}}
   list={{@config.list}}
   pattern={{@config.pattern}}
   readonly={{@config.readonly}}
   size={{@config.size}}
   tabindex={{@config.tabindex}}
-
-  min={{this.min}}
-  max={{this.max}}
-  step={{this.step}}
-
-  multiple={{@config.multiple}}
 
   ...attributes
 />

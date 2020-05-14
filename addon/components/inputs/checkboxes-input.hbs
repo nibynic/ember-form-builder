@@ -2,6 +2,7 @@
   <div
     {{did-insert this.setDefaultValue}}
     {{on "change" this.handleChange}}
+    ...attributes
   >
     {{#each this.resolvedCollection as |option|}}
       <Option

@@ -19,6 +19,8 @@
 
   placeholder={{@config.texts.placeholder}}
   required={{@config.validations.required}}
+
+  ...attributes
 >
   {{#each this.resolvedCollection as |option|}}
     {{component this.optionComponentName content=option selectedValue=this.value}}
