@@ -2,7 +2,8 @@ import classic from 'ember-classic-decorator';
 import { reads } from '@ember/object/computed';
 import EmberObject, {
   defineProperty,
-  computed
+  computed,
+  get
 } from '@ember/object';
 import { resolve } from 'rsvp';
 
@@ -15,8 +16,8 @@ export default class EmberValidations extends EmberObject {
   }
 
   validate() {
-    if (this.get('object.validate')) {
-      return this.get('object').validate();
+    if (get(this, 'object.validate')) {
+      return get(this, 'object').validate();
     } else {
       return resolve();
     }
@@ -31,35 +32,32 @@ class AttributesProxy extends EmberObject {
   }
 
   unknownProperty(key) {
-    return this.cache[key] = this.cache[key] || Attribute.create({
-      key, object: this.object
-    });
+    return this.cache[key] = this.cache[key] || new Attribute(key, this.object);
   }
 }
 
-@classic
-class Attribute extends EmberObject {
-  init() {
-    undefined;
-    defineProperty(this, 'validations', reads(`object.validations.${this.key}`));
-    defineProperty(this, 'errors', reads(`object.errors.${this.key}`));
-    defineProperty(this, 'warnings', reads(`object.warnings.${this.key}`));
+class Attribute {
+  constructor(key, object) {
+    this.object = object;
+    defineProperty(this, 'validations', reads(`object.validations.${key}`));
+    defineProperty(this, 'errors', reads(`object.errors.${key}`));
+    defineProperty(this, 'warnings', reads(`object.warnings.${key}`));
   }
 
   @computed('validations.presence')
   get required() {
-    return !!this.get('validations.presence');
+    return !!get(this, 'validations.presence');
   }
 
   @computed('validations.number.{integer,gt,gte,lt,lte,disabled}')
   get number() {
-    if (this.get('validations.numericality')) {
+    if (get(this, 'validations.numericality')) {
       return {
-        integer:  !!this.get('validations.numericality.onlyInteger'),
-        gt:       this.get('validations.numericality.greaterThan'),
-        gte:      this.get('validations.numericality.greaterThanOrEqualTo'),
-        lt:       this.get('validations.numericality.lessThan'),
-        lte:      this.get('validations.numericality.lessThanOrEqualTo')
+        integer:  !!get(this, 'validations.numericality.onlyInteger'),
+        gt:       get(this, 'validations.numericality.greaterThan'),
+        gte:      get(this, 'validations.numericality.greaterThanOrEqualTo'),
+        lt:       get(this, 'validations.numericality.lessThan'),
+        lte:      get(this, 'validations.numericality.lessThanOrEqualTo')
       };
     } else {
       return undefined;

@@ -3,16 +3,12 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
-import EmberObject, {
-  defineProperty,
-  computed,
-  action
-} from '@ember/object';
+import { defineProperty, computed, action } from '@ember/object';
+import ObjectProxy from '@ember/object/proxy';
 import humanize from 'ember-form-builder/utilities/humanize';
 import guessType from 'ember-form-builder/utilities/guess-type';
 import { A } from '@ember/array';
 import { guidFor } from '@ember/object/internals';
-import classic from 'ember-classic-decorator';
 import { dependentKeyCompat } from '@ember/object/compat';
 
 export default class Input extends Component {
@@ -20,7 +16,7 @@ export default class Input extends Component {
   @service('formBuilderTranslations')
   translationService;
 
-  
+
   constructor() {
     super(...arguments);
     defineProperty(this, 'value', alias(`args.builder.object.${this.args.attr}`));
@@ -94,8 +90,7 @@ class ConfigProxy {
   }
 }
 
-@classic
-class TextProxy extends EmberObject {
+class TextProxy extends ObjectProxy {
 
   init() {
     super.init(...arguments);

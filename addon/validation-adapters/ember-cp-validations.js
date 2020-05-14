@@ -3,7 +3,8 @@ import { reads } from '@ember/object/computed';
 import { resolve, reject } from 'rsvp';
 import EmberObject, {
   defineProperty,
-  computed
+  computed,
+  get
 } from '@ember/object';
 
 @classic
@@ -37,35 +38,32 @@ class AttributesProxy extends EmberObject {
   }
 
   unknownProperty(key) {
-    return this.cache[key] = this.cache[key] || Attribute.create({
-      key, object: this.object
-    });
+    return this.cache[key] = this.cache[key] || new Attribute(key, this.object);
   }
 }
 
-@classic
-class Attribute extends EmberObject {
-  init() {
-    undefined;
-    defineProperty(this, 'validations', reads(`object.validations.attrs.${this.key}.options`));
-    defineProperty(this, 'errors', reads(`object.validations.attrs.${this.key}.messages`));
-    defineProperty(this, 'warnings', reads(`object.validations.attrs.${this.key}.warningMessages`));
+class Attribute {
+  constructor(key, object) {
+    this.object = object;
+    defineProperty(this, 'validations', reads(`object.validations.attrs.${key}.options`));
+    defineProperty(this, 'errors', reads(`object.validations.attrs.${key}.messages`));
+    defineProperty(this, 'warnings', reads(`object.validations.attrs.${key}.warningMessages`));
   }
 
   @computed('validations.presence.{presence,disabled}')
   get required() {
-    return this.get('validations.presence.presence') && !this.get('validations.presence.disabled');
+    return get(this, 'validations.presence.presence') && !get(this, 'validations.presence.disabled');
   }
 
   @computed('validations.number.{integer,gt,gte,lt,lte,disabled}')
   get number() {
-    if (this.get('validations.number.integer') && !this.get('validations.number.disabled')) {
+    if (get(this, 'validations.number.integer') && !get(this, 'validations.number.disabled')) {
       return {
-        integer:  !!this.get('validations.number.integer'),
-        gt:       this.get('validations.number.gt'),
-        gte:      this.get('validations.number.gte'),
-        lt:       this.get('validations.number.lt'),
-        lte:      this.get('validations.number.lte')
+        integer:  !!get(this, 'validations.number.integer'),
+        gt:       get(this, 'validations.number.gt'),
+        gte:      get(this, 'validations.number.gte'),
+        lt:       get(this, 'validations.number.lt'),
+        lte:      get(this, 'validations.number.lte')
       }
     } else {
       return undefined;

@@ -1,4 +1,3 @@
-import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import Service from '@ember/service';
@@ -6,8 +5,6 @@ import { A } from '@ember/array';
 import { getOwner } from '@ember/application';
 import { pluralize } from 'ember-inflector';
 
-
-@classic
 export default class FormBuilderTranslationsService extends Service {
   @computed
   get i18n() {
