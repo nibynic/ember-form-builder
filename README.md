@@ -1,6 +1,6 @@
 # Ember Form Builder
 
-[![Build Status](https://travis-ci.org/nibynic/ember-form-builder.svg)](https://travis-ci.org/nibynic/ember-form-builder)
+[![Build Status](https://travis-ci.com/nibynic/ember-form-builder.svg?branch=master)](https://travis-ci.com/nibynic/ember-form-builder)
 [![Ember Observer Score](https://emberobserver.com/badges/ember-form-builder.svg)](https://emberobserver.com/addons/ember-form-builder)
 
 ## About
