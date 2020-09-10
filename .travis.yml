@@ -57,3 +57,6 @@ jobs:
 
 script:
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
