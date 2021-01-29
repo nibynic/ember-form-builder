@@ -1,7 +1,10 @@
-<option
-  value={{@content.value}}
-  selected={{this.isSelected}}
-  ...attributes
->
-  {{@content.label}}
-</option>
+{{yield this.isSelected}}
+{{#unless (has-block)}}
+  <option
+    value={{@content.value}}
+    selected={{this.isSelected}}
+    ...attributes
+  >
+    {{@content.label}}
+  </option>
+{{/unless}}
