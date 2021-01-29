@@ -65,7 +65,8 @@ export default class FormBuilder extends EmberObject {
   @reads('dataAdapter.model')     model;
 
   get modelName() {
-    return this.settings.modelName || this.dataAdapter.modelName;
+    console.log('modelName', this.settings.modelName);
+    return this.settings.modelName !== undefined ? this.settings.modelName : this.dataAdapter.modelName;
   }
 
   get translationKey() {

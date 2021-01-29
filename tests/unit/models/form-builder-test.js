@@ -22,7 +22,8 @@ module('Unit | Models | FormBuilder', function(hooks) {
   module('hierarchy', function(hooks) {
     hooks.beforeEach(function() {
       this.builder = this.owner.factoryFor('model:form-builder').create({
-        settings: { modelName: 'post' }
+        settings: { modelName: 'post' },
+        object: { constructor: { modelName: 'myPost' }}
       });
       this.child = this.owner.factoryFor('model:form-builder').create({
         settings: { modelName: 'author' }
@@ -52,6 +53,16 @@ module('Unit | Models | FormBuilder', function(hooks) {
 
       assert.equal(this.child.name, 'post[authors][2]');
       assert.equal(this.grandchild.name, 'post[authors][2][device]');
+
+      this.builder.set('settings', { modelName: undefined });
+
+      assert.equal(this.child.name, 'myPost[authors][2]');
+      assert.equal(this.grandchild.name, 'myPost[authors][2][device]');
+
+      this.builder.set('settings', { modelName: '' });
+
+      assert.equal(this.child.name, 'authors[2]');
+      assert.equal(this.grandchild.name, 'authors[2][device]');
     });
 
     test('it propagates loading state', function(assert) {

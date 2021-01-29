@@ -48,5 +48,9 @@ module('Integration | Component | form-builder/fields', function(hooks) {
     this.set('index', 2);
 
     assert.dom(this.element).hasText('sampleModel[sampleChildren][2]');
+
+    this.set('parent.name', '');
+
+    assert.dom(this.element).hasText('sampleChildren[2]');
   });
 });
