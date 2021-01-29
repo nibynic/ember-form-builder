@@ -64,4 +64,19 @@ module('Integration | Component | form-builder/submit', function(hooks) {
 
     assert.dom('[data-test-submit]').isDisabled('has disabled attribute');
   });
+
+  test('it allows extending via block syntax', async function(assert) {
+    this.set('builder', EmberObject.create({
+      isLoading: false
+    }));
+
+    await render(hbs`
+      <FormBuilder::Submit data-test-submit @builder={{builder}} as |text builder|>
+        Text: {{text}}
+        Loading: {{builder.isLoading}}
+      </FormBuilder::Submit>
+    `);
+
+    assert.dom('button').hasText('Text: Save Loading: false');
+  });
 });

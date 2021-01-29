@@ -1,3 +1,6 @@
 <button type="submit" disabled={{this.builder.isLoading}} ...attributes>
-  {{this.text}}
+  {{yield this.text this.builder}}
+  {{#unless (has-block)}}
+    {{this.text}}
+  {{/unless}}
 </button>
