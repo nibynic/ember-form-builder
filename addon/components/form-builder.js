@@ -73,7 +73,7 @@ class Settings {
     return (this._isLoading !== NOT_SET && this._isLoading) || this.source.isLoading;
   }
   set isLoading(v) {
-    return this._isLoading = v;
+    this._isLoading = v;
   }
 
 
@@ -84,6 +84,6 @@ class Settings {
     return (this._status !== NOT_SET && this._status) || this.source.status;
   }
   set status(v) {
-    return this._status = v;
+    this._status = v;
   }
 }

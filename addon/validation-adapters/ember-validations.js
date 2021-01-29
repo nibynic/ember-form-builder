@@ -49,7 +49,7 @@ class Attribute {
     return !!get(this, 'validations.presence');
   }
 
-  @computed('validations.number.{integer,gt,gte,lt,lte,disabled}')
+  @computed('validations.numericality.{onlyInteger,greaterThan,greaterThanOrEqualTo,lessThan,lessThanOrEqualTo}')
   get number() {
     if (get(this, 'validations.numericality')) {
       return {
