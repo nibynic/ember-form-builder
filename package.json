@@ -1,6 +1,6 @@
 {
   "name": "ember-form-builder",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Simple and easily extensible form builder for Ember apps",
   "scripts": {
     "build": "ember build --environment=production",
