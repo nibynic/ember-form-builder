@@ -100,7 +100,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
       }];
     });
 
-    module('without key', function(hooks) {
+    module('without key', function() {
       module('single select', function(hooks) {
         hooks.beforeEach(async function() {
           this.set('config', {
@@ -185,7 +185,7 @@ module('Integration | Component | inputs/collection-input', function(hooks) {
       });
     });
 
-    module('with key', function(hooks) {
+    module('with key', function() {
       module('single select', function(hooks) {
         hooks.beforeEach(async function() {
           this.set('config', {

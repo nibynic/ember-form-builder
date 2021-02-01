@@ -1,5 +1,5 @@
 {{yield this.isSelected}}
-{{#unless (has-block)}}
+{{#if (not (has-block))}}
   <option
     value={{@content.value}}
     selected={{this.isSelected}}
@@ -7,4 +7,4 @@
   >
     {{@content.label}}
   </option>
-{{/unless}}
+{{/if}}
