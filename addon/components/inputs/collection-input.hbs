@@ -23,6 +23,6 @@
   ...attributes
 >
   {{#each this.resolvedCollection as |option|}}
-    {{component this.optionComponentName content=option selectedValue=this.value}}
+    {{component this.optionComponentName content=option selectedValue=this.value key=@config.key}}
   {{/each}}
 </select>
