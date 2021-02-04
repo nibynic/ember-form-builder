@@ -1,20 +1,23 @@
-{{#let (component this.optionComponentName) as |Option|}}
-  <div
-    {{did-insert this.setDefaultValue}}
-    {{did-insert this.registerWrapper}}
-    ...attributes
+<div
+  {{did-insert this.registerWrapper}}
+  ...attributes
+>
+  <Inputs::CollectionInput
+    @config={{@config}}
+    @getSelectedIndices={{this.getSelectedIndices}}
+    as |base|
   >
-    {{#each this.resolvedCollection as |option|}}
-      <Option
+    {{#each base.collection as |option|}}
+      <Inputs::CheckboxOption
         @content={{option}}
-        @selectedValue={{this.value}}
+        @selectedValue={{@config.value}}
         @key={{@config.key}}
         @disabled={{@config.disabled}}
-        @required={{this.normalizedRequired}}
+        @required={{and @config.validations.required (not base.multiple)}}
         @inputName={{@config.name}}
-        @inputType={{this.inputType}}
-        {{on "change" this.handleChange}}
+        @inputType={{if base.multiple "checkbox" "radio"}}
+        {{on "change" base.handleChange}}
       />
     {{/each}}
-  </div>
-{{/let}}
+  </Inputs::CollectionInput>
+</div>

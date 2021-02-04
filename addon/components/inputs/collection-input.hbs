@@ -1,28 +1,38 @@
-<select
-  name={{@config.name}}
-  id={{@config.inputElementId}}
+{{#if (has-block)}}
+  {{yield (hash
+    handleChange=this.handleChange
+    setDefaultValue=this.setDefaultValue
+    multiple=this.multiple
+    value=this.value
+    collection=this.resolvedCollection
+  )}}
+{{else}}
+  <select
+    name={{@config.name}}
+    id={{@config.inputElementId}}
 
-  {{on "change" this.handleChange}}
-  {{did-insert this.setDefaultValue}}
+    {{on "change" this.handleChange}}
+    {{did-insert this.setDefaultValue}}
 
-  multiple={{this.multiple}}
+    multiple={{this.multiple}}
 
-  autocomplete={{@config.autocomplete}}
-  autofocus={{@config.autofocus}}
-  dir={{@config.dir}}
-  disabled={{@config.disabled}}
-  inputmode={{@config.inputmode}}
-  pattern={{@config.pattern}}
-  readonly={{@config.readonly}}
-  size={{@config.size}}
-  tabindex={{@config.tabindex}}
+    autocomplete={{@config.autocomplete}}
+    autofocus={{@config.autofocus}}
+    dir={{@config.dir}}
+    disabled={{@config.disabled}}
+    inputmode={{@config.inputmode}}
+    pattern={{@config.pattern}}
+    readonly={{@config.readonly}}
+    size={{@config.size}}
+    tabindex={{@config.tabindex}}
 
-  placeholder={{@config.texts.placeholder}}
-  required={{@config.validations.required}}
+    placeholder={{@config.texts.placeholder}}
+    required={{@config.validations.required}}
 
-  ...attributes
->
-  {{#each this.resolvedCollection as |option|}}
-    {{component this.optionComponentName content=option selectedValue=this.value key=@config.key}}
-  {{/each}}
-</select>
+    ...attributes
+  >
+    {{#each this.resolvedCollection as |option|}}
+      <Inputs::SelectOption @content={{option}} @selectedValue={{this.value}} @key={{@config.key}} />
+    {{/each}}
+  </select>
+{{/if}}

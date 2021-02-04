@@ -9,8 +9,6 @@ import { action } from '@ember/object';
 import { next } from '@ember/runloop';
 
 export default class CollectionInput extends Component {
-  optionComponentName = 'inputs/select-option';
-
   @alias('args.config.collection')
   collection;
 
@@ -46,8 +44,12 @@ export default class CollectionInput extends Component {
 
   @action
   handleChange(e) {
-    let selected = Array.prototype.slice.call(e.currentTarget.querySelectorAll('option:checked'));
-    this._setSelection(selected.map((el) => el.index));
+    if (this.args.getSelectedIndices) {
+      this._setSelection(this.args.getSelectedIndices());
+    } else {
+      let selected = Array.prototype.slice.call(e.currentTarget.querySelectorAll('option:checked'));
+      this._setSelection(selected.map((el) => el.index));
+    }
   }
 
   _setSelection(indicies) {
