@@ -60,7 +60,7 @@ export default class CollectionInput extends Component {
 
       if (this.multiple) {
         A(value).replace(0, get(value, 'length'), newValues);
-      } else {
+      } else if (!this.isDestroyed) {
         set(this, 'args.config.value', newValues[0]);
       }
     });
