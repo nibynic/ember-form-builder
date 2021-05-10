@@ -12,7 +12,7 @@ addons:
 
 cache:
   directories:
-    - $HOME/.npm
+    - "node_modules"
 
 env:
   global:
@@ -36,15 +36,15 @@ jobs:
     - stage: "Tests"
       name: "Tests"
       script:
-        - npm run lint
-        - npm run test:ember
+        - yarn run lint
+        - yarn run test:ember
 
     - stage: "Additional Tests"
       name: "Floating Dependencies"
       install:
-        - npm install --no-package-lock
+        - yarn install --no-package-lock
       script:
-        - npm run test:ember
+        - yarn run test:ember
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
