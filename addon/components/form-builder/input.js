@@ -10,6 +10,7 @@ import guessType from 'ember-form-builder/utilities/guess-type';
 import { A } from '@ember/array';
 import { guidFor } from '@ember/object/internals';
 import { dependentKeyCompat } from '@ember/object/compat';
+import { once } from '@ember/runloop';
 
 export default class Input extends Component {
 
@@ -57,6 +58,11 @@ export default class Input extends Component {
 
   @action
   handleFocusOut() {
+    once(this, this.markAsFocuedOut);
+  }
+
+  @action
+  markAsFocuedOut() {
     this.hasFocusedOut = true;
   }
 
