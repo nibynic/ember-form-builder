@@ -57,7 +57,7 @@ class Attribute {
 
   @computed('validations.number.{integer,gt,gte,lt,lte,disabled}')
   get number() {
-    if (get(this, 'validations.number.integer') && !get(this, 'validations.number.disabled')) {
+    if (!get(this, 'validations.number.disabled')) {
       return {
         integer:  !!get(this, 'validations.number.integer'),
         gt:       get(this, 'validations.number.gt'),
