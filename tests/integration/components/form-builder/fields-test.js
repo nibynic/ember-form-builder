@@ -4,14 +4,14 @@ import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
-module('Integration | Component | form-builder/fields', function(hooks) {
+module('Integration | Component | form-builder/fields', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it registers and unregisters itself with the parent form builder', async function(assert) {
+  test('it registers and unregisters itself with the parent form builder', async function (assert) {
     let addChild = sinon.stub();
     let removeChild = sinon.stub();
     this.set('parent', { addChild, removeChild });
-    this.set('isVisible', true)
+    this.set('isVisible', true);
 
     await render(hbs`
       {{#if isVisible}}
@@ -27,13 +27,13 @@ module('Integration | Component | form-builder/fields', function(hooks) {
     assert.ok(removeChild.calledOnce);
   });
 
-  test('it sets name', async function(assert) {
+  test('it sets name', async function (assert) {
     this.set('parent', {
       name: 'sampleModel',
       addChild: (childBuilder) => {
         childBuilder.set('parent', this.parent);
       },
-      removeChild() {}
+      removeChild() {},
     });
     this.index = 1;
 

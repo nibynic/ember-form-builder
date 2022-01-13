@@ -1,3 +1,3 @@
-import StringInput from "ember-form-builder/components/inputs/string-input";
+import StringInput from 'ember-form-builder/components/inputs/string-input';
 
 export default StringInput;

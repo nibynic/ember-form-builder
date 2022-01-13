@@ -1,3 +1,3 @@
-import EmailInput from "ember-form-builder/components/inputs/email-input";
+import EmailInput from 'ember-form-builder/components/inputs/email-input';
 
 export default EmailInput;

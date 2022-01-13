@@ -3,7 +3,7 @@ import { isArray } from '@ember/array';
 import { flattenNames } from './lib/flatten';
 import expand from './lib/expand';
 
-export default function(source, attrs) {
+export default function (source, attrs) {
   if (!isArray(attrs)) {
     attrs = flattenNames(attrs);
   }

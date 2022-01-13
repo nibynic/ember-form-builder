@@ -1,3 +1,4 @@
+import { set } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { camelize } from '@ember/string';
 import { all } from 'rsvp';
@@ -9,7 +10,9 @@ import { getOwner } from '@ember/application';
 import defaultConfiguration from 'ember-form-builder/configuration';
 import { assign } from '@ember/polyfills';
 import { tracked } from '@glimmer/tracking';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class FormBuilder extends EmberObject {
   @tracked isValid = true;
   @tracked parent;
@@ -23,12 +26,21 @@ export default class FormBuilder extends EmberObject {
     let owner = getOwner(this);
 
     this.configuration = assign(
-      {}, defaultConfiguration,
+      {},
+      defaultConfiguration,
       owner.factoryFor('config:environment').class.formBuilder || {}
     );
 
-    this.validationAdapter  = owner.factoryFor(`validation-adapter:${this.configuration.validationsAddon}`).create({ object: this.object });
-    this.dataAdapter        = owner.factoryFor(`data-adapter:${this.configuration.dataAddon}`).create({ object: this.object });
+    this.validationAdapter = owner
+      .factoryFor(`validation-adapter:${this.configuration.validationsAddon}`)
+      .create({ object: this.object });
+    set(
+      this,
+      'dataAdapter',
+      owner
+        .factoryFor(`data-adapter:${this.configuration.dataAddon}`)
+        .create({ object: this.object })
+    );
   }
 
   addChild(childFormBuilder) {
@@ -59,13 +71,15 @@ export default class FormBuilder extends EmberObject {
     );
   }
 
-  @reads('settings.object')       object;
-  @reads('settings.status')       status;
-  @reads('settings.index')        index;
-  @reads('dataAdapter.model')     model;
+  @reads('settings.object') object;
+  @reads('settings.status') status;
+  @reads('settings.index') index;
+  @reads('dataAdapter.model') model;
 
   get modelName() {
-    return this.settings.modelName !== undefined ? this.settings.modelName : this.dataAdapter.modelName;
+    return this.settings.modelName !== undefined
+      ? this.settings.modelName
+      : this.dataAdapter.modelName;
   }
 
   get translationKey() {
@@ -80,14 +94,16 @@ export default class FormBuilder extends EmberObject {
     if (!isBlank(index)) {
       name = pluralize(name);
     }
-    return A([ prefix, name, index ])
-      .reject(isBlank).map(
-        (n, i) => i > 0 ? `[${n}]` : n
-      ).join('');
+    return A([prefix, name, index])
+      .reject(isBlank)
+      .map((n, i) => (i > 0 ? `[${n}]` : n))
+      .join('');
   }
 
   get isLoading() {
-    return (this.settings.isLoading !== undefined && this.settings.isLoading) ||
-      (this.parent && this.parent.isLoading);
+    return (
+      (this.settings.isLoading !== undefined && this.settings.isLoading) ||
+      (this.parent && this.parent.isLoading)
+    );
   }
 }

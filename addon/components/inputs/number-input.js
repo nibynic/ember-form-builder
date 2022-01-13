@@ -1,9 +1,10 @@
 import StringInput from './string-input';
 import { action, get, set, computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
-
 import { isPresent } from '@ember/utils';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class NumberInput extends StringInput {
   type = 'number';
 

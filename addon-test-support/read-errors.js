@@ -3,11 +3,9 @@ import expand from './lib/expand';
 import findInput from './lib/find-input';
 import { A } from '@ember/array';
 
-export default function(scope, attrs) {
+export default function (scope, attrs) {
   let result = {};
-  flattenNames(attrs).forEach(
-    (key) => result[key] = readError(scope, key)
-  );
+  flattenNames(attrs).forEach((key) => (result[key] = readError(scope, key)));
   return expand(result);
 }
 

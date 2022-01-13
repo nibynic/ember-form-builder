@@ -1,12 +1,14 @@
 import Route from '@ember/routing/route';
 
-export default Route.extend({
+export default class IndexRoute extends Route {
   model() {
-    return this.fixedModel || {
-      attractions: [],
-      guests: [],
-      organizer: {},
-      shoppingItems: [{}]
-    };
+    return (
+      this.fixedModel || {
+        attractions: [],
+        guests: [],
+        organizer: {},
+        shoppingItems: [{}],
+      }
+    );
   }
-})
+}

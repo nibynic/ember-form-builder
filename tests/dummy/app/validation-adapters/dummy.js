@@ -1,10 +1,13 @@
 import EmberObject from '@ember/object';
-import { reads } from '@ember/object/computed';
+import classic from 'ember-classic-decorator';
 
-export default EmberObject.extend({
+@classic
+export default class DummyValidationAdapter extends EmberObject {
   validate() {
     return this.object.validate();
-  },
+  }
 
-  attributes: reads('object.validationsDummy')
-})
+  get attributes() {
+    return this.object.validationsDummy;
+  }
+}

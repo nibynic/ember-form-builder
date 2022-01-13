@@ -6,5 +6,4 @@ export default class extends Component {
   handleChange(e) {
     set(this, 'args.config.value', e.target.value);
   }
-
 }

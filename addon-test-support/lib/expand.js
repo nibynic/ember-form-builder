@@ -1,4 +1,4 @@
-export default function(attrs) {
+export default function (attrs) {
   let result = {};
   Object.entries(attrs).forEach(([path, value]) => {
     let context = result;

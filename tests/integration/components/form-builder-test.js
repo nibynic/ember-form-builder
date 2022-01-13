@@ -5,10 +5,10 @@ import hbs from 'htmlbars-inline-precompile';
 import { Promise, resolve, reject } from 'rsvp';
 import sinon from 'sinon';
 
-module('Integration | Component | form-builder', function(hooks) {
+module('Integration | Component | form-builder', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     await render(hbs`
       <FormBuilder novalidate />
     `);
@@ -17,7 +17,7 @@ module('Integration | Component | form-builder', function(hooks) {
     assert.dom('form').hasAttribute('novalidate');
   });
 
-  test('it sets model name', async function(assert) {
+  test('it sets model name', async function (assert) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
@@ -29,7 +29,7 @@ module('Integration | Component | form-builder', function(hooks) {
     assert.dom('[data-test-model-name]').hasText('overriden-type');
   });
 
-  test('it allows empty model name', async function(assert) {
+  test('it allows empty model name', async function (assert) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
@@ -45,7 +45,7 @@ module('Integration | Component | form-builder', function(hooks) {
     assert.dom('[data-test-name]').hasText('');
   });
 
-  test('it sets name', async function(assert) {
+  test('it sets name', async function (assert) {
     await render(hbs`
       <FormBuilder @name="sample-model" @index={{index}} as |f|>
         <div data-test-name>{{f.builder.name}}</div>
@@ -59,8 +59,8 @@ module('Integration | Component | form-builder', function(hooks) {
     assert.dom('[data-test-name]').hasText('sampleModels[0]');
   });
 
-  module('submitting', function(hooks) {
-    hooks.beforeEach(async function() {
+  module('submitting', function (hooks) {
+    hooks.beforeEach(async function () {
       this.validate = sinon.stub();
       this.submit = sinon.stub();
       this.didFail = sinon.stub();
@@ -74,7 +74,7 @@ module('Integration | Component | form-builder', function(hooks) {
       `);
     });
 
-    test('it doesn’t submit if validation failed', async function(assert) {
+    test('it doesn’t submit if validation failed', async function (assert) {
       this.validate.returns(reject());
 
       await click('input[type=submit]');
@@ -86,7 +86,7 @@ module('Integration | Component | form-builder', function(hooks) {
       assert.dom('[data-test-status]').hasText('failure');
     });
 
-    test('it handles successful submit', async function(assert) {
+    test('it handles successful submit', async function (assert) {
       this.validate.returns(resolve());
       this.submit.returns(resolve());
 
@@ -99,7 +99,7 @@ module('Integration | Component | form-builder', function(hooks) {
       assert.dom('[data-test-status]').hasText('success');
     });
 
-    test('it handles failed submit', async function(assert) {
+    test('it handles failed submit', async function (assert) {
       this.validate.returns(resolve());
       this.submit.returns(reject());
 
@@ -112,7 +112,7 @@ module('Integration | Component | form-builder', function(hooks) {
       assert.dom('[data-test-status]').hasText('failure');
     });
 
-    test('it doesn’t override provided status property', async function(assert) {
+    test('it doesn’t override provided status property', async function (assert) {
       this.validate.returns(resolve());
       this.submit.returns(resolve());
       this.set('status', 'failure');
@@ -135,13 +135,15 @@ module('Integration | Component | form-builder', function(hooks) {
     });
   });
 
-  module('loading state', function(hooks) {
-    hooks.beforeEach(async function() {
+  module('loading state', function (hooks) {
+    hooks.beforeEach(async function () {
       this.validate = sinon.stub().returns(resolve());
-      this.submit = sinon.stub().returns(new Promise((r) => this.resolvePromise = r));
+      this.submit = sinon
+        .stub()
+        .returns(new Promise((r) => (this.resolvePromise = r)));
     });
 
-    test('it detects loading state', async function(assert) {
+    test('it detects loading state', async function (assert) {
       await render(hbs`
         <FormBuilder @for={{this}} @action={{action submit}} as |f|>
           {{#if f.builder.isLoading}}
@@ -162,7 +164,7 @@ module('Integration | Component | form-builder', function(hooks) {
       assert.dom('[data-test-is-loading]').doesNotExist();
     });
 
-    test('it doesn’t crash if promise is resolved after component was destroyed', async function(assert) {
+    test('it doesn’t crash if promise is resolved after component was destroyed', async function (assert) {
       await render(hbs`
         {{#unless hideComponent}}
           <FormBuilder @for={{this}} @action={{action submit}} as |f|>
@@ -185,7 +187,7 @@ module('Integration | Component | form-builder', function(hooks) {
       assert.ok(true);
     });
 
-    test('it doesn’t override provided isLoading property', async function(assert) {
+    test('it doesn’t override provided isLoading property', async function (assert) {
       this.set('isLoading', true);
 
       await render(hbs`

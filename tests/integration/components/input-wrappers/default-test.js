@@ -2,28 +2,21 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
-import Component from '@ember/component';
 
-module('Integration | Component | input-wrappers/default', function(hooks) {
+module('Integration | Component | input-wrappers/default', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     this.config = {
-      canValidate:  false,
+      canValidate: false,
       validations: {
-        errors:     ['cannot be blank', 'is too short']
-      }
+        errors: ['cannot be blank', 'is too short'],
+      },
     };
-    this.owner.register('component:inputs/my-input', Component.extend({
-      layout: hbs`<div data-test-my-input></div>`
-    }));
-    this.owner.register('component:my-label', Component.extend({
-      layout: hbs`<div data-test-my-label></div>`
-    }));
     await render(hbs`
       <InputWrappers::Default
         @config={{config}}
-        @inputComponent={{component "inputs/my-input"}}
+        @inputComponent={{component "my-input"}}
         @labelComponent={{component "my-label"}}
       />
     `);
@@ -35,7 +28,7 @@ module('Integration | Component | input-wrappers/default', function(hooks) {
 
     this.set('config.texts', {
       label: 'Email',
-      hint: 'Please type in your full email address'
+      hint: 'Please type in your full email address',
     });
     this.set('config.canValidate', true);
 

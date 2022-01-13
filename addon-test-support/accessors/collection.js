@@ -3,9 +3,9 @@ import { isArray } from '@ember/array';
 
 export default {
   read(input) {
-    let values = Array.prototype.slice.apply(input.querySelectorAll('option:checked')).map(
-      (i) => i.value
-    );
+    let values = Array.prototype.slice
+      .apply(input.querySelectorAll('option:checked'))
+      .map((i) => i.value);
     if (input.querySelector('select').multiple) {
       return values;
     } else {
@@ -19,5 +19,5 @@ export default {
       option.selected = value.includes(option.value);
     }
     await triggerEvent(input.querySelector('select'), 'change');
-  }
+  },
 };

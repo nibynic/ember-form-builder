@@ -9,5 +9,5 @@ export default {
     let field = input.querySelector('input');
     field.checked = value;
     await triggerEvent(field, 'change');
-  }
+  },
 };

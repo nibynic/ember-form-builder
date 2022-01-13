@@ -7,7 +7,9 @@ import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { resolve } from 'rsvp';
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class CollectionInput extends Component {
   @alias('args.config.collection')
   collection;
@@ -18,7 +20,7 @@ export default class CollectionInput extends Component {
   @computed('args.config.collection')
   get collectionPromise() {
     return ObjectProxy.extend(PromiseProxyMixin).create({
-      promise: resolve(this.args.config.collection)
+      promise: resolve(this.args.config.collection),
     });
   }
 
@@ -29,9 +31,9 @@ export default class CollectionInput extends Component {
         return option;
       } else {
         return {
-          value:    option,
-          label:    option,
-          content:  option
+          value: option,
+          label: option,
+          content: option,
         };
       }
     });
@@ -47,15 +49,18 @@ export default class CollectionInput extends Component {
     if (this.args.getSelectedIndices) {
       this._setSelection(this.args.getSelectedIndices());
     } else {
-      let selected = Array.prototype.slice.call(e.currentTarget.querySelectorAll('option:checked'));
+      let selected = Array.prototype.slice.call(
+        e.currentTarget.querySelectorAll('option:checked')
+      );
       this._setSelection(selected.map((el) => el.index));
     }
   }
 
   _setSelection(indicies) {
     this.collectionPromise.then(() => {
-
-      let newValues = A(A(this.resolvedCollection).objectsAt(indicies)).mapBy('content');
+      let newValues = A(A(this.resolvedCollection).objectsAt(indicies)).mapBy(
+        'content'
+      );
       let value = this.value;
 
       if (this.multiple) {

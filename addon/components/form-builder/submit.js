@@ -5,12 +5,20 @@ export default class Submit extends Component {
   @service('formBuilderTranslations') translationService;
 
   get builder() {
-    return (this.args.builder && this.args.builder.builder) || this.args.builder;
+    return (
+      (this.args.builder && this.args.builder.builder) || this.args.builder
+    );
   }
 
   get text() {
-    return this.args.text ||
-      this.translationService.t(this.builder && this.builder.translationKey, 'action', 'submit') ||
-      'Save';
+    return (
+      this.args.text ||
+      this.translationService.t(
+        this.builder && this.builder.translationKey,
+        'action',
+        'submit'
+      ) ||
+      'Save'
+    );
   }
 }

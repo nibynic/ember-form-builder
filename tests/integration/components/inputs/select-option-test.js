@@ -3,18 +3,20 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
-module('Integration | Component | inputs/select-option', function(hooks) {
+module('Integration | Component | inputs/select-option', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     this.option = {
       content: 'A',
       label: 'Option A',
-      value: 'a'
+      value: 'a',
     };
     this.selectedValue = 'A';
 
-    await render(hbs`<Inputs::SelectOption @content={{this.option}} @selectedValue={{this.selectedValue}} />`);
+    await render(
+      hbs`<Inputs::SelectOption @content={{this.option}} @selectedValue={{this.selectedValue}} />`
+    );
 
     assert.dom('option').hasAttribute('value', 'a');
     assert.dom('option').hasText('Option A');
@@ -33,11 +35,11 @@ module('Integration | Component | inputs/select-option', function(hooks) {
     assert.dom('option').matchesSelector(':not(:checked)');
   });
 
-  test('it can be extended via block syntax', async function(assert) {
+  test('it can be extended via block syntax', async function (assert) {
     this.option = {
       content: 'A',
       label: 'Option A',
-      value: 'a'
+      value: 'a',
     };
     this.selectedValue = 'A';
 

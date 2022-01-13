@@ -1,33 +1,37 @@
 function typeForProperty(object, property) {
   try {
-    return object.constructor.metaForProperty &&
+    return (
+      object.constructor.metaForProperty &&
       object.constructor.metaForProperty(property) &&
-      object.constructor.metaForProperty(property).type;
-  } catch(error) {
+      object.constructor.metaForProperty(property).type
+    );
+  } catch (error) {
     return null;
   }
 }
 
-export default function(model, { attr, collection }) {
+export default function (model, { attr, collection }) {
   attr = attr || '';
   if (attr.match(/password/i)) {
-    return "password";
+    return 'password';
   }
 
   if (attr.match(/email/)) {
-    return "email";
+    return 'email';
   }
 
   if (attr.match(/^(is|has|did)/)) {
-    return "boolean";
+    return 'boolean';
   }
 
   if (collection) {
-    return "collection";
+    return 'collection';
   }
 
   var type = typeForProperty(model, attr);
-  if (type) { return type; }
+  if (type) {
+    return type;
+  }
 
-  return "string";
+  return 'string';
 }

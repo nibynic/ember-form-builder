@@ -1,11 +1,17 @@
-import { reads } from '@ember/object/computed';
 import Base from './base';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class EmberOrbit extends Base {
-  @reads('model.type')
-  modelName;
+  get modelName() {
+    return this.model?.type;
+  }
 
   isModel(object) {
-    return object && object.constructor.attributes && object.constructor.relationships;
+    return (
+      object &&
+      object.constructor.attributes &&
+      object.constructor.relationships
+    );
   }
 }

@@ -3,31 +3,31 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, fillIn } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | inputs/url-input', function(hooks) {
+module('Integration | Component | inputs/url-input', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     this.config = {
       value: 'example.com',
       name: 'myInput',
       disabled: false,
       autocomplete: 'url',
       texts: {
-        placeholder: 'Your website'
-      }
+        placeholder: 'Your website',
+      },
     };
 
     await render(hbs`<Inputs::UrlInput @config={{config}} />`);
   });
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     assert.dom('input').hasAttribute('type', 'url');
     assert.dom('input').hasAttribute('name', 'myInput');
     assert.dom('input').hasAttribute('autocomplete', 'url');
     assert.dom('input').hasAttribute('placeholder', 'Your website');
   });
 
-  test('it updates value', async function(assert) {
+  test('it updates value', async function (assert) {
     assert.dom('input').hasValue('example.com');
 
     this.set('config.value', 'my.example.com');
@@ -39,7 +39,7 @@ module('Integration | Component | inputs/url-input', function(hooks) {
     assert.equal(this.config.value, 'another.example.com');
   });
 
-  test('it can be disabled', async function(assert) {
+  test('it can be disabled', async function (assert) {
     assert.dom('input').isNotDisabled();
 
     this.set('config.disabled', true);
@@ -47,7 +47,7 @@ module('Integration | Component | inputs/url-input', function(hooks) {
     assert.dom('input').isDisabled();
   });
 
-  test('it supports presence validations', async function(assert) {
+  test('it supports presence validations', async function (assert) {
     assert.dom('input').doesNotHaveAttribute('required');
 
     this.set('config.validations', { required: true });

@@ -17,7 +17,11 @@ export default function flatten(attrs) {
         // array of simple values
         result[key] = value;
       }
-    } else if (value && typeof value === 'object' && Object.entries(value).length) {
+    } else if (
+      value &&
+      typeof value === 'object' &&
+      Object.entries(value).length
+    ) {
       // nested object
       Object.entries(flatten(value)).forEach(([childKey, childValue]) => {
         result[[key, childKey].join('.')] = childValue;

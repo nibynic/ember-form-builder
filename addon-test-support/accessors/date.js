@@ -7,6 +7,9 @@ export default {
   },
 
   async write(input, value) {
-    await fillIn(input.querySelector('input'), value ? value.toISOString().substring(0,10) : value);
-  }
+    await fillIn(
+      input.querySelector('input'),
+      value ? value.toISOString().substring(0, 10) : value
+    );
+  },
 };

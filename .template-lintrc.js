@@ -3,6 +3,6 @@
 module.exports = {
   extends: 'octane',
   rules: {
-    'no-positive-tabindex': false
-  }
+    'no-positive-tabindex': false,
+  },
 };

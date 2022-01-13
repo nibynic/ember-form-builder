@@ -8,5 +8,5 @@ export default {
 
   async write(input, value) {
     await fillIn(input.querySelector('input'), value);
-  }
+  },
 };

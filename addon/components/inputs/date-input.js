@@ -1,6 +1,8 @@
 import StringInput from './string-input';
 import { action, set, computed } from '@ember/object';
+import classic from 'ember-classic-decorator';
 
+@classic
 export default class DateInput extends StringInput {
   type = 'date';
 
@@ -37,9 +39,13 @@ function pad(number, length = 2) {
 
 function formatDate(date) {
   if (date && date.getFullYear && date.getMonth && date.getDate) {
-    return pad(date.getFullYear(), 4) +
-        '-' + pad(date.getMonth() + 1) +
-        '-' + pad(date.getDate());
+    return (
+      pad(date.getFullYear(), 4) +
+      '-' +
+      pad(date.getMonth() + 1) +
+      '-' +
+      pad(date.getDate())
+    );
   } else {
     return null;
   }

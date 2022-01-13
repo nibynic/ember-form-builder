@@ -1,10 +1,6 @@
 import classic from 'ember-classic-decorator';
 import { reads } from '@ember/object/computed';
-import EmberObject, {
-  defineProperty,
-  computed,
-  get
-} from '@ember/object';
+import EmberObject, { defineProperty, computed, get } from '@ember/object';
 import { resolve } from 'rsvp';
 
 @classic
@@ -32,10 +28,12 @@ class AttributesProxy extends EmberObject {
   }
 
   unknownProperty(key) {
-    return this.cache[key] = this.cache[key] || new Attribute(key, this.object);
+    return (this.cache[key] =
+      this.cache[key] || new Attribute(key, this.object));
   }
 }
 
+@classic
 class Attribute {
   constructor(key, object) {
     this.object = object;
@@ -49,15 +47,17 @@ class Attribute {
     return !!get(this, 'validations.presence');
   }
 
-  @computed('validations.numericality.{onlyInteger,greaterThan,greaterThanOrEqualTo,lessThan,lessThanOrEqualTo}')
+  @computed(
+    'validations.numericality.{onlyInteger,greaterThan,greaterThanOrEqualTo,lessThan,lessThanOrEqualTo}'
+  )
   get number() {
     if (get(this, 'validations.numericality')) {
       return {
-        integer:  !!get(this, 'validations.numericality.onlyInteger'),
-        gt:       get(this, 'validations.numericality.greaterThan'),
-        gte:      get(this, 'validations.numericality.greaterThanOrEqualTo'),
-        lt:       get(this, 'validations.numericality.lessThan'),
-        lte:      get(this, 'validations.numericality.lessThanOrEqualTo')
+        integer: !!get(this, 'validations.numericality.onlyInteger'),
+        gt: get(this, 'validations.numericality.greaterThan'),
+        gte: get(this, 'validations.numericality.greaterThanOrEqualTo'),
+        lt: get(this, 'validations.numericality.lessThan'),
+        lte: get(this, 'validations.numericality.lessThanOrEqualTo'),
       };
     } else {
       return undefined;

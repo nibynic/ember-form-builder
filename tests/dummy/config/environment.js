@@ -23,8 +23,8 @@ module.exports = function (environment) {
     },
 
     formBuilder: {
-      validationsAddon: 'dummy'
-    }
+      validationsAddon: 'dummy',
+    },
   };
 
   if (environment === 'development') {
