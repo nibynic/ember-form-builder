@@ -9,8 +9,9 @@
 Ember Form Builder is an Ember Addon that enables you to assemble forms with
 labels, validations, hints without repeating yourself. It's strongly inspired by a Rails gem [SimpleForm](https://github.com/plataformatec/simple_form).
 
-* Ember Form Builder 2.X requires Ember 3.16.0+
-* Ember Form Builder 1.X requires Ember 3.4.0+
+* Ember.js v3.16 or above
+* Ember CLI v2.13 or above
+* Node.js v10 or above
 
 ## Installation
 
