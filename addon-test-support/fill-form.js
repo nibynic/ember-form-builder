@@ -13,10 +13,8 @@ export default async function (scope, attrs) {
     );
   }
   for (let input of document.querySelectorAll('input, select, textarea')) {
-    try {
-      await blur(input);
-    } catch (e) {
-      // continue regardless of error
+    if (!input.disabled) {
+      blur(input);
     }
   }
   await settled();
