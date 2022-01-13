@@ -16,6 +16,7 @@ module('Integration | TestSupport | default accessors', function(hooks) {
       <FormBuilder @for={{model}} @name="myModel" as |f|>
         <f.input @attr="myAttr" @as={{this.as}} @collection={{this.collection}} />
       </FormBuilder>
+      <input type="text" disabled />
     `);
   });
 

@@ -12,7 +12,11 @@ export default async function(scope, attrs) {
     );
   }
   for (let input of document.querySelectorAll('input, select, textarea')) {
-    blur(input);
+    try {
+      await blur(input);
+    } catch (e) {
+      // continue regardless of error
+    }
   }
   await settled();
 }
