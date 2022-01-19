@@ -76,7 +76,7 @@
     "ember-cli-babel": "^7.23.0",
     "ember-cli-htmlbars": "^5.3.1",
     "ember-inflector": "^3.0.0",
-    "ember-test-selectors": "^3.0.0",
+    "ember-test-selectors": "^6.0.0",
     "ember-truth-helpers": "^2.1.0",
     "global": "^4.4.0",
     "webpack": "^4.44.1"
