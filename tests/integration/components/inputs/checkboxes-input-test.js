@@ -5,7 +5,7 @@ import hbs from 'htmlbars-inline-precompile';
 
 module(
   'Integration | Component | inputs/checkboxes-input',
-  async function (hooks) {
+  function (hooks) {
     setupRenderingTest(hooks);
 
     module('collection of strings', function (hooks) {
