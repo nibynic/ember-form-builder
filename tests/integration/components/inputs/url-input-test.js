@@ -17,7 +17,7 @@ module('Integration | Component | inputs/url-input', function (hooks) {
       },
     };
 
-    await render(hbs`<Inputs::UrlInput @config={{config}} />`);
+    await render(hbs`<Inputs::UrlInput @config={{this.config}} />`);
   });
 
   test('it renders', async function (assert) {
@@ -36,7 +36,7 @@ module('Integration | Component | inputs/url-input', function (hooks) {
 
     await fillIn('input', 'another.example.com');
 
-    assert.equal(this.config.value, 'another.example.com');
+    assert.strictEqual(this.config.value, 'another.example.com');
   });
 
   test('it can be disabled', async function (assert) {

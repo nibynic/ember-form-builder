@@ -14,8 +14,11 @@ module('Unit | Models | FormBuilder', function (hooks) {
       });
     let builder = this.owner.factoryFor('model:form-builder').create();
 
-    assert.equal(builder.configuration.dataAddon, 'ember-orbit'); // overriden value
-    assert.equal(builder.configuration.validationsAddon, 'ember-validations'); // default value
+    assert.strictEqual(builder.configuration.dataAddon, 'ember-orbit'); // overriden value
+    assert.strictEqual(
+      builder.configuration.validationsAddon,
+      'ember-validations'
+    ); // default value
 
     this.configStub.restore();
   });
@@ -38,39 +41,39 @@ module('Unit | Models | FormBuilder', function (hooks) {
 
     test('it registers and deregisters children', function (assert) {
       assert.deepEqual(this.builder.children, [this.child]);
-      assert.equal(this.child.parent, this.builder);
+      assert.strictEqual(this.child.parent, this.builder);
 
       this.builder.removeChild(this.child);
 
       assert.deepEqual(this.builder.children, []);
-      assert.equal(this.child.parent, undefined);
+      assert.strictEqual(this.child.parent, null);
     });
 
     test('it generates nested names', function (assert) {
-      assert.equal(this.child.name, 'post[author]');
-      assert.equal(this.grandchild.name, 'post[author][device]');
+      assert.strictEqual(this.child.name, 'post[author]');
+      assert.strictEqual(this.grandchild.name, 'post[author][device]');
 
       this.child.set('index', 2);
 
-      assert.equal(this.child.name, 'post[authors][2]');
-      assert.equal(this.grandchild.name, 'post[authors][2][device]');
+      assert.strictEqual(this.child.name, 'post[authors][2]');
+      assert.strictEqual(this.grandchild.name, 'post[authors][2][device]');
 
       this.builder.set('settings', { modelName: undefined });
 
-      assert.equal(this.child.name, 'myPost[authors][2]');
-      assert.equal(this.grandchild.name, 'myPost[authors][2][device]');
+      assert.strictEqual(this.child.name, 'myPost[authors][2]');
+      assert.strictEqual(this.grandchild.name, 'myPost[authors][2][device]');
 
       this.builder.set('settings', { modelName: '' });
 
-      assert.equal(this.child.name, 'authors[2]');
-      assert.equal(this.grandchild.name, 'authors[2][device]');
+      assert.strictEqual(this.child.name, 'authors[2]');
+      assert.strictEqual(this.grandchild.name, 'authors[2][device]');
     });
 
     test('it propagates loading state', function (assert) {
       this.set('builder.settings.isLoading', true);
 
-      assert.equal(this.child.isLoading, true);
-      assert.equal(this.grandchild.isLoading, true);
+      assert.true(this.child.isLoading);
+      assert.true(this.grandchild.isLoading);
     });
   });
 
@@ -97,12 +100,12 @@ module('Unit | Models | FormBuilder', function (hooks) {
       ).class;
 
       assert.ok(this.builder.dataAdapter instanceof EmberOrbitAdapter);
-      assert.equal(this.builder.dataAdapter.object, this.model);
+      assert.strictEqual(this.builder.dataAdapter.object, this.model);
     });
 
     test('it proxies model and model name from the adapter', function (assert) {
-      assert.equal(this.builder.model, this.model);
-      assert.equal(this.builder.modelName, 'my-model');
+      assert.strictEqual(this.builder.model, this.model);
+      assert.strictEqual(this.builder.modelName, 'my-model');
     });
   });
 
@@ -131,7 +134,7 @@ module('Unit | Models | FormBuilder', function (hooks) {
       assert.ok(
         this.builder.validationAdapter instanceof EmberCpValidationsAdapter
       );
-      assert.equal(this.builder.validationAdapter.object, this.object);
+      assert.strictEqual(this.builder.validationAdapter.object, this.object);
 
       this.configStub.restore();
     });

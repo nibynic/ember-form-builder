@@ -21,7 +21,7 @@ module('Integration | Component | form-builder', function (hooks) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
-      <FormBuilder @for={{object}} @name="overriden-type" as |f|>
+      <FormBuilder @for={{this.object}} @name="overriden-type" as |f|>
         <div data-test-model-name>{{f.builder.modelName}}</div>
       </FormBuilder>
     `);
@@ -33,7 +33,7 @@ module('Integration | Component | form-builder', function (hooks) {
     this.set('object', { modelName: 'default-type' });
 
     await render(hbs`
-      <FormBuilder @for={{object}} @name="" as |f|>
+      <FormBuilder @for={{this.object}} @name="" as |f|>
         <div data-test-model-name>{{f.builder.modelName}}</div>
         <div data-test-translation-key>{{f.builder.translationKey}}</div>
         <div data-test-name>{{f.builder.name}}</div>
@@ -47,7 +47,7 @@ module('Integration | Component | form-builder', function (hooks) {
 
   test('it sets name', async function (assert) {
     await render(hbs`
-      <FormBuilder @name="sample-model" @index={{index}} as |f|>
+      <FormBuilder @name="sample-model" @index={{this.index}} as |f|>
         <div data-test-name>{{f.builder.name}}</div>
       </FormBuilder>
     `);
@@ -66,9 +66,10 @@ module('Integration | Component | form-builder', function (hooks) {
       this.didFail = sinon.stub();
 
       await render(hbs`
-        <FormBuilder @for={{this}} @action={{action this.submit}} @submitFailed={{action this.didFail}} as |f|>
+        <FormBuilder @for={{this}} @action={{this.submit}} @submitFailed={{this.didFail}} as |f|>
           <div data-test-is-valid>{{f.builder.isValid}}</div>
           <div data-test-status>{{f.builder.status}}</div>
+          {{!-- template-lint-disable require-input-label --}}
           <input type="submit">
         </FormBuilder>
       `);
@@ -117,8 +118,9 @@ module('Integration | Component | form-builder', function (hooks) {
       this.submit.returns(resolve());
       this.set('status', 'failure');
       await render(hbs`
-        <FormBuilder @for={{this}} @action={{action submit}} @status={{status}} as |f|>
+        <FormBuilder @for={{this}} @action={{this.submit}} @status={{this.status}} as |f|>
           <div data-test-status>{{f.builder.status}}</div>
+          {{!-- template-lint-disable require-input-label --}}
           <input type="submit">
         </FormBuilder>
       `);
@@ -145,10 +147,11 @@ module('Integration | Component | form-builder', function (hooks) {
 
     test('it detects loading state', async function (assert) {
       await render(hbs`
-        <FormBuilder @for={{this}} @action={{action submit}} as |f|>
+        <FormBuilder @for={{this}} @action={{this.submit}} as |f|>
           {{#if f.builder.isLoading}}
             <div data-test-is-loading></div>
           {{/if}}
+          {{!-- template-lint-disable require-input-label --}}
           <input type="submit">
         </FormBuilder>
       `);
@@ -166,11 +169,12 @@ module('Integration | Component | form-builder', function (hooks) {
 
     test('it doesn’t crash if promise is resolved after component was destroyed', async function (assert) {
       await render(hbs`
-        {{#unless hideComponent}}
-          <FormBuilder @for={{this}} @action={{action submit}} as |f|>
+        {{#unless this.hideComponent}}
+          <FormBuilder @for={{this}} @action={{this.submit}} as |f|>
             {{#if f.builder.isLoading}}
               <div data-test-is-loading></div>
             {{/if}}
+            {{!-- template-lint-disable require-input-label --}}
             <input type="submit">
           </FormBuilder>
         {{/unless}}
@@ -191,10 +195,11 @@ module('Integration | Component | form-builder', function (hooks) {
       this.set('isLoading', true);
 
       await render(hbs`
-        <FormBuilder @for={{this}} @action={{action submit}} @isLoading={{isLoading}} as |f|>
+        <FormBuilder @for={{this}} @action={{this.submit}} @isLoading={{this.isLoading}} as |f|>
           {{#if f.builder.isLoading}}
             <div data-test-is-loading></div>
           {{/if}}
+          {{!-- template-lint-disable require-input-label --}}
           <input type="submit">
         </FormBuilder>
       `);

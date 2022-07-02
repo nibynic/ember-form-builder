@@ -17,7 +17,7 @@ module('Integration | Component | inputs/number-input', function (hooks) {
       },
     };
 
-    await render(hbs`<Inputs::NumberInput @config={{config}} />`);
+    await render(hbs`<Inputs::NumberInput @config={{this.config}} />`);
   });
 
   test('it renders', async function (assert) {
@@ -36,11 +36,11 @@ module('Integration | Component | inputs/number-input', function (hooks) {
 
     await fillIn('input', '789');
 
-    assert.equal(this.config.value, 789);
+    assert.strictEqual(this.config.value, 789);
 
     await fillIn('input', '');
 
-    assert.equal(this.config.value, undefined);
+    assert.strictEqual(this.config.value, undefined);
   });
 
   test('it can be disabled', async function (assert) {

@@ -40,7 +40,7 @@ module('Integration | Component | form-builder/submit', function (hooks) {
     this.builder = {};
 
     await render(hbs`
-      <FormBuilder::Submit data-test-submit @builder={{builder}} />
+      <FormBuilder::Submit data-test-submit @builder={{this.builder}} />
     `);
 
     assert.dom('[data-test-submit]').hasText('Zapisz');
@@ -65,7 +65,7 @@ module('Integration | Component | form-builder/submit', function (hooks) {
     this.builder = { isLoading: false };
 
     await render(hbs`
-      <FormBuilder::Submit data-test-submit @builder={{builder}} />
+      <FormBuilder::Submit data-test-submit @builder={{this.builder}} />
     `);
 
     assert.dom('[data-test-submit]').isNotDisabled();
@@ -79,7 +79,7 @@ module('Integration | Component | form-builder/submit', function (hooks) {
     this.builder = { isLoading: false };
 
     await render(hbs`
-      <FormBuilder::Submit data-test-submit @builder={{builder}} as |text builder|>
+      <FormBuilder::Submit data-test-submit @builder={{this.builder}} as |text builder|>
         Text: {{text}}
         Loading: {{builder.isLoading}}
       </FormBuilder::Submit>

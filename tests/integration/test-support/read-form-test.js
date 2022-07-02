@@ -13,7 +13,7 @@ module('Integration | TestSupport | readForm', function (hooks) {
       age: 37,
     };
     await render(hbs`
-      <FormBuilder @for={{model}} @name="person" as |f|>
+      <FormBuilder @for={{this.model}} @name="person" as |f|>
         <f.input @attr="firstName" />
         <f.input @attr="age" @as="number" />
       </FormBuilder>
@@ -30,8 +30,8 @@ module('Integration | TestSupport | readForm', function (hooks) {
       },
     };
     await render(hbs`
-      <FormBuilder @for={{model}} @name="person" as |f|>
-        <f.fields @for={{model.address}} @name="address" as |ff|>
+      <FormBuilder @for={{this.model}} @name="person" as |f|>
+        <f.fields @for={{this.model.address}} @name="address" as |ff|>
           <ff.input @attr="street" />
         </f.fields>
       </FormBuilder>
@@ -55,8 +55,8 @@ module('Integration | TestSupport | readForm', function (hooks) {
       children: [{ firstName: 'Jan' }, { firstName: 'Anna' }],
     };
     await render(hbs`
-      <FormBuilder @for={{model}} @name="person" as |f|>
-        {{#each model.children as |child i|}}
+      <FormBuilder @for={{this.model}} @name="person" as |f|>
+        {{#each this.model.children as |child i|}}
           <f.fields @for={{child}} @name="child" @index={{i}} as |ff|>
             <ff.input @attr="firstName" />
           </f.fields>

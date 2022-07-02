@@ -16,11 +16,11 @@ module('Unit | DataAdapter | Base', function (hooks) {
   test('it finds model', function (assert) {
     this.adapter.set('object', this.model);
 
-    assert.equal(this.adapter.model, this.model);
+    assert.strictEqual(this.adapter.model, this.model);
 
     this.adapter.set('object', {
       model: this.model,
     });
-    assert.equal(this.adapter.model, this.model);
+    assert.strictEqual(this.adapter.model, this.model);
   });
 });

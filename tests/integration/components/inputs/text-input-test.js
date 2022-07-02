@@ -17,7 +17,7 @@ module('Integration | Component | inputs/text-input', function (hooks) {
       },
     };
 
-    await render(hbs`<Inputs::TextInput @config={{config}} />`);
+    await render(hbs`<Inputs::TextInput @config={{this.config}} />`);
   });
 
   test('it renders', async function (assert) {
@@ -35,7 +35,7 @@ module('Integration | Component | inputs/text-input', function (hooks) {
 
     await fillIn('textarea', 'bye!');
 
-    assert.equal(this.config.value, 'bye!');
+    assert.strictEqual(this.config.value, 'bye!');
   });
 
   test('it can be disabled', async function (assert) {

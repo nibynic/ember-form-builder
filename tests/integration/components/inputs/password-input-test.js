@@ -17,7 +17,7 @@ module('Integration | Component | inputs/password-input', function (hooks) {
       },
     };
 
-    await render(hbs`<Inputs::PasswordInput @config={{config}} />`);
+    await render(hbs`<Inputs::PasswordInput @config={{this.config}} />`);
   });
 
   test('it renders', async function (assert) {
@@ -36,7 +36,7 @@ module('Integration | Component | inputs/password-input', function (hooks) {
 
     await fillIn('input', 'bye!');
 
-    assert.equal(this.config.value, 'bye!');
+    assert.strictEqual(this.config.value, 'bye!');
   });
 
   test('it can be disabled', async function (assert) {

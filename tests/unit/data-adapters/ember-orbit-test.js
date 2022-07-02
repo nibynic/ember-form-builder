@@ -25,6 +25,6 @@ module('Unit | DataAdapter | EmberOrbit', function (hooks) {
   });
 
   test('it detects model name', function (assert) {
-    assert.equal(this.adapter.modelName, 'fake-model');
+    assert.strictEqual(this.adapter.modelName, 'fake-model');
   });
 });

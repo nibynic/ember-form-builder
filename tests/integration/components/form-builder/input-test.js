@@ -59,7 +59,7 @@ module('Integration | Component | form-builder/input', function (hooks) {
     `);
     await fillIn('input', '456');
 
-    assert.equal(this.builder.object.title, '456');
+    assert.strictEqual(this.builder.object.title, '456');
   });
 
   test('it proxies auxiliary attributes', async function (assert) {
@@ -180,7 +180,7 @@ module('Integration | Component | form-builder/input', function (hooks) {
 
   test('it renders a hint when provided', async function (assert) {
     await render(hbs`
-      <FormBuilder::Input @attr="title" @as="string" @builder={{this.builder}} @hint={{hint}} />
+      <FormBuilder::Input @attr="title" @as="string" @builder={{this.builder}} @hint={{this.hint}} />
     `);
 
     assert.dom('small').doesNotExist();
@@ -262,7 +262,7 @@ module('Integration | Component | form-builder/input', function (hooks) {
       this.set('type', type);
 
       await render(hbs`
-        <FormBuilder::Input @attr="title" @as={{type}} @builder={{this.builder}} />
+        <FormBuilder::Input @attr="title" @as={{this.type}} @builder={{this.builder}} />
       `);
 
       assert

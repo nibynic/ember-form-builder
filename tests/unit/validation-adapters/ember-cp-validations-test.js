@@ -73,14 +73,14 @@ module('Unit | ValidationAdapter | EmberCpValidations', function (hooks) {
       },
     });
 
-    assert.equal(get(this, 'adapter.attributes.firstName.required'), true);
+    assert.true(get(this, 'adapter.attributes.firstName.required'));
 
     this.set(
       'object.validations.attrs.firstName.options.presence.disabled',
       true
     );
 
-    assert.equal(get(this, 'adapter.attributes.firstName.required'), false);
+    assert.false(get(this, 'adapter.attributes.firstName.required'));
   });
 
   test('it maps number validations', function (assert) {
@@ -104,6 +104,6 @@ module('Unit | ValidationAdapter | EmberCpValidations', function (hooks) {
 
     this.set('object.validations.attrs.age.options.number.disabled', true);
 
-    assert.equal(get(this, 'adapter.attributes.age.number'));
+    assert.strictEqual(get(this, 'adapter.attributes.age.number'), undefined);
   });
 });

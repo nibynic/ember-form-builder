@@ -13,9 +13,10 @@ module('Integration | TestSupport | default accessors', function (hooks) {
     };
     this.as = 'string';
     await render(hbs`
-      <FormBuilder @for={{model}} @name="myModel" as |f|>
+      <FormBuilder @for={{this.model}} @name="myModel" as |f|>
         <f.input @attr="myAttr" @as={{this.as}} @collection={{this.collection}} />
       </FormBuilder>
+      {{!-- template-lint-disable require-input-label --}}
       <input type="text" disabled />
     `);
   });
@@ -200,7 +201,7 @@ module('Integration | TestSupport | default accessors', function (hooks) {
     });
   });
 
-  module('string', function (hooks) {
+  module('string2', function (hooks) {
     hooks.beforeEach(function () {
       this.set('model.myAttr', '111222333');
       this.set('as', 'tel');
