@@ -9,9 +9,9 @@
 Ember Form Builder is an Ember Addon that enables you to assemble forms with
 labels, validations, hints without repeating yourself. It's strongly inspired by a Rails gem [SimpleForm](https://github.com/plataformatec/simple_form).
 
-* Ember.js v3.16 or above
-* Ember CLI v2.13 or above
-* Node.js v10 or above
+- Ember.js v3.24 or above
+- Ember CLI v3.24 or above
+- Node.js v12 or above
 
 ## Installation
 
@@ -24,11 +24,11 @@ ember install ember-form-builder
 ```handlebars
 <FormBuilder @for={{this}} @action={{this.submit}} as |f|>
 
-  <f.input @attr="title" />
-  <f.input @attr="category" @collection={{categories}} />
-  <f.input @attr="isPublished" />
-  <f.input @attr="publishedOn" @as="date" />
-  <f.input @attr="price" @hint="Leave empty if this is a free article" />
+  <f.input @attr='title' />
+  <f.input @attr='category' @collection={{categories}} />
+  <f.input @attr='isPublished' />
+  <f.input @attr='publishedOn' @as='date' />
+  <f.input @attr='price' @hint='Leave empty if this is a free article' />
 
   <f.submit />
 
@@ -39,17 +39,17 @@ ember install ember-form-builder
 
 The following inputs types are built into Ember Form Builder:
 
-Type | Guessed when | HTML form
---- | --- | ---
-`boolean` | attribute name begins with `is`, `has` or `did`; underlying model's attribute is a `DS.attr("boolean")` | `<input type="checkbox" />`
-`collection` | a `collection` attribute is present | `<select>`
-`date` | underlying model's attribute is a `DS.attr("date")` | `<input type="date" />`
-`email` | attribute name contains `email` | `<input type="email" />`|
-`number` | underlying model's attribute is a `DS.attr("number")` | `<input type="number" />`|
-`password` | attribute name contains `password` | `<input type="password" />`|
-`checkboxes` | _never_ | collection of `<input type="radio" />` with labels
-`string` | underlying model's attribute is a `DS.attr("string")` | `<input type="text" />`|
-`text` | _never_ | `<textarea>`
+| Type         | Guessed when                                                                                            | HTML form                                          |
+| ------------ | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `boolean`    | attribute name begins with `is`, `has` or `did`; underlying model's attribute is a `DS.attr("boolean")` | `<input type="checkbox" />`                        |
+| `collection` | a `collection` attribute is present                                                                     | `<select>`                                         |
+| `date`       | underlying model's attribute is a `DS.attr("date")`                                                     | `<input type="date" />`                            |
+| `email`      | attribute name contains `email`                                                                         | `<input type="email" />`                           |
+| `number`     | underlying model's attribute is a `DS.attr("number")`                                                   | `<input type="number" />`                          |
+| `password`   | attribute name contains `password`                                                                      | `<input type="password" />`                        |
+| `checkboxes` | _never_                                                                                                 | collection of `<input type="radio" />` with labels |
+| `string`     | underlying model's attribute is a `DS.attr("string")`                                                   | `<input type="text" />`                            |
+| `text`       | _never_                                                                                                 | `<textarea>`                                       |
 
 ### Extending built-in inputs
 
@@ -73,36 +73,33 @@ export default class TextInput extends OriginalTextInput {
 To provide your own input types simply implement a component named `your-type-input` and put it into `components/inputs` folder. Like this:
 
 ```hbs
-{{!-- In app/components/inputs/your-type-input.hbs --}}
+{{! In app/components/inputs/your-type-input.hbs }}
 <input
-  type="range"
-
+  type='range'
   id={{@config.inputElementId}}
   name={{@config.name}}
-
   value={{@config.value}}
-
-  {{on "change" this.handleChange}}
+  {{on 'change' this.handleChange}}
 />
 ```
 
 You can then use your input using the `as` option:
 
 ```handlebars
-{{f.input "description" as="your-type"}}
+{{f.input 'description' as='your-type'}}
 ```
 
 ### Validation
 
 Ember Form Builder will automatically mark inputs as erroneus and display error messages next to them whenever:
 
-* the input's attribute is invalid __and__
-* a user has focused out of the input at least once.
+- the input's attribute is invalid **and**
+- a user has focused out of the input at least once.
 
 Ember Form Builder supports these validation addons:
 
-* [Ember Validations](https://github.com/DockYard/ember-validations) (default) - this is compatible also with Ember Data's server-provided validation messages,
-* [Ember CP Validations](https://github.com/DockYard/ember-validations)
+- [Ember Validations](https://github.com/DockYard/ember-validations) (default) - this is compatible also with Ember Data's server-provided validation messages,
+- [Ember CP Validations](https://github.com/DockYard/ember-validations)
 
 You can set your choice in the [configuration](#configuration). None of those libraries is required by Ember Form Builder.
 
@@ -112,8 +109,8 @@ Ember Form Builder will automatically detect model name and then use it in input
 
 Ember Form Builder supports these data addons:
 
-* [Ember Data](https://github.com/emberjs/data) (default),
-* [Ember-Orbit](https://github.com/orbitjs/ember-orbit)
+- [Ember Data](https://github.com/emberjs/data) (default),
+- [Ember-Orbit](https://github.com/orbitjs/ember-orbit)
 
 You can set your choice in the [configuration](#configuration). None of those libraries is required by Ember Form Builder.
 
@@ -124,13 +121,13 @@ Ember Form Builder supports `ember-intl` and `ember-i18n` at the moment, however
 
 Ember Form Builder automatically detects internationalization addon and tries to guess the translation keys.
 
-use case | label | hint | placeholder | submit | required
---- | --- | --- | --- | --- | ---
-Explicit | `@label="My attribute"` | `@hint="My hint"` | `@placeholder="My placeholder"` | `@text="My submit"` | `not possible`
-Custom form translation key: `<FormBuilder @translationKey="custom.key" />` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit` | `not possible`
-Underlying model's name (e.g. `article`) | Looks up `article.attributes.attribute` | Looks up `article.hints.attribute` | Looks up `article.actions.submit` | Looks up `article.placeholders.attribute` | `not possible`
-Default | humanizes attribute name | empty | empty | Looks up `formBuilder.actions.submit` | Looks up `formBuilder.isRequired`
-Without `ember-intl` or `ember-i18n` | humanizes attribute name | empty | empty | "Save" | "Required"
+| use case                                                                    | label                                      | hint                                  | placeholder                                  | submit                                    | required                          |
+| --------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------- | -------------------------------------------- | ----------------------------------------- | --------------------------------- |
+| Explicit                                                                    | `@label="My attribute"`                    | `@hint="My hint"`                     | `@placeholder="My placeholder"`              | `@text="My submit"`                       | `not possible`                    |
+| Custom form translation key: `<FormBuilder @translationKey="custom.key" />` | Looks up `custom.key.attributes.attribute` | Looks up `custom.key.hints.attribute` | Looks up `custom.key.placeholders.attribute` | Looks up `custom.key.actions.submit`      | `not possible`                    |
+| Underlying model's name (e.g. `article`)                                    | Looks up `article.attributes.attribute`    | Looks up `article.hints.attribute`    | Looks up `article.actions.submit`            | Looks up `article.placeholders.attribute` | `not possible`                    |
+| Default                                                                     | humanizes attribute name                   | empty                                 | empty                                        | Looks up `formBuilder.actions.submit`     | Looks up `formBuilder.isRequired` |
+| Without `ember-intl` or `ember-i18n`                                        | humanizes attribute name                   | empty                                 | empty                                        | "Save"                                    | "Required"                        |
 
 ## Customization
 
@@ -147,14 +144,14 @@ easily render them in any place you need.
 the `<f.input />` call.
 
 ```handlebars
-{{!-- app/components/input-wrappers/my-wrapper.hbs --}}
-<div class="my-input">
+{{! app/components/input-wrappers/my-wrapper.hbs }}
+<div class='my-input'>
   <@labelComponent />
-  <div class="my-field">
-    <@inputComponent class="my-input-control" />
+  <div class='my-field'>
+    <@inputComponent class='my-input-control' />
   </div>
   {{#if @config.validations.errors}}
-    <div class="my-errors">{{@config.validations.errors}}</div>
+    <div class='my-errors'>{{@config.validations.errors}}</div>
   {{/if}}
 </div>
 ```
@@ -167,8 +164,8 @@ its name in the `@wrapper` attribute:
 ```handlebars
 <FormBuilder @for={{this}} @action={{this.submit}} as |f|>
 
-  <f.input @attr="title" @wrapper="my-wrapper" />
-  <f.input @attr="isPublished" @wrapper="inline" />
+  <f.input @attr='title' @wrapper='my-wrapper' />
+  <f.input @attr='isPublished' @wrapper='inline' />
   <f.submit />
 
 </FormBuilder>
@@ -195,13 +192,13 @@ and write form data.
 In the examples below we use this component:
 
 ```handlebars
-{{!-- app/components/my-form --}}
-<FormBuilder @for={{@model}} @name="person" as |f|>
-  <f.input @attr="firstName" />
-  <f.input @attr="age" @as="number" />
+{{! app/components/my-form }}
+<FormBuilder @for={{@model}} @name='person' as |f|>
+  <f.input @attr='firstName' />
+  <f.input @attr='age' @as='number' />
   {{#each @model.children as |child i|}}
-    <f.fields @for={{child}} @name="child" @index={{i}} as |ff|>
-      <ff.input @attr="firstName" />
+    <f.fields @for={{child}} @name='child' @index={{i}} as |ff|>
+      <ff.input @attr='firstName' />
     </f.fields>
   {{/each}}
 </FormBuilder>
@@ -308,12 +305,11 @@ module('Integration | Components | my-form', function(hooks) {
   });
 ```
 
-
 ## Upgrading
 
 Please check out the [upgrading documentation](UPGRADING.md).
 
-## Legal ##
+## Legal
 
 [nibynic](http://nibynic.com) &copy; 2015
 
