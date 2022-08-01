@@ -74,7 +74,7 @@ module.exports = async function () {
         },
       },
       embroiderSafe(),
-      embroiderOptimized(),
+      // embroiderOptimized(),
     ],
   };
 };
