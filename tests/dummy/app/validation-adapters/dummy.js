@@ -1,5 +1,6 @@
 import EmberObject from '@ember/object';
 import classic from 'ember-classic-decorator';
+import { dependentKeyCompat } from '@ember/object/compat';
 
 @classic
 export default class DummyValidationAdapter extends EmberObject {
@@ -7,6 +8,7 @@ export default class DummyValidationAdapter extends EmberObject {
     return this.object.validate();
   }
 
+  @dependentKeyCompat
   get attributes() {
     return this.object.validationsDummy;
   }
