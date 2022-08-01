@@ -15,7 +15,7 @@ module('Integration | Component | input-wrappers/inline', function (hooks) {
     };
     await render(hbs`
       <InputWrappers::Inline
-        @config={{config}}
+        @config={{this.config}}
         @inputComponent={{component "my-input"}}
         @labelComponent={{component "my-label"}}
       />

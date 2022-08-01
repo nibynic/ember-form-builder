@@ -20,7 +20,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
     module('single select', function (hooks) {
       hooks.beforeEach(async function () {
         this.set('config.value', 'France');
-        await render(hbs`<Inputs::CollectionInput @config={{config}} />`);
+        await render(hbs`<Inputs::CollectionInput @config={{this.config}} />`);
       });
 
       test('it renders', async function (assert) {
@@ -42,7 +42,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
 
         await fillIn('select', 'Spain');
 
-        assert.equal(this.config.value, 'Spain');
+        assert.strictEqual(this.config.value, 'Spain');
       });
 
       test('it can be disabled', async function (assert) {
@@ -65,7 +65,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
     module('multiple select', function (hooks) {
       hooks.beforeEach(async function () {
         this.set('config.value', ['France']);
-        await render(hbs`<Inputs::CollectionInput @config={{config}} />`);
+        await render(hbs`<Inputs::CollectionInput @config={{this.config}} />`);
       });
 
       test('it renders', async function (assert) {
@@ -119,7 +119,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
           });
 
           await render(hbs`
-            <Inputs::CollectionInput @config={{config}} />
+            <Inputs::CollectionInput @config={{this.config}} />
           `);
         });
 
@@ -149,10 +149,10 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
         test('it sets the value after being displayed', async function (assert) {
           this.set('config.value', undefined);
           await render(hbs`
-            <Inputs::CollectionInput @config={{config}} />
+            <Inputs::CollectionInput @config={{this.config}} />
           `);
 
-          assert.equal(this.config.value, this.collection[0].content);
+          assert.strictEqual(this.config.value, this.collection[0].content);
         });
       });
 
@@ -164,7 +164,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
           });
 
           await render(hbs`
-            <Inputs::CollectionInput @config={{config}} />
+            <Inputs::CollectionInput @config={{this.config}} />
           `);
         });
 
@@ -187,7 +187,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
         test('it does not set the value after being displayed', async function (assert) {
           this.set('config.value', []);
           await render(hbs`
-            <Inputs::CollectionInput @config={{config}} />
+            <Inputs::CollectionInput @config={{this.config}} />
           `);
 
           assert.deepEqual(this.config.value, []);
@@ -205,7 +205,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
           });
 
           await render(hbs`
-            <Inputs::CollectionInput @config={{config}} />
+            <Inputs::CollectionInput @config={{this.config}} />
           `);
         });
 
@@ -223,10 +223,10 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
         test('it sets the value after being displayed', async function (assert) {
           this.set('config.value', undefined);
           await render(hbs`
-            <Inputs::CollectionInput @config={{config}} />
+            <Inputs::CollectionInput @config={{this.config}} />
           `);
 
-          assert.equal(this.config.value, this.collection[0].content);
+          assert.strictEqual(this.config.value, this.collection[0].content);
         });
       });
 
@@ -239,7 +239,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
           });
 
           await render(hbs`
-            <Inputs::CollectionInput @config={{config}} />
+            <Inputs::CollectionInput @config={{this.config}} />
           `);
         });
 
@@ -265,10 +265,10 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
       });
 
       await render(hbs`
-        <Inputs::CollectionInput @config={{config}} />
+        <Inputs::CollectionInput @config={{this.config}} />
       `);
 
-      assert.equal(this.config.value, 'Cooking');
+      assert.strictEqual(this.config.value, 'Cooking');
     });
   });
 });

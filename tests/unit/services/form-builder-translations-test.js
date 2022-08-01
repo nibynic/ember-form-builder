@@ -24,7 +24,7 @@ module('Unit | Service | FormBuilderTranslations', function (hooks) {
     let i18n = this.owner.lookup('service:i18n');
     let service = this.owner.lookup('service:form-builder-translations');
 
-    assert.equal(service.translationService, i18n);
+    assert.strictEqual(service.translationService, i18n);
   });
 
   test('it finds translations for given scope and type', function (assert) {
@@ -34,42 +34,45 @@ module('Unit | Service | FormBuilderTranslations', function (hooks) {
 
     intl.exists.returns(true);
 
-    assert.equal(
+    assert.strictEqual(
       service.t('post', 'attribute', 'title'),
       't:post.attributes.title'
     );
-    assert.equal(
+    assert.strictEqual(
       service.t('components.myForm', 'hint', 'url'),
       't:components.myForm.hints.url'
     );
-    assert.equal(
+    assert.strictEqual(
       service.t('user.admin', 'action', 'submit'),
       't:user.admin.actions.submit'
     );
 
     intl.exists.callsFake((k) => !!k.match('formBuilder'));
 
-    assert.equal(
+    assert.strictEqual(
       service.t('post', 'attribute', 'title'),
       't:formBuilder.attributes.title'
     );
-    assert.equal(
+    assert.strictEqual(
       service.t('components.myForm', 'hint', 'url'),
       't:formBuilder.hints.url'
     );
-    assert.equal(
+    assert.strictEqual(
       service.t('user.admin', 'action', 'submit'),
       't:formBuilder.actions.submit'
     );
-    assert.equal(
+    assert.strictEqual(
       service.t('formBuilder.isRequired'),
       't:formBuilder.isRequired'
     );
 
     intl.exists.returns(false);
 
-    assert.equal(service.t('post', 'attribute', 'title'), undefined);
-    assert.equal(service.t('components.myForm', 'hint', 'url'), undefined);
-    assert.equal(service.t('user.admin', 'action', 'submit'), undefined);
+    assert.strictEqual(service.t('post', 'attribute', 'title'), undefined);
+    assert.strictEqual(
+      service.t('components.myForm', 'hint', 'url'),
+      undefined
+    );
+    assert.strictEqual(service.t('user.admin', 'action', 'submit'), undefined);
   });
 });

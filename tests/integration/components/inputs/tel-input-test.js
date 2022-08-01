@@ -17,7 +17,7 @@ module('Integration | Component | inputs/tel-input', function (hooks) {
       },
     };
 
-    await render(hbs`<Inputs::TelInput @config={{config}} />`);
+    await render(hbs`<Inputs::TelInput @config={{this.config}} />`);
   });
 
   test('it renders', async function (assert) {
@@ -36,7 +36,7 @@ module('Integration | Component | inputs/tel-input', function (hooks) {
 
     await fillIn('input', '0800801802');
 
-    assert.equal(this.config.value, '0800801802');
+    assert.strictEqual(this.config.value, '0800801802');
   });
 
   test('it can be disabled', async function (assert) {

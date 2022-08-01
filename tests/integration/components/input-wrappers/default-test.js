@@ -15,7 +15,7 @@ module('Integration | Component | input-wrappers/default', function (hooks) {
     };
     await render(hbs`
       <InputWrappers::Default
-        @config={{config}}
+        @config={{this.config}}
         @inputComponent={{component "my-input"}}
         @labelComponent={{component "my-label"}}
       />

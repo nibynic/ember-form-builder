@@ -17,7 +17,7 @@ module('Integration | Component | inputs/email-input', function (hooks) {
       },
     };
 
-    await render(hbs`<Inputs::EmailInput @config={{config}} />`);
+    await render(hbs`<Inputs::EmailInput @config={{this.config}} />`);
   });
 
   test('it renders', async function (assert) {
@@ -36,7 +36,7 @@ module('Integration | Component | inputs/email-input', function (hooks) {
 
     await fillIn('input', 'nick@example.com');
 
-    assert.equal(this.config.value, 'nick@example.com');
+    assert.strictEqual(this.config.value, 'nick@example.com');
   });
 
   test('it can be disabled', async function (assert) {

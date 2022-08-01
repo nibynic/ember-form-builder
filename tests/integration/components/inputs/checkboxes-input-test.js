@@ -19,7 +19,7 @@ module('Integration | Component | inputs/checkboxes-input', function (hooks) {
     module('single select', function (hooks) {
       hooks.beforeEach(async function () {
         this.set('config.value', 'France');
-        await render(hbs`<Inputs::CheckboxesInput @config={{config}} />`);
+        await render(hbs`<Inputs::CheckboxesInput @config={{this.config}} />`);
       });
 
       test('it renders', async function (assert) {
@@ -44,7 +44,7 @@ module('Integration | Component | inputs/checkboxes-input', function (hooks) {
 
         await click('input[value=Spain]');
 
-        assert.equal(this.config.value, 'Spain');
+        assert.strictEqual(this.config.value, 'Spain');
       });
 
       test('it can be disabled', async function (assert) {
@@ -67,7 +67,7 @@ module('Integration | Component | inputs/checkboxes-input', function (hooks) {
     module('multiple select', function (hooks) {
       hooks.beforeEach(async function () {
         this.set('config.value', ['France']);
-        await render(hbs`<Inputs::CheckboxesInput @config={{config}} />`);
+        await render(hbs`<Inputs::CheckboxesInput @config={{this.config}} />`);
       });
 
       test('it renders', async function (assert) {
@@ -130,7 +130,7 @@ module('Integration | Component | inputs/checkboxes-input', function (hooks) {
         });
 
         await render(hbs`
-          <Inputs::CheckboxesInput @config={{config}} />
+          <Inputs::CheckboxesInput @config={{this.config}} />
         `);
       });
 
@@ -164,7 +164,7 @@ module('Integration | Component | inputs/checkboxes-input', function (hooks) {
         });
 
         await render(hbs`
-          <Inputs::CheckboxesInput @config={{config}} />
+          <Inputs::CheckboxesInput @config={{this.config}} />
         `);
       });
 

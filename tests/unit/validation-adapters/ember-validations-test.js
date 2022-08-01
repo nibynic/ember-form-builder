@@ -57,7 +57,7 @@ module('Unit | ValidationAdapter | EmberValidations', function (hooks) {
       },
     });
 
-    assert.equal(get(this, 'adapter.attributes.firstName.required'), true);
+    assert.true(get(this, 'adapter.attributes.firstName.required'));
   });
 
   test('it maps number validations', function (assert) {

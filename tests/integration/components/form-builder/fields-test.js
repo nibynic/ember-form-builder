@@ -14,8 +14,8 @@ module('Integration | Component | form-builder/fields', function (hooks) {
     this.set('isVisible', true);
 
     await render(hbs`
-      {{#if isVisible}}
-        <FormBuilder::Fields @on={{parent}} />
+      {{#if this.isVisible}}
+        <FormBuilder::Fields @on={{this.parent}} />
       {{/if}}
     `);
 
@@ -38,7 +38,7 @@ module('Integration | Component | form-builder/fields', function (hooks) {
     this.index = 1;
 
     await render(hbs`
-      <FormBuilder::Fields @on={{parent}} @name="sample-child" @index={{index}} as |f|>
+      <FormBuilder::Fields @on={{this.parent}} @name="sample-child" @index={{this.index}} as |f|>
         {{f.builder.name}}
       </FormBuilder::Fields>
     `);

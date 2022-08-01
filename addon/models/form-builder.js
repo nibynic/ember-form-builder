@@ -8,7 +8,6 @@ import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import { getOwner } from '@ember/application';
 import defaultConfiguration from 'ember-form-builder/configuration';
-import { assign } from '@ember/polyfills';
 import { tracked } from '@glimmer/tracking';
 import classic from 'ember-classic-decorator';
 
@@ -25,7 +24,7 @@ export default class FormBuilder extends EmberObject {
 
     let owner = getOwner(this);
 
-    this.configuration = assign(
+    this.configuration = Object.assign(
       {},
       defaultConfiguration,
       owner.factoryFor('config:environment').class.formBuilder || {}

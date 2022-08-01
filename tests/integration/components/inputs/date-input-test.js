@@ -16,7 +16,7 @@ module('Integration | Component | inputs/date-input', function (hooks) {
         placeholder: 'Birth date',
       },
     };
-    await render(hbs`<Inputs::DateInput @config={{config}} />`);
+    await render(hbs`<Inputs::DateInput @config={{this.config}} />`);
   });
 
   test('it renders', async function (assert) {
@@ -39,7 +39,7 @@ module('Integration | Component | inputs/date-input', function (hooks) {
 
     await fillIn('input', '');
 
-    assert.equal(this.config.value, undefined);
+    assert.strictEqual(this.config.value, undefined);
   });
 
   test('it supports presence validations', async function (assert) {
