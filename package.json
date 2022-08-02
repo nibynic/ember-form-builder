@@ -93,6 +93,7 @@
     }
   },
   "resolutions": {
+    "ansi-html": "^0.0.8",
     "clean-css": "^4.1.11",
     "minimist": "^0.2.1"
   }
