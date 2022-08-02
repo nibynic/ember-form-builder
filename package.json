@@ -95,6 +95,7 @@
   "resolutions": {
     "ansi-html": "^0.0.8",
     "clean-css": "^4.1.11",
+    "glob-parent": "^5.1.2",
     "minimist": "^1.2.6"
   }
 }
