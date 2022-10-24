@@ -25,10 +25,15 @@ jobs:
           cache: yarn
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
+      - name: Lint Addon
+        run: yarn lint
+        working-directory: addon
       - name: Lint
         run: yarn lint
+        working-directory: test-app
       - name: Run Tests
         run: yarn test:ember
+        working-directory: test-app
 
   floating:
     name: "Floating Dependencies"
@@ -44,6 +49,7 @@ jobs:
         run: yarn install --no-lockfile
       - name: Run Tests
         run: yarn test:ember
+        working-directory: test-app
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
