@@ -11,14 +11,24 @@
     "lint:hbs": "ember-template-lint .",
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
-    "lint:js:fix": "eslint . --fix"
+    "lint:js:fix": "eslint . --fix",
+    "build": "rollup --config",
+    "prepublishOnly": "rollup --config",
+    "start": "rollup --config --watch"
   },
   "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.19.6",
     "@ember/optional-features": "^2.0.0",
-    "@ember/test-helpers": "^2.7.0",
+    "@embroider/addon-dev": "^2.0.0",
+    "@embroider/compat": "1.8.3",
+    "@embroider/core": "1.8.3",
     "@embroider/test-setup": "^1.6.0",
+    "@embroider/webpack": "1.8.3",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
+    "@rollup/plugin-babel": "^6.0.2",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^2.4.1",
@@ -50,10 +60,8 @@
     "prettier": "^2.6.2",
     "qunit": "^2.19.1",
     "qunit-dom": "^2.0.0",
-    "webpack": "^5.0.0",
-    "@embroider/core": "1.8.3",
-    "@embroider/webpack": "1.8.3",
-    "@embroider/compat": "1.8.3"
+    "rollup": "^3.2.3",
+    "webpack": "^5.0.0"
   },
   "keywords": [
     "ember-addon"
@@ -72,16 +80,55 @@
     "edition": "octane"
   },
   "ember-addon": {
-    "versionCompatibility": {
-      "ember": ">3.16.4"
+    "main": "addon-main.js",
+    "type": "addon",
+    "version": 2,
+    "app-js": {
+      "./components/form-builder.js": "./dist/_app_/components/form-builder.js",
+      "./components/form-builder/fields.js": "./dist/_app_/components/form-builder/fields.js",
+      "./components/form-builder/input.js": "./dist/_app_/components/form-builder/input.js",
+      "./components/form-builder/label.js": "./dist/_app_/components/form-builder/label.js",
+      "./components/form-builder/submit.js": "./dist/_app_/components/form-builder/submit.js",
+      "./components/input-wrappers/default.js": "./dist/_app_/components/input-wrappers/default.js",
+      "./components/input-wrappers/inline.js": "./dist/_app_/components/input-wrappers/inline.js",
+      "./components/inputs/boolean-input.js": "./dist/_app_/components/inputs/boolean-input.js",
+      "./components/inputs/checkbox-option.js": "./dist/_app_/components/inputs/checkbox-option.js",
+      "./components/inputs/checkboxes-input.js": "./dist/_app_/components/inputs/checkboxes-input.js",
+      "./components/inputs/collection-input.js": "./dist/_app_/components/inputs/collection-input.js",
+      "./components/inputs/date-input.js": "./dist/_app_/components/inputs/date-input.js",
+      "./components/inputs/email-input.js": "./dist/_app_/components/inputs/email-input.js",
+      "./components/inputs/number-input.js": "./dist/_app_/components/inputs/number-input.js",
+      "./components/inputs/password-input.js": "./dist/_app_/components/inputs/password-input.js",
+      "./components/inputs/select-option.js": "./dist/_app_/components/inputs/select-option.js",
+      "./components/inputs/string-input.js": "./dist/_app_/components/inputs/string-input.js",
+      "./components/inputs/tel-input.js": "./dist/_app_/components/inputs/tel-input.js",
+      "./components/inputs/text-input.js": "./dist/_app_/components/inputs/text-input.js",
+      "./components/inputs/url-input.js": "./dist/_app_/components/inputs/url-input.js",
+      "./data-adapters/base.js": "./dist/_app_/data-adapters/base.js",
+      "./data-adapters/ember-data.js": "./dist/_app_/data-adapters/ember-data.js",
+      "./data-adapters/ember-orbit.js": "./dist/_app_/data-adapters/ember-orbit.js",
+      "./models/form-builder.js": "./dist/_app_/models/form-builder.js",
+      "./services/form-builder-translations.js": "./dist/_app_/services/form-builder-translations.js",
+      "./validation-adapters/ember-cp-validations.js": "./dist/_app_/validation-adapters/ember-cp-validations.js",
+      "./validation-adapters/ember-validations.js": "./dist/_app_/validation-adapters/ember-validations.js"
     }
   },
-  "resolutions": {
-    "ansi-html": "^0.0.8",
-    "clean-css": "^4.1.11",
-    "glob-parent": "^5.1.2",
-    "got": "^11.8.5",
-    "markdown-it": "^12.3.2",
-    "minimist": "^1.2.6"
-  }
+  "dependencies": {
+    "@embroider/addon-shim": "^1.8.3",
+    "ember-classic-decorator": "^3.0.0"
+  },
+  "peerDependencies": {
+    "ember-inflector": "^4.0.0",
+    "@ember/test-helpers": "^2.7.0"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*",
+    "./test-support": "./dist/test-support/index.js",
+    "./addon-main.js": "./addon-main.js"
+  },
+  "files": [
+    "addon-main.js",
+    "dist"
+  ]
 }

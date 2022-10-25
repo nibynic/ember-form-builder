@@ -7,7 +7,7 @@ import EmberObject, { computed } from '@ember/object';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import { getOwner } from '@ember/application';
-import defaultConfiguration from 'ember-form-builder/configuration';
+import defaultConfiguration from '../configuration';
 import { tracked } from '@glimmer/tracking';
 import classic from 'ember-classic-decorator';
 

@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { getOwner } from '@ember/application';
-import optional from 'ember-form-builder/utilities/optional-action';
+import optional from '../utils/optional-action';
 import { tracked } from '@glimmer/tracking';
 import { dependentKeyCompat } from '@ember/object/compat';
 

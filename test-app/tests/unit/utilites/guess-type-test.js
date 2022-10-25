@@ -3,9 +3,9 @@
 import { module, test } from 'qunit';
 import { A } from '@ember/array';
 import EmberObject, { computed } from '@ember/object';
-import guessType from 'ember-form-builder/utilities/guess-type';
+import guessType from 'ember-form-builder/utils/guess-type';
 
-module('Unit | Utilities | guesType', function () {
+module('Unit | utils | guesType', function () {
   test('it detects password by attribute', function (assert) {
     assert.strictEqual(guessType({}, { attr: 'password' }), 'password');
     assert.strictEqual(

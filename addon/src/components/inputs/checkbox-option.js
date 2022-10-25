@@ -1,4 +1,4 @@
-import SelectOption from 'ember-form-builder/components/inputs/select-option';
+import SelectOption from './select-option';
 import { guidFor } from '@ember/object/internals';
 
 export default class CheckboxOption extends SelectOption {
