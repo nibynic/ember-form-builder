@@ -29,7 +29,7 @@ module('Integration | Component | inputs/date-input', function (hooks) {
   test('it updates value', async function (assert) {
     assert.dom('input').hasValue('2010-11-01');
 
-    this.set('config.value', new Date('2010-11-12'));
+    this.set('config', { value: new Date('2010-11-12') });
 
     assert.dom('input').hasValue('2010-11-12');
 

@@ -30,7 +30,7 @@ module('Integration | Component | inputs/tel-input', function (hooks) {
   test('it updates value', async function (assert) {
     assert.dom('input').hasValue('0700606060');
 
-    this.set('config.value', '0800801801');
+    this.set('config', { value: '0800801801' });
 
     assert.dom('input').hasValue('0800801801');
 

@@ -30,7 +30,7 @@ module('Integration | Component | inputs/number-input', function (hooks) {
   test('it updates value', async function (assert) {
     assert.dom('input').hasValue('123');
 
-    this.set('config.value', 456);
+    this.set('config', { value: 456 });
 
     assert.dom('input').hasValue('456');
 
@@ -60,16 +60,20 @@ module('Integration | Component | inputs/number-input', function (hooks) {
   });
 
   test('it supports numericality validations', async function (assert) {
-    this.set('config.validations', {
-      number: { gt: 5, lt: 120 },
+    this.set('config', {
+      validations: {
+        number: { gt: 5, lt: 120 },
+      },
     });
 
     assert.dom('input').hasAttribute('min', '5.01');
     assert.dom('input').hasAttribute('max', '119.99');
     assert.dom('input').hasAttribute('step', '0.01');
 
-    this.set('config.validations', {
-      number: { gte: 5, lte: 120, integer: true },
+    this.set('config', {
+      validations: {
+        number: { gte: 5, lte: 120, integer: true },
+      },
     });
 
     assert.dom('input').hasAttribute('min', '5');

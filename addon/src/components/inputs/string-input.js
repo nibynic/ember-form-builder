@@ -1,16 +1,15 @@
 import Component from '@glimmer/component';
-import { action, set } from '@ember/object';
-import { reads } from '@ember/object/computed';
-import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 
-@classic
-export default class extends Component {
+export default class StringInputComponent extends Component {
   type = 'text';
 
-  @reads('args.config.value') value;
+  get value() {
+    return this.args.config.value;
+  }
 
   @action
   handleChange(e) {
-    set(this, 'args.config.value', e.target.value);
+    this.args.config.value = e.target.value;
   }
 }

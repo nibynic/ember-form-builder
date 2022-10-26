@@ -28,13 +28,14 @@ module('Integration | Component | form-builder/fields', function (hooks) {
   });
 
   test('it sets name', async function (assert) {
-    this.set('parent', {
+    this.parent = {
       name: 'sampleModel',
       addChild: (childBuilder) => {
-        childBuilder.set('parent', this.parent);
+        this.child = childBuilder;
+        childBuilder.parent = this.parent;
       },
       removeChild() {},
-    });
+    };
     this.index = 1;
 
     await render(hbs`
@@ -49,7 +50,7 @@ module('Integration | Component | form-builder/fields', function (hooks) {
 
     assert.dom(this.element).hasText('sampleModel[sampleChildren][2]');
 
-    this.set('parent.name', '');
+    this.set('child.parent', { name: '' });
 
     assert.dom(this.element).hasText('sampleChildren[2]');
   });

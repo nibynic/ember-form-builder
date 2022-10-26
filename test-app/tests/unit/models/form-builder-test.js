@@ -26,8 +26,10 @@ module('Unit | Models | FormBuilder', function (hooks) {
   module('hierarchy', function (hooks) {
     hooks.beforeEach(function () {
       this.builder = this.owner.factoryFor('model:form-builder').create({
-        settings: { modelName: 'post' },
-        object: { constructor: { modelName: 'myPost' } },
+        settings: {
+          modelName: 'post',
+          object: { constructor: { modelName: 'myPost' } },
+        },
       });
       this.child = this.owner.factoryFor('model:form-builder').create({
         settings: { modelName: 'author' },
@@ -53,12 +55,15 @@ module('Unit | Models | FormBuilder', function (hooks) {
       assert.strictEqual(this.child.name, 'post[author]');
       assert.strictEqual(this.grandchild.name, 'post[author][device]');
 
-      this.child.set('index', 2);
+      this.child.settings.index = 2;
 
       assert.strictEqual(this.child.name, 'post[authors][2]');
       assert.strictEqual(this.grandchild.name, 'post[authors][2][device]');
 
-      this.builder.set('settings', { modelName: undefined });
+      this.builder.set('settings', {
+        modelName: undefined,
+        object: this.builder.settings.object
+      });
 
       assert.strictEqual(this.child.name, 'myPost[authors][2]');
       assert.strictEqual(this.grandchild.name, 'myPost[authors][2][device]');
@@ -86,7 +91,7 @@ module('Unit | Models | FormBuilder', function (hooks) {
         });
       this.model = { type: 'my-model' };
       this.builder = this.owner.factoryFor('model:form-builder').create({
-        object: this.model,
+        settings: { object: this.model },
       });
     });
 
@@ -118,7 +123,7 @@ module('Unit | Models | FormBuilder', function (hooks) {
         });
       this.object = {};
       this.builder = this.owner.factoryFor('model:form-builder').create({
-        object: this.object,
+        settings: { object: this.object },
       });
     });
 

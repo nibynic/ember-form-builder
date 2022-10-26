@@ -1,7 +1,5 @@
 import EmberObject from '@ember/object';
-import classic from 'ember-classic-decorator';
 
-@classic
 export default class Base extends EmberObject {
   isModel() {}
 

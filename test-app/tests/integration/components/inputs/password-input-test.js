@@ -30,7 +30,7 @@ module('Integration | Component | inputs/password-input', function (hooks) {
   test('it updates value', async function (assert) {
     assert.dom('input').hasValue('123hello');
 
-    this.set('config.value', 'hello?');
+    this.set('config', { value: 'hello?' });
 
     assert.dom('input').hasValue('hello?');
 

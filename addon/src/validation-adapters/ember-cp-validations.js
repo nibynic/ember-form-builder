@@ -1,14 +1,22 @@
-import classic from 'ember-classic-decorator';
-import { reads } from '@ember/object/computed';
 import { resolve, reject } from 'rsvp';
-import EmberObject, { defineProperty, computed, get } from '@ember/object';
+import EmberObject from '@ember/object';
 
-@classic
 export default class EmberCpValidations extends EmberObject {
-  @computed('object')
+  cache = {};
+
   get attributes() {
-    let object = this.object;
-    return AttributesProxy.create({ object });
+    return new Proxy(this, {
+      get(self, key) {
+        if (key in self || typeof key === 'symbol') {
+          return self[key];
+        }
+        self.cache[key] = self.cache[key] || new Attribute(key, self.object);
+        return self.cache[key];
+      },
+      has() {
+        return true;
+      }
+    });
   }
 
   validate() {
@@ -26,57 +34,43 @@ export default class EmberCpValidations extends EmberObject {
   }
 }
 
-@classic
-class AttributesProxy extends EmberObject {
-  @computed
-  get cache() {
-    return {};
-  }
-
-  unknownProperty(key) {
-    return (this.cache[key] =
-      this.cache[key] || new Attribute(key, this.object));
-  }
-}
-
-@classic
 class Attribute {
   constructor(key, object) {
+    this.key = key;
     this.object = object;
-    defineProperty(
-      this,
-      'validations',
-      reads(`object.validations.attrs.${key}.options`)
-    );
-    defineProperty(
-      this,
-      'errors',
-      reads(`object.validations.attrs.${key}.messages`)
-    );
-    defineProperty(
-      this,
-      'warnings',
-      reads(`object.validations.attrs.${key}.warningMessages`)
-    );
   }
 
-  @computed('validations.presence.{presence,disabled}')
+  get config() {
+    return (this.object.validations.attrs || {})[this.key] || {};
+  }
+
+  get validations() {
+    return this.config.options || {};
+  }
+
+  get errors() {
+    return this.config.messages || [];
+  }
+
+  get warnings() {
+    return this.config.warningMessages || [];
+  }
+
   get required() {
     return (
-      get(this, 'validations.presence.presence') &&
-      !get(this, 'validations.presence.disabled')
+      this.validations.presence?.presence &&
+      !this.validations.presence?.disabled
     );
   }
 
-  @computed('validations.number.{integer,gt,gte,lt,lte,disabled}')
   get number() {
-    if (!get(this, 'validations.number.disabled')) {
+    if (!this.validations.number?.disabled) {
       return {
-        integer: !!get(this, 'validations.number.integer'),
-        gt: get(this, 'validations.number.gt'),
-        gte: get(this, 'validations.number.gte'),
-        lt: get(this, 'validations.number.lt'),
-        lte: get(this, 'validations.number.lte'),
+        integer: !!this.validations.number?.integer,
+        gt: this.validations.number?.gt,
+        gte: this.validations.number?.gte,
+        lt: this.validations.number?.lt,
+        lte: this.validations.number?.lte,
       };
     } else {
       return undefined;

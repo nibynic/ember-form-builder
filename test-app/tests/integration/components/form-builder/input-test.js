@@ -27,6 +27,7 @@ module('Integration | Component | form-builder/input', function (hooks) {
     @tracked name;
     @tracked object = {};
     @tracked validationAdapter = {};
+    @tracked translationKey;
   }
 
   hooks.beforeEach(function () {
@@ -44,7 +45,8 @@ module('Integration | Component | form-builder/input', function (hooks) {
 
     assert.dom('input').hasValue('Testing testing 123');
 
-    this.set('builder.object.title', 'Another test!');
+    this.builder.object = { title: 'Another test!' };
+    await settled();
 
     assert.dom('input').hasValue('Another test!');
   });
@@ -186,7 +188,7 @@ module('Integration | Component | form-builder/input', function (hooks) {
     assert.dom('small').doesNotExist();
 
     this.set('hint', 'This is a hint');
-
+    
     assert.dom('small').hasText('This is a hint');
   });
 
@@ -311,12 +313,14 @@ module('Integration | Component | form-builder/input', function (hooks) {
         'Placeholder was omitted without translation key'
       );
 
-    this.set('builder.translationKey', 'blogPost');
+    this.builder.translationKey = 'blogPost';
+    await settled();
 
     assert.dom('label').hasText('Tytuł posta');
     assert.dom('small').hasText('Maksymalnie 45 znaków');
 
-    this.set('builder.translationKey', 'article');
+    this.builder.translationKey = 'article';
+    await settled();
 
     assert.dom('label').hasText('Tytuł artykułu');
     assert.dom('small').hasText('Maksymalnie 255 znaków');

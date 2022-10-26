@@ -3,11 +3,14 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import Service from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 module('Integration | Component | form-builder/label', function (hooks) {
   setupRenderingTest(hooks);
 
   class TranslationsStub extends Service {
+    @tracked locale;
+    
     translations = {
       'formBuilder.isRequired': 'Wymagane',
     };
@@ -32,7 +35,7 @@ module('Integration | Component | form-builder/label', function (hooks) {
     assert.dom('abbr').hasAttribute('title', 'Wymagane');
 
     service.translations['formBuilder.isRequired'] = 'Required';
-    service.set('locale', 'en');
+    service.locale = 'en';
     await settled();
 
     assert.dom('abbr').hasAttribute('title', 'Required');

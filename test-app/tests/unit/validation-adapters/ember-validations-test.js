@@ -3,12 +3,19 @@ import { setupTest } from 'ember-qunit';
 import { resolve, reject } from 'rsvp';
 import sinon from 'sinon';
 import { get } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 module('Unit | ValidationAdapter | EmberValidations', function (hooks) {
   setupTest(hooks);
 
+  class ObjectStub {
+    @tracked errors;
+    @tracked warnings;
+    @tracked validations;
+  }
+
   hooks.beforeEach(async function () {
-    this.object = {};
+    this.object = new ObjectStub();
     this.adapter = this.owner
       .factoryFor('validation-adapter:ember-validations')
       .create({
@@ -35,12 +42,12 @@ module('Unit | ValidationAdapter | EmberValidations', function (hooks) {
   });
 
   test('it maps errors and warnings', function (assert) {
-    this.set('object.errors', {
+    this.object.errors = {
       firstName: ['cannot be blank'],
-    });
-    this.set('object.warnings', {
+    };
+    this.object.warnings = {
       firstName: ['should start with a capital letter'],
-    });
+    };
 
     assert.deepEqual(get(this, 'adapter.attributes.firstName.errors'), [
       'cannot be blank',
@@ -51,17 +58,17 @@ module('Unit | ValidationAdapter | EmberValidations', function (hooks) {
   });
 
   test('it maps required fields', function (assert) {
-    this.set('object.validations', {
+    this.object.validations = {
       firstName: {
         presence: true,
       },
-    });
+    };
 
     assert.true(get(this, 'adapter.attributes.firstName.required'));
   });
 
   test('it maps number validations', function (assert) {
-    this.set('object.validations', {
+    this.object.validations = {
       age: {
         numericality: {
           greaterThan: 1,
@@ -71,7 +78,7 @@ module('Unit | ValidationAdapter | EmberValidations', function (hooks) {
           onlyInteger: true,
         },
       },
-    });
+    };
 
     assert.deepEqual(get(this, 'adapter.attributes.age.number'), {
       gt: 1,

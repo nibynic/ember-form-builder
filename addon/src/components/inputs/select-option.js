@@ -1,11 +1,7 @@
 import Component from '@glimmer/component';
-import { computed } from '@ember/object';
 import { isArray, A } from '@ember/array';
-import classic from 'ember-classic-decorator';
 
-@classic
 export default class SelectOption extends Component {
-  @computed('args.{selectedValue.[],content.content,key}')
   get isSelected() {
     let key = this.args.key;
     if (isArray(this.args.selectedValue)) {

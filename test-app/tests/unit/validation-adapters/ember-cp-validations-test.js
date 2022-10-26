@@ -3,14 +3,17 @@ import { setupTest } from 'ember-qunit';
 import sinon from 'sinon';
 import { resolve } from 'rsvp';
 import { get } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 module('Unit | ValidationAdapter | EmberCpValidations', function (hooks) {
   setupTest(hooks);
 
+  class ObjectStub {
+    @tracked validations;
+  }
+
   hooks.beforeEach(async function () {
-    this.object = {
-      validations: {},
-    };
+    this.object = new ObjectStub();
     this.adapter = this.owner
       .factoryFor('validation-adapter:ember-cp-validations')
       .create({
@@ -45,15 +48,15 @@ module('Unit | ValidationAdapter | EmberCpValidations', function (hooks) {
   });
 
   test('it maps errors and warnings', function (assert) {
-    this.set('object.validations', {
+    this.object.validations = {
       attrs: {
         firstName: {
           messages: ['cannot be blank'],
           warningMessages: ['should start with a capital letter'],
         },
       },
-    });
-
+    };
+    
     assert.deepEqual(get(this, 'adapter.attributes.firstName.errors'), [
       'cannot be blank',
     ]);

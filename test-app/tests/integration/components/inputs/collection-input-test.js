@@ -19,7 +19,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
 
     module('single select', function (hooks) {
       hooks.beforeEach(async function () {
-        this.set('config.value', 'France');
+        this.config.value = 'France';
         await render(hbs`<Inputs::CollectionInput @config={{this.config}} />`);
       });
 
@@ -36,7 +36,11 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
       test('it updates value', async function (assert) {
         assert.dom('select').hasValue('France');
 
-        this.set('config.value', 'Germany');
+        this.set('config', {
+          value: 'Germany',
+          collection: this.config.collection,
+        });
+        await settled();
 
         assert.dom('select').hasValue('Germany');
 
@@ -139,7 +143,10 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
           assert.dom('option:checked').exists({ count: 1 });
           assert.dom('option[value="2"]').matchesSelector(':checked');
 
-          this.set('config.value', this.collection[2].content);
+          this.set('config', {
+            value: this.collection[2].content,
+            collection: this.collection,
+          });
           await settled();
 
           assert.dom('option:checked').exists({ count: 1 });
@@ -213,9 +220,13 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
           assert.dom('option:checked').exists({ count: 1 });
           assert.dom('option[value="2"]').matchesSelector(':checked');
 
-          this.set('config.value', { id: '3' });
+          this.set('config', {
+            value: { id: '3' },
+            collection: this.collection,
+            key: 'id',
+          });
           await settled();
-
+          
           assert.dom('option:checked').exists({ count: 1 });
           assert.dom('option[value="3"]').matchesSelector(':checked');
         });

@@ -1,17 +1,13 @@
-import { set } from '@ember/object';
-import { reads } from '@ember/object/computed';
 import { camelize } from '@ember/string';
 import { all } from 'rsvp';
 import { A } from '@ember/array';
-import EmberObject, { computed } from '@ember/object';
+import EmberObject from '@ember/object';
 import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import { getOwner } from '@ember/application';
 import defaultConfiguration from '../configuration';
-import { tracked } from '@glimmer/tracking';
-import classic from 'ember-classic-decorator';
+import { tracked, cached } from '@glimmer/tracking';
 
-@classic
 export default class FormBuilder extends EmberObject {
   @tracked isValid = true;
   @tracked parent;
@@ -19,40 +15,40 @@ export default class FormBuilder extends EmberObject {
   settings = {};
   children = A([]);
 
-  init() {
-    super.init(...arguments);
-
-    let owner = getOwner(this);
-
-    this.configuration = Object.assign(
+  @cached
+  get configuration() {
+    return Object.assign(
       {},
       defaultConfiguration,
-      owner.factoryFor('config:environment').class.formBuilder || {}
+      getOwner(this).factoryFor('config:environment').class.formBuilder || {}
     );
+  }
 
-    this.validationAdapter = owner
+  @cached
+  get validationAdapter() {
+    return getOwner(this)
       .factoryFor(`validation-adapter:${this.configuration.validationsAddon}`)
       .create({ object: this.object });
-    set(
-      this,
-      'dataAdapter',
-      owner
-        .factoryFor(`data-adapter:${this.configuration.dataAddon}`)
-        .create({ object: this.object })
-    );
+  }
+
+  @cached
+  get dataAdapter() {
+    return getOwner(this)
+      .factoryFor(`data-adapter:${this.configuration.dataAddon}`)
+      .create({ object: this.object });
   }
 
   addChild(childFormBuilder) {
     this.children.addObject(childFormBuilder);
-    childFormBuilder.set('parent', this);
+    childFormBuilder.parent = this;
   }
 
   removeChild(childFormBuilder) {
     this.children.removeObject(childFormBuilder);
-    childFormBuilder.set('parent', null);
+    childFormBuilder.parent = null;
   }
 
-  validate() {
+  async validate() {
     var validations = [];
 
     validations.push(this.validationAdapter.validate());
@@ -61,19 +57,27 @@ export default class FormBuilder extends EmberObject {
       validations.push(child.validate());
     });
 
-    return all(validations).then(
-      () => this.set('isValid', true),
-      (e) => {
-        this.set('isValid', false);
-        throw e;
-      }
-    );
+    try {
+      await all(validations);
+      this.isValid = true;
+    } catch (e) {
+      this.isValid = false;
+      throw e;
+    }
   }
 
-  @reads('settings.object') object;
-  @reads('settings.status') status;
-  @reads('settings.index') index;
-  @reads('dataAdapter.model') model;
+  get object() {
+    return this.settings.object;
+  }
+  get status() {
+    return this.settings.status;
+  }
+  get index() {
+    return this.settings.index;
+  }
+  get model() {
+    return this.dataAdapter.model;
+  }
 
   get modelName() {
     return this.settings.modelName !== undefined
@@ -85,7 +89,6 @@ export default class FormBuilder extends EmberObject {
     return this.settings.translationKey || camelize(this.modelName || '');
   }
 
-  @computed('modelName', 'parent.name', 'index')
   get name() {
     let prefix = camelize((this.parent && this.parent.name) || '');
     let name = camelize(this.modelName || '');

@@ -31,7 +31,7 @@ export default class FormBuilderTranslationsService extends Service {
       ].find((key) => service.exists(key));
       return key ? service.t(key) : undefined;
     } else {
-      return null;
+      return undefined;
     }
   }
 

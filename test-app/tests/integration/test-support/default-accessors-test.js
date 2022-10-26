@@ -101,7 +101,7 @@ module('Integration | TestSupport | default accessors', function (hooks) {
 
     module('multiple', function (hooks) {
       hooks.beforeEach(function () {
-        this.set('model.myAttr', ['a', 'b']);
+        this.set('model', { myAttr: ['a', 'b'] });
       });
 
       test('it reads', async function (assert) {
@@ -186,7 +186,7 @@ module('Integration | TestSupport | default accessors', function (hooks) {
 
   module('string', function (hooks) {
     hooks.beforeEach(function () {
-      this.set('model.myAttr', 'Hey!');
+      this.set('model', { myAttr: 'Hey!' });
       this.set('as', 'string');
     });
 

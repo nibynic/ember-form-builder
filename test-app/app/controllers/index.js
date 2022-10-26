@@ -1,9 +1,7 @@
 import Controller from '@ember/controller';
 import { alias } from '@ember/object/computed';
 import { isBlank } from '@ember/utils';
-import classic from 'ember-classic-decorator';
 
-@classic
 export default class IndexController extends Controller {
   @alias('model.title') title;
   @alias('model.description') description;

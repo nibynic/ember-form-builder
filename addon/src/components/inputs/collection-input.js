@@ -1,30 +1,31 @@
-import { alias } from '@ember/object/computed';
 import Component from '@glimmer/component';
-import { get, set, computed } from '@ember/object';
 import { A, isArray } from '@ember/array';
-import ObjectProxy from '@ember/object/proxy';
-import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
-import { resolve } from 'rsvp';
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
-import classic from 'ember-classic-decorator';
+import { tracked, cached } from '@glimmer/tracking';
 
-@classic
-export default class CollectionInput extends Component {
-  @alias('args.config.collection')
-  collection;
+class CollectionPromise {
+  @tracked content;
 
-  @alias('args.config.value')
-  value;
-
-  @computed('args.config.collection')
-  get collectionPromise() {
-    return ObjectProxy.extend(PromiseProxyMixin).create({
-      promise: resolve(this.args.config.collection),
-    });
+  constructor(promise) {
+    this.waitForContent(promise);
   }
 
-  @computed('collectionPromise.content.[]')
+  async waitForContent(promise) {
+    this.content = await promise;
+  }
+}
+
+export default class CollectionInput extends Component {
+  get value() {
+    return this.args.config.value;
+  }
+
+  @cached
+  get collectionPromise() {
+    return new CollectionPromise(this.args.config.collection);
+  }
+
   get resolvedCollection() {
     return (this.collectionPromise.content || []).map((option) => {
       if (typeof option === 'object') {
@@ -56,22 +57,20 @@ export default class CollectionInput extends Component {
     }
   }
 
-  _setSelection(indicies) {
-    this.collectionPromise.then(() => {
-      let newValues = A(A(this.resolvedCollection).objectsAt(indicies)).mapBy(
-        'content'
-      );
-      let value = this.value;
+  async _setSelection(indicies) {
+    await this.collectionPromise;
+    let newValues = A(A(this.resolvedCollection).objectsAt(indicies)).mapBy(
+      'content'
+    );
+    let value = this.value;
 
-      if (this.multiple) {
-        A(value).replace(0, get(value, 'length'), newValues);
-      } else if (!this.isDestroyed) {
-        set(this, 'args.config.value', newValues[0]);
-      }
-    });
+    if (this.multiple) {
+      A(value).replace(0, this.value.length, newValues);
+    } else if (!this.isDestroyed) {
+      this.args.config.value = newValues[0];
+    }
   }
 
-  @computed('value')
   get multiple() {
     return isArray(this.value);
   }

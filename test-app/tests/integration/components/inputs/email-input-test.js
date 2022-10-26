@@ -30,7 +30,7 @@ module('Integration | Component | inputs/email-input', function (hooks) {
   test('it updates value', async function (assert) {
     assert.dom('input').hasValue('john@example.com');
 
-    this.set('config.value', 'margaret@example.com');
+    this.set('config', { value: 'margaret@example.com' });
 
     assert.dom('input').hasValue('margaret@example.com');
 

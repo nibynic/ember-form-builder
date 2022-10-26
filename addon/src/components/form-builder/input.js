@@ -1,40 +1,33 @@
-/* eslint-disable ember/no-computed-properties-in-native-classes */
-import { set } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { alias } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
-import { defineProperty, computed, action } from '@ember/object';
-import ObjectProxy from '@ember/object/proxy';
+import { defineProperty, action } from '@ember/object';
 import humanize from '../../utils/humanize';
 import guessType from '../../utils/guess-type';
 import { A } from '@ember/array';
 import { guidFor } from '@ember/object/internals';
 import { dependentKeyCompat } from '@ember/object/compat';
 import { once } from '@ember/runloop';
-import classic from 'ember-classic-decorator';
 
-export default class Input extends Component {
-  @service('formBuilderTranslations')
-  translationService;
+export default class InputComponent extends Component {
+  @service('formBuilderTranslations') translationService;
 
-  constructor() {
-    super(...arguments);
-    defineProperty(
-      this,
-      'value',
-      alias(`args.builder.object.${this.args.attr}`)
-    );
-    defineProperty(
-      this,
-      'validations',
-      alias(`args.builder.validationAdapter.attributes.${this.args.attr}`)
-    );
+  get value() {
+    return this.args.builder.object[this.args.attr];
+  }
+  set value(v) {
+    this.args.builder.object[this.args.attr] = v;
+  }
+
+  get validations() {
+    return (this.args.builder.validationAdapter.attributes || {})[
+      this.args.attr
+    ];
   }
 
   config = new ConfigProxy(this);
-  texts = TextProxy.create({ context: this });
+  texts = new TextProxy(this);
 
   get type() {
     return this.args.as || guessType(this.args.builder.model, this.args);
@@ -79,9 +72,13 @@ export default class Input extends Component {
   }
 }
 
-@classic
 class ConfigProxy {
-  @alias('content.value') value;
+  get value() {
+    return this.content.value;
+  }
+  set value(v) {
+    this.content.value = v;
+  }
 
   get inputElementId() {
     return this.content.inputElementId;
@@ -107,7 +104,7 @@ class ConfigProxy {
   }
 
   constructor(content) {
-    set(this, 'content', content);
+    this.content = content;
 
     A(Object.keys(content.args))
       .removeObjects([
@@ -126,23 +123,32 @@ class ConfigProxy {
         'validations',
       ])
       .forEach((key) =>
-        defineProperty(this, key, alias(`content.args.${key}`))
+        defineProperty(this, key, {
+          get() {
+            return this.content.args[key];
+          },
+        })
       );
   }
 }
 
-@classic
-class TextProxy extends ObjectProxy {
-  init() {
-    super.init(...arguments);
-    set(this, 'content', this.context.args);
-    set(this, 'translationService', this.context.translationService);
+class TextProxy {
+  constructor(context) {
+    this.content = context.args;
+    this.translationService = context.translationService;
+    return new Proxy(this, {
+      get(self, key) {
+        if (key in self) {
+          return self[key];
+        }
+        if (self.exists(key)) {
+          return self.content[key] || self.translate(key.toString());
+        }
+        return undefined;
+      },
+    });
   }
 
-  @computed(
-    'content.{label,attr,builder.translationKey}',
-    'translationService.locale'
-  )
   get label() {
     if (this.exists('label')) {
       return (
@@ -164,26 +170,5 @@ class TextProxy extends ObjectProxy {
       type,
       this.content.attr
     );
-  }
-
-  unknownProperty(key) {
-    defineProperty(
-      this,
-      key,
-      computed(
-        'content',
-        `content.{${key},attr,builder.translationKey}`,
-        'translationService.locale',
-        {
-          get(k) {
-            if (this.exists(k)) {
-              return this.content[k] || this.translate(k);
-            }
-            return undefined;
-          },
-        }
-      )
-    );
-    return this[key];
   }
 }

@@ -30,7 +30,7 @@ module('Integration | Component | inputs/url-input', function (hooks) {
   test('it updates value', async function (assert) {
     assert.dom('input').hasValue('example.com');
 
-    this.set('config.value', 'my.example.com');
+    this.set('config', { value: 'my.example.com' });
 
     assert.dom('input').hasValue('my.example.com');
 

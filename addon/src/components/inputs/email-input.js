@@ -1,5 +1,5 @@
 import StringInput from './string-input';
 
-export default class extends StringInput {
+export default class EmailInputComponent extends StringInput {
   type = 'email';
 }

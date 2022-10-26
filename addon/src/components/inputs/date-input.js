@@ -1,12 +1,9 @@
 import StringInput from './string-input';
-import { action, set, computed } from '@ember/object';
-import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 
-@classic
 export default class DateInput extends StringInput {
   type = 'date';
 
-  @computed('args.config.value')
   get value() {
     return formatDate(this.args.config.value);
   }
@@ -15,14 +12,14 @@ export default class DateInput extends StringInput {
   handleChange(e) {
     let value = e.target.value;
     if (value.length === 0) {
-      set(this, 'args.config.value', undefined);
+      this.args.config.value = undefined;
     } else {
       let timestamp = Date.parse(value + 'T00:00Z');
       if (isNaN(timestamp)) {
         return value;
       } else {
         var date = new Date(timestamp);
-        set(this, 'args.config.value', date);
+        this.args.config.value = date;
       }
     }
   }

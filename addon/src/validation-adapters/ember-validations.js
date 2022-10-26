@@ -1,63 +1,66 @@
-import classic from 'ember-classic-decorator';
-import { reads } from '@ember/object/computed';
-import EmberObject, { defineProperty, computed, get } from '@ember/object';
+import EmberObject from '@ember/object';
 import { resolve } from 'rsvp';
+import { cached } from '@glimmer/tracking';
+import { dependentKeyCompat } from '@ember/object/compat';
 
-@classic
 export default class EmberValidations extends EmberObject {
-  @computed('object')
+  cache = {};
+
+  @cached
   get attributes() {
-    let object = this.object;
-    return AttributesProxy.create({ object });
+    return new Proxy(this, {
+      get(self, key) {
+        if (key in self || typeof key === 'symbol') {
+          return self[key];
+        }
+        self.cache[key] = self.cache[key] || new Attribute(key, self.object);
+        return self.cache[key];
+      },
+      has() {
+        return true;
+      }
+    });
   }
 
   validate() {
-    if (get(this, 'object.validate')) {
-      return get(this, 'object').validate();
+    if (this.object.validate) {
+      return this.object.validate();
     } else {
       return resolve();
     }
   }
 }
 
-@classic
-class AttributesProxy extends EmberObject {
-  @computed
-  get cache() {
-    return {};
-  }
-
-  unknownProperty(key) {
-    return (this.cache[key] =
-      this.cache[key] || new Attribute(key, this.object));
-  }
-}
-
-@classic
 class Attribute {
   constructor(key, object) {
+    this.key = key;
     this.object = object;
-    defineProperty(this, 'validations', reads(`object.validations.${key}`));
-    defineProperty(this, 'errors', reads(`object.errors.${key}`));
-    defineProperty(this, 'warnings', reads(`object.warnings.${key}`));
   }
 
-  @computed('validations.presence')
+  get validations() {
+    return (this.object.validations || {})[this.key] || {};
+  }
+
+  get errors() {
+    return (this.object.errors || {})[this.key] || [];
+  }
+
+  get warnings() {
+    return (this.object.warnings || {})[this.key] || [];
+  }
+
   get required() {
-    return !!get(this, 'validations.presence');
+    return !!this.validations.presence;
   }
 
-  @computed(
-    'validations.numericality.{onlyInteger,greaterThan,greaterThanOrEqualTo,lessThan,lessThanOrEqualTo}'
-  )
   get number() {
-    if (get(this, 'validations.numericality')) {
+    if (this.validations.numericality) {
       return {
-        integer: !!get(this, 'validations.numericality.onlyInteger'),
-        gt: get(this, 'validations.numericality.greaterThan'),
-        gte: get(this, 'validations.numericality.greaterThanOrEqualTo'),
-        lt: get(this, 'validations.numericality.lessThan'),
-        lte: get(this, 'validations.numericality.lessThanOrEqualTo'),
+        integer: !!this.validations.numericality.onlyInteger,
+        gt: this.validations.numericality.greaterThan,
+        gte: this.validations.numericality.greaterThanOrEqualTo,
+        lt: this.validations.numericality.lessThan,
+        lte: this.validations.numericality.lessThanOrEqualTo,
       };
     } else {
       return undefined;
