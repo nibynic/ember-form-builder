@@ -10,7 +10,7 @@ module('Integration | Component | form-builder/label', function (hooks) {
 
   class TranslationsStub extends Service {
     @tracked locale;
-    
+
     translations = {
       'formBuilder.isRequired': 'Wymagane',
     };

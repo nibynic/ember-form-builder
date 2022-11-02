@@ -188,7 +188,7 @@ module('Integration | Component | form-builder/input', function (hooks) {
     assert.dom('small').doesNotExist();
 
     this.set('hint', 'This is a hint');
-    
+
     assert.dom('small').hasText('This is a hint');
   });
 

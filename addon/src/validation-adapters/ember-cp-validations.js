@@ -15,7 +15,7 @@ export default class EmberCpValidations extends EmberObject {
       },
       has() {
         return true;
-      }
+      },
     });
   }
 

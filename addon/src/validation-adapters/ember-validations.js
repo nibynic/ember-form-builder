@@ -1,7 +1,6 @@
 import EmberObject from '@ember/object';
 import { resolve } from 'rsvp';
 import { cached } from '@glimmer/tracking';
-import { dependentKeyCompat } from '@ember/object/compat';
 
 export default class EmberValidations extends EmberObject {
   cache = {};
@@ -18,7 +17,7 @@ export default class EmberValidations extends EmberObject {
       },
       has() {
         return true;
-      }
+      },
     });
   }
 

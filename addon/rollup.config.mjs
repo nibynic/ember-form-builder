@@ -17,11 +17,13 @@ export default {
     addon.publicEntrypoints([
       'components/**/*.js',
       'data-adapters/*.js',
+      'helpers/*.js',
       'models/*.js',
       'services/*.js',
       'utils/*.js',
       'validation-adapters/*.js',
       'configuration.js',
+      'registry.js',
       'test-support/index.js'
     ]),
 
@@ -32,6 +34,7 @@ export default {
       'components/*.js',
       'components/**/*.js',
       'data-adapters/*.js',
+      'helpers/*.js',
       'models/*.js',
       'services/*.js',
       'validation-adapters/*.js'

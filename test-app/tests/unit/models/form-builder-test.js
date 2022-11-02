@@ -62,7 +62,7 @@ module('Unit | Models | FormBuilder', function (hooks) {
 
       this.builder.set('settings', {
         modelName: undefined,
-        object: this.builder.settings.object
+        object: this.builder.settings.object,
       });
 
       assert.strictEqual(this.child.name, 'myPost[authors][2]');

@@ -56,7 +56,7 @@ module('Unit | ValidationAdapter | EmberCpValidations', function (hooks) {
         },
       },
     };
-    
+
     assert.deepEqual(get(this, 'adapter.attributes.firstName.errors'), [
       'cannot be blank',
     ]);

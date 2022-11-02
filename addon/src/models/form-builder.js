@@ -1,4 +1,4 @@
-import { camelize } from '@ember/string';
+import { camelize } from 'ember-cli-string-utils';
 import { all } from 'rsvp';
 import { A } from '@ember/array';
 import EmberObject from '@ember/object';

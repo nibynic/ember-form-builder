@@ -107,18 +107,23 @@
       "./data-adapters/base.js": "./dist/_app_/data-adapters/base.js",
       "./data-adapters/ember-data.js": "./dist/_app_/data-adapters/ember-data.js",
       "./data-adapters/ember-orbit.js": "./dist/_app_/data-adapters/ember-orbit.js",
+      "./helpers/register-form-builder-input.js": "./dist/_app_/helpers/register-form-builder-input.js",
+      "./helpers/register-form-builder-wrapper.js": "./dist/_app_/helpers/register-form-builder-wrapper.js",
       "./models/form-builder.js": "./dist/_app_/models/form-builder.js",
+      "./services/form-builder-registry.js": "./dist/_app_/services/form-builder-registry.js",
       "./services/form-builder-translations.js": "./dist/_app_/services/form-builder-translations.js",
       "./validation-adapters/ember-cp-validations.js": "./dist/_app_/validation-adapters/ember-cp-validations.js",
       "./validation-adapters/ember-validations.js": "./dist/_app_/validation-adapters/ember-validations.js"
     }
   },
   "dependencies": {
-    "@embroider/addon-shim": "^1.8.3"
+    "@embroider/addon-shim": "^1.8.3",
+    "@embroider/util": "^1.9.0",
+    "ember-cli-string-utils": "^1.1.0"
   },
   "peerDependencies": {
-    "ember-inflector": "^4.0.0",
-    "@ember/test-helpers": "^2.7.0"
+    "@ember/test-helpers": "^2.7.0",
+    "ember-inflector": "^4.0.0"
   },
   "exports": {
     ".": "./dist/index.js",

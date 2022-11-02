@@ -226,7 +226,7 @@ module('Integration | Component | inputs/collection-input', function (hooks) {
             key: 'id',
           });
           await settled();
-          
+
           assert.dom('option:checked').exists({ count: 1 });
           assert.dom('option[value="3"]').matchesSelector(':checked');
         });

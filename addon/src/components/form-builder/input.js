@@ -12,6 +12,7 @@ import { once } from '@ember/runloop';
 
 export default class InputComponent extends Component {
   @service('formBuilderTranslations') translationService;
+  @service formBuilderRegistry;
 
   get value() {
     return this.args.builder.object[this.args.attr];
@@ -33,8 +34,14 @@ export default class InputComponent extends Component {
     return this.args.as || guessType(this.args.builder.model, this.args);
   }
 
-  get wrapper() {
-    return this.args.wrapper || 'default';
+  get inputComponent() {
+    return this.formBuilderRegistry.resolveInput(this.type);
+  }
+
+  get wrapperComponent() {
+    return this.formBuilderRegistry.resolveWrapper(
+      this.args.wrapper || 'default'
+    );
   }
 
   get inputElementId() {
