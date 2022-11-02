@@ -1,25 +1,20 @@
 import EmberObject from '@ember/object';
 import { resolve } from 'rsvp';
-import { cached } from '@glimmer/tracking';
 
 export default class EmberValidations extends EmberObject {
   cache = {};
-
-  @cached
-  get attributes() {
-    return new Proxy(this, {
-      get(self, key) {
-        if (key in self || typeof key === 'symbol') {
-          return self[key];
-        }
-        self.cache[key] = self.cache[key] || new Attribute(key, self.object);
-        return self.cache[key];
-      },
-      has() {
-        return true;
-      },
-    });
-  }
+  attributes = new Proxy(this, {
+    get(self, key) {
+      if (key in self || typeof key === 'symbol') {
+        return self[key];
+      }
+      self.cache[key] = self.cache[key] || new Attribute(key, self.object);
+      return self.cache[key];
+    },
+    has() {
+      return true;
+    },
+  });
 
   validate() {
     if (this.object.validate) {

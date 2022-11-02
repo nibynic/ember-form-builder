@@ -6,7 +6,7 @@ export default class FormBuilderRegistryService extends Service {
   INPUTS = {};
 
   registerInput(type, component) {
-    this.INPUTS[type] = ensureSafeComponent(component);
+    this.INPUTS[type] = ensureSafeComponent(component, this);
   }
 
   resolveInput(type) {
@@ -21,7 +21,7 @@ export default class FormBuilderRegistryService extends Service {
   WRAPPERS = {};
 
   registerWrapper(type, component) {
-    this.WRAPPERS[type] = ensureSafeComponent(component);
+    this.WRAPPERS[type] = ensureSafeComponent(component, this);
   }
 
   resolveWrapper(type) {

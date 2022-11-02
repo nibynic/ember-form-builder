@@ -2,7 +2,8 @@ import Component from '@glimmer/component';
 import { A, isArray } from '@ember/array';
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
-import { tracked, cached } from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
+import { createCache, getValue } from '@glimmer/tracking/primitives/cache';
 
 class CollectionPromise {
   @tracked content;
@@ -21,9 +22,11 @@ export default class CollectionInput extends Component {
     return this.args.config.value;
   }
 
-  @cached
-  get collectionPromise() {
+  #collectionPromise = createCache(() => {
     return new CollectionPromise(this.args.config.collection);
+  });
+  get collectionPromise() {
+    return getValue(this.#collectionPromise);
   }
 
   get resolvedCollection() {

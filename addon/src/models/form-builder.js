@@ -6,7 +6,9 @@ import { pluralize } from 'ember-inflector';
 import { isBlank } from '@ember/utils';
 import { getOwner } from '@ember/application';
 import defaultConfiguration from '../configuration';
-import { tracked, cached } from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
+import { assign } from '@ember/polyfills';
+import { createCache, getValue } from '@glimmer/tracking/primitives/cache';
 
 export default class FormBuilder extends EmberObject {
   @tracked isValid = true;
@@ -15,27 +17,31 @@ export default class FormBuilder extends EmberObject {
   settings = {};
   children = A([]);
 
-  @cached
-  get configuration() {
-    return Object.assign(
+  constructor() {
+    super(...arguments);
+    this.configuration = assign(
       {},
       defaultConfiguration,
       getOwner(this).factoryFor('config:environment').class.formBuilder || {}
     );
   }
 
-  @cached
-  get validationAdapter() {
-    return getOwner(this)
+  #validationAdapter = createCache(() =>
+    getOwner(this)
       .factoryFor(`validation-adapter:${this.configuration.validationsAddon}`)
-      .create({ object: this.object });
+      .create({ object: this.object })
+  );
+  get validationAdapter() {
+    return getValue(this.#validationAdapter);
   }
 
-  @cached
-  get dataAdapter() {
-    return getOwner(this)
+  #dataAdapter = createCache(() =>
+    getOwner(this)
       .factoryFor(`data-adapter:${this.configuration.dataAddon}`)
-      .create({ object: this.object });
+      .create({ object: this.object })
+  );
+  get dataAdapter() {
+    return getValue(this.#dataAdapter);
   }
 
   addChild(childFormBuilder) {
