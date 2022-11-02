@@ -1,7 +1,7 @@
 {{#let this.wrapperComponent as |Wrapper|}}
   <Wrapper
     @config={{this.config}}
-    @inputComponent={{component this.inputComponent config=this.config}}
+    @inputComponent={{component (ensure-safe-component this.inputComponent) config=this.config}}
     @labelComponent={{component "form-builder/label" for=this.inputElementId isRequired=this.validations.required text=this.texts.label}}
     {{on "focusout" this.handleFocusOut}}
     data-test-input-type={{this.type}}
