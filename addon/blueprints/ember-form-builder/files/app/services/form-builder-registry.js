@@ -1,5 +1,6 @@
 import OriginalRegistry from 'ember-form-builder/services/form-builder-registry';
 import { importSync } from '@embroider/macros';
+import { ensureSafeComponent } from '@embroider/util';
 
 // This service eagerly loads all FormBuilder inputs and input wrappers
 // If you need more control over what gets imported, delete this file
@@ -8,10 +9,10 @@ import { importSync } from '@embroider/macros';
 
 export default class FormBuilderRegistryService extends OriginalRegistry {
   resolveInput(type) {
-    return importSync(`../components/inputs/${type}-input.js`).default;
+    return ensureSafeComponent(importSync(`../components/inputs/${type}-input.js`).default, this);
   }
 
   resolveWrapper(type) {
-    return importSync(`../components/input-wrappers/${type}.js`).default;
+    return ensureSafeComponent(importSync(`../components/input-wrappers/${type}.js`).default, this);
   }
 }

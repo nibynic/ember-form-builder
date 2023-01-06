@@ -2,18 +2,27 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, click, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import { tracked } from '@glimmer/tracking';
 
 module('Integration | Component | inputs/checkboxes-input', function (hooks) {
   setupRenderingTest(hooks);
 
+  class Config {
+    constructor(attributes = {}) {
+      Object.assign(this, attributes);
+    }
+
+    @tracked value;
+  }
+
   module('collection of strings', function (hooks) {
     hooks.beforeEach(async function () {
-      this.config = {
+      this.config = new Config({
         name: 'myInput',
         disabled: false,
         autocomplete: 'country',
         collection: ['France', 'Spain', 'Germany', 'United Kingdom'],
-      };
+      });
     });
 
     module('single select', function (hooks) {

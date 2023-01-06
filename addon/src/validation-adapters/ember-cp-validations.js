@@ -1,21 +1,17 @@
 import { resolve, reject } from 'rsvp';
 import EmberObject from '@ember/object';
+import compatibleProxy from '../utils/compatible-proxy';
 
 export default class EmberCpValidations extends EmberObject {
   cache = {};
 
   get attributes() {
-    return new Proxy(this, {
-      get(self, key) {
-        if (key in self || typeof key === 'symbol') {
-          return self[key];
-        }
-        self.cache[key] = self.cache[key] || new Attribute(key, self.object);
-        return self.cache[key];
-      },
-      has() {
-        return true;
-      },
+    return compatibleProxy(this, function(source, key) {
+      if (key in this || typeof key === 'symbol') {
+        return this[key];
+      }
+      source.cache[key] = source.cache[key] || new Attribute(key, source.object);
+      return source.cache[key];
     });
   }
 
