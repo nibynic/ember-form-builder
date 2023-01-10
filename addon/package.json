@@ -22,6 +22,9 @@
     "@babel/plugin-proposal-decorators": "^7.19.6",
     "@ember/optional-features": "^2.0.0",
     "@embroider/addon-dev": "^3.0.0",
+    "@embroider/compat": "^2.0.2",
+    "@glimmer/component": "^1.1.2",
+    "@glimmer/tracking": "^1.1.2",
     "@rollup/plugin-babel": "^6.0.2",
     "babel-eslint": "^10.1.0",
     "ember-template-lint": "^4.16.1",
@@ -90,11 +93,12 @@
     "@embroider/addon-shim": "^1.8.4",
     "@embroider/util": "^1.9.0",
     "ember-cache-primitive-polyfill": "^1.0.1",
-    "ember-cli-string-utils": "^1.1.0"
+    "ember-cli-string-utils": "^1.1.0",
+    "ember-inflector": "^4.0.0"
   },
   "peerDependencies": {
     "@ember/test-helpers": "^2.7.0",
-    "ember-inflector": "^4.0.0"
+    "ember-source": ">=3.24.0"
   },
   "exports": {
     ".": "./dist/index.js",
