@@ -7,7 +7,6 @@ import { isBlank } from '@ember/utils';
 import { getOwner } from '@ember/application';
 import defaultConfiguration from '../configuration';
 import { tracked } from '@glimmer/tracking';
-import { assign } from '@ember/polyfills';
 import { createCache, getValue } from '@glimmer/tracking/primitives/cache';
 
 export default class FormBuilder extends EmberObject {
@@ -19,7 +18,7 @@ export default class FormBuilder extends EmberObject {
 
   constructor() {
     super(...arguments);
-    this.configuration = assign(
+    this.configuration = Object.assign(
       {},
       defaultConfiguration,
       getOwner(this).factoryFor('config:environment').class.formBuilder || {}
