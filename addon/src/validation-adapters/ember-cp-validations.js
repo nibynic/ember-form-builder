@@ -6,11 +6,12 @@ export default class EmberCpValidations extends EmberObject {
   cache = {};
 
   get attributes() {
-    return compatibleProxy(this, function(source, key) {
+    return compatibleProxy(this, function (source, key) {
       if (key in this || typeof key === 'symbol') {
         return this[key];
       }
-      source.cache[key] = source.cache[key] || new Attribute(key, source.object);
+      source.cache[key] =
+        source.cache[key] || new Attribute(key, source.object);
       return source.cache[key];
     });
   }

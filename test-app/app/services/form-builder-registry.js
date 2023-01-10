@@ -9,10 +9,16 @@ import { ensureSafeComponent } from '@embroider/util';
 
 export default class FormBuilderRegistryService extends OriginalRegistry {
   resolveInput(type) {
-    return ensureSafeComponent(importSync(`../components/inputs/${type}-input.js`).default, this);
+    return ensureSafeComponent(
+      importSync(`../components/inputs/${type}-input.js`).default,
+      this
+    );
   }
 
   resolveWrapper(type) {
-    return ensureSafeComponent(importSync(`../components/input-wrappers/${type}.js`).default, this);
+    return ensureSafeComponent(
+      importSync(`../components/input-wrappers/${type}.js`).default,
+      this
+    );
   }
 }

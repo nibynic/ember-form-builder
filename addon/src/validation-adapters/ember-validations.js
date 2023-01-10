@@ -4,14 +4,14 @@ import compatibleProxy from '../utils/compatible-proxy';
 
 export default class EmberValidations extends EmberObject {
   cache = {};
-  attributes = compatibleProxy(this, function(source, key) {
+  attributes = compatibleProxy(this, function (source, key) {
     if (key in this || typeof key === 'symbol') {
       return this[key];
     }
     source.cache[key] = source.cache[key] || new Attribute(key, source.object);
     return source.cache[key];
   });
-  
+
   validate() {
     if (this.object.validate) {
       return this.object.validate();
