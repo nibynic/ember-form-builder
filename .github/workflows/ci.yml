@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
-          cache: npm
+          cache: yarn
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Lint Addon
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14.x
-          cache: npm
+          cache: yarn
       - name: Install Dependencies
         run: yarn install --no-lockfile
       - name: Run Tests
@@ -80,7 +80,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
-          cache: npm
+          cache: yarn
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Run Tests
