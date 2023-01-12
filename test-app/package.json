@@ -22,8 +22,8 @@
     "@ember/optional-features": "^2.0.0",
     "@ember/render-modifiers": "^2.0.4",
     "@ember/test-helpers": "~2.8.1",
-    "@embroider/macros": "~1.9.0",
     "@embroider/core": "^2.0.2",
+    "@embroider/macros": "~1.9.0",
     "@embroider/test-setup": "^2.0.2",
     "@embroider/webpack": "^2.0.2",
     "@glimmer/component": "^1.1.2",
@@ -81,5 +81,13 @@
   },
   "ember": {
     "edition": "octane"
+  },
+  "resolutions": {
+    "@xmldom/xmldom": ">=0.7.0",
+    "ansi-html": ">=0.0.8",
+    "clean-css": ">=4.1.11",
+    "got": ">=11.8.5",
+    "json5": ">=1.0.2",
+    "minimist": ">=1.2.6"
   }
 }
