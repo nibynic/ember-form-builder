@@ -81,13 +81,5 @@
   },
   "ember": {
     "edition": "octane"
-  },
-  "resolutions": {
-    "ansi-html": "^0.0.8",
-    "clean-css": "^4.1.11",
-    "glob-parent": "^5.1.2",
-    "got": "^11.8.5",
-    "markdown-it": "^12.3.2",
-    "minimist": "^1.2.6"
   }
 }
