@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
-          cache: npm
+          cache: yarn
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Lint Addon
@@ -32,6 +32,9 @@ jobs:
       - name: Lint
         run: yarn lint
         working-directory: test-app
+      - name: Build addon
+        run: yarn build
+        working-directory: addon
       - name: Run Tests
         run: yarn test:ember
         working-directory: test-app
@@ -46,9 +49,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14.x
-          cache: npm
+          cache: yarn
       - name: Install Dependencies
         run: yarn install --no-lockfile
+      - name: Build addon
+        run: yarn build
+        working-directory: addon
       - name: Run Tests
         run: yarn test:ember
         working-directory: test-app
@@ -68,8 +74,8 @@ jobs:
           - ember-release
           - ember-beta
           - ember-canary
-          - ember-classic
           - embroider-safe
+          - embroider-optimized
 
     steps:
       - uses: actions/checkout@v3
@@ -77,8 +83,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.x
-          cache: npm
+          cache: yarn
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
+      - name: Build addon
+        run: yarn build
+        working-directory: addon
       - name: Run Tests
         run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        working-directory: test-app
