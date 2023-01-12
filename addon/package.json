@@ -1,6 +1,6 @@
 {
   "name": "ember-form-builder",
-  "version": "2.3.0",
+  "version": "3.0.0-beta.1",
   "description": "Simple and easily extensible form builder for Ember apps",
   "engines": {
     "node": "14.* || 16.* || >= 18"
